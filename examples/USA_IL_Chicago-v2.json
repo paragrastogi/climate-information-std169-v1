@@ -24,231 +24,240 @@
     "station_height": 1.8
   },
   "climate_zone": {
-        "ashrae_169_2025": "5A",
-        "iecc_2021": "5A"
-},
-  "data_sets": [
+    "ashrae_169_2025": "5A",
+    "iecc_2021": "5A"
+  },
+  "summary_data_sets": [
     {
-      "0": {
-        "type": "summary_data",
-        "source_data_period": {
-          "id": "Handbook 2025 period of record",
-          "starting_time": "1991-01-01",
-          "end_time": "2023-12-31",
-          "labels": "ASHRAE Fundamentals - Handbook 2025: Grade A",
-          "notes": "conditions for grade A stations are based on at least 30 years of hourly data as per ASHRAE Handbook - Fundamentals 2025"
-        },
+      "source_data_period": {
+        "id": "Handbook 2025 period of record",
+        "starting_time": "1991-01-01",
+        "end_time": "2023-12-31",
+        "labels": "ASHRAE Fundamentals - Handbook 2025: Grade A",
+        "notes": "conditions for grade A stations are based on at least 30 years of hourly data as per ASHRAE Handbook - Fundamentals 2025"
+      },
       "climate_data_type": "MEASURED",
       "notes": "Example file generated from ASHRAE Handbook - Fundamentals 2025",
       "dry_bulb_temperature": {
-        "display_name": "Dry-bulb temperature",  
+        "display_name": "Dry-bulb temperature",
         "units": "K",
         "annual": {
           "display_name": "Annual",
-          "percentile00.4": {
-            "display_name": "0.4th Percentile",
-            "value_type": "CONTINUOUS_PERCENTILE",
-            "values": 306.05
-          },
-          "percentile01.0": {
-            "display_name": "1st Percentile",
-            "value_type": "CONTINUOUS_PERCENTILE",
-            "values": 304.65
-          },
-          "percentile02.0": {
-            "display_name": "2nd Percentile",
-            "value_type": "CONTINUOUS_PERCENTILE",
-            "values": 303.25
-          },
-          "percentile99.0": {
-            "display_name": "99th Percentile",
-            "value_type": "CONTINUOUS_PERCENTILE",
-            "values": 257.85
-          },
-          "percentile99.6": {
-            "display_name": "99.6th Percentile",
-            "value_type": "CONTINUOUS_PERCENTILE",
-            "values": 255.05
-          },
-          "average": {
-            "display_name": "Average",
+          "percentiles": [
+            {
+              "percentile": 0.4,
+              "values": 306.05
+            },
+            {
+              "percentile": 1.0,
+              "value_type": "CONTINUOUS_PERCENTILE",
+              "values": 304.65
+            },
+            {
+              "percentile": 2.0,
+              "value_type": "CONTINUOUS_PERCENTILE",
+              "values": 303.25
+            },
+            {
+              "percentile": 99.0,
+              "value_type": "CONTINUOUS_PERCENTILE",
+              "values": 257.85
+            },
+            {
+              "percentile": 99.6,
+              "value_type": "CONTINUOUS_PERCENTILE",
+              "values": 255.05
+            }
+          ],
+          "mean": {
             "value_type": "AVERAGE",
             "values": 283.85
           },
-          "standard_deviation": { 
-            "display_name": "Standard Deviation",
+          "standard_deviation": {
             "value_type": "STANDARD_DEVIATION",
             "values": 10.95
           }
         },
         "monthly": {
           "display_name": "Monthly",
-          "01": {
-            "display_name": "January",
-            "average": {
-              "display_name": "Average",
-              "value_type": "AVERAGE",
-              "value": 269.25
+          "data": [
+            {
+              "display_name": "January",
+              "average": {
+                "display_name": "Average",
+                "value_type": "AVERAGE",
+                "value": 269.25
+              },
+              "standard_deviation": {
+                "display_name": "Standard Deviation",
+                "value_type": "STANDARD_DEVIATION",
+                "value": 6.19
+              }
             },
-            "standard_deviation": {
-              "display_name": "Standard Deviation",
-              "value_type": "STANDARD_DEVIATION",
-              "value": 6.19
-            }
-          },
-          "02": {
-            "display_name": "February",
-            "average": {
-              "display_name": "Average",
-              "value_type": "AVERAGE",
-              "value": 270.75
+            {
+              "display_name": "February",
+              "average": {
+                "display_name": "Average",
+                "value_type": "AVERAGE",
+                "value": 270.75
+              },
+              "standard_deviation": {
+                "display_name": "Standard Deviation",
+                "value_type": "STANDARD_DEVIATION",
+                "value": 6.15
+              }
             },
-            "standard_deviation": {
-              "display_name": "Standard Deviation",
-              "value_type": "STANDARD_DEVIATION",
-              "value": 6.15
-            }
-          },
-          "03": {
-            "display_name": "March",
-            "average": {
-              "display_name": "Average",
-              "value_type": "AVERAGE",
-              "value": 276.95
+            {
+              "display_name": "March",
+              "average": {
+                "display_name": "Average",
+                "value_type": "AVERAGE",
+                "value": 276.95
+              },
+              "standard_deviation": {
+                "display_name": "Standard Deviation",
+                "value_type": "STANDARD_DEVIATION",
+                "value": 5.88
+              }
             },
-            "standard_deviation": {
-              "display_name": "Standard Deviation",
-              "value_type": "STANDARD_DEVIATION",
-              "value": 5.88
-            }
-          },
-          "04": {
-            "display_name": "April",
-            "average": {
-              "display_name": "Average",
-              "value_type": "AVERAGE",
-              "value": 282.85
+            {
+              "display_name": "April",
+              "average": {
+                "display_name": "Average",
+                "value_type": "AVERAGE",
+                "value": 282.85
+              },
+              "standard_deviation": {
+                "display_name": "Standard Deviation",
+                "value_type": "STANDARD_DEVIATION",
+                "value": 5.09
+              }
             },
-            "standard_deviation": {
-              "display_name": "Standard Deviation",
-              "value_type": "STANDARD_DEVIATION",
-              "value": 5.09
-            }
-          },
-          "05": {
-            "display_name": "May",
-            "average": {
-              "display_name": "Average",
-              "value_type": "AVERAGE",
-              "value": 288.85
+            {
+              "display_name": "May",
+              "average": {
+                "display_name": "Average",
+                "value_type": "AVERAGE",
+                "value": 288.85
+              },
+              "standard_deviation": {
+                "display_name": "Standard Deviation",
+                "value_type": "STANDARD_DEVIATION",
+                "value": 5.12
+              }
             },
-            "standard_deviation": {
-              "display_name": "Standard Deviation",
-              "value_type": "STANDARD_DEVIATION",
-              "value": 5.12
-            }
-          },
-          "06": {
-            "display_name": "June",
-            "average": {
-              "display_name": "Average",
-              "value_type": "AVERAGE",
-              "value": 294.45
+            {
+              "display_name": "June",
+              "average": {
+                "display_name": "Average",
+                "value_type": "AVERAGE",
+                "value": 294.45
+              },
+              "standard_deviation": {
+                "display_name": "Standard Deviation",
+                "value_type": "STANDARD_DEVIATION",
+                "value": 3.98
+              }
             },
-            "standard_deviation": {
-              "display_name": "Standard Deviation",
-              "value_type": "STANDARD_DEVIATION",
-              "value": 3.98
-            }
-          },
-          "07": {
-            "display_name": "July",
-            "average": {
-              "display_name": "Average",
-              "value_type": "AVERAGE",
-              "value": 297.05
+            {
+              "display_name": "July",
+              "average": {
+                "display_name": "Average",
+                "value_type": "AVERAGE",
+                "value": 297.05
+              },
+              "standard_deviation": {
+                "display_name": "Standard Deviation",
+                "value_type": "STANDARD_DEVIATION",
+                "value": 3.12
+              }
             },
-            "standard_deviation": {
-              "display_name": "Standard Deviation",
-              "value_type": "STANDARD_DEVIATION",
-              "value": 3.12
-            }
-          },
-          "08": {
-            "display_name": "August",
-            "average": {
-              "display_name": "Average",
-              "value_type": "AVERAGE",
-              "value": 296.25
+            {
+              "display_name": "August",
+              "average": {
+                "display_name": "Average",
+                "value_type": "AVERAGE",
+                "value": 296.25
+              },
+              "standard_deviation": {
+                "display_name": "Standard Deviation",
+                "value_type": "STANDARD_DEVIATION",
+                "value": 2.85
+              }
             },
-            "standard_deviation": {
-              "display_name": "Standard Deviation",
-              "value_type": "STANDARD_DEVIATION",
-              "value": 2.85
-            }
-          },
-          "09": {
-            "display_name": "September",
-            "average": {
-              "display_name": "Average",
-              "value_type": "AVERAGE",
-              "value": 292.35
+            {
+              "display_name": "September",
+              "average": {
+                "display_name": "Average",
+                "value_type": "AVERAGE",
+                "value": 292.35
+              },
+              "standard_deviation": {
+                "display_name": "Standard Deviation",
+                "value_type": "STANDARD_DEVIATION",
+                "value": 4.14
+              }
             },
-            "standard_deviation": {
-              "display_name": "Standard Deviation",
-              "value_type": "STANDARD_DEVIATION",
-              "value": 4.14
-            }
-          },
-          "10": {
-            "display_name": "October",
-            "average": {
-              "display_name": "Average",
-              "value_type": "AVERAGE",
-              "value": 285.35
+            {
+              "display_name": "October",
+              "average": {
+                "display_name": "Average",
+                "value_type": "AVERAGE",
+                "value": 285.35
+              },
+              "standard_deviation": {
+                "display_name": "Standard Deviation",
+                "value_type": "STANDARD_DEVIATION",
+                "value": 5.02
+              }
             },
-            "standard_deviation": {
-              "display_name": "Standard Deviation",
-              "value_type": "STANDARD_DEVIATION",
-              "value": 5.02
-            }
-          },
-          "11": {
-            "display_name": "November",
-            "average": {
-              "display_name": "Average",
-              "value_type": "AVERAGE",
-              "value": 278.45
+            {
+              "display_name": "November",
+              "average": {
+                "display_name": "Average",
+                "value_type": "AVERAGE",
+                "value": 278.45
+              },
+              "standard_deviation": {
+                "display_name": "Standard Deviation",
+                "value_type": "STANDARD_DEVIATION",
+                "value": 5.43
+              }
             },
-            "standard_deviation": {
-              "display_name": "Standard Deviation",
-              "value_type": "STANDARD_DEVIATION",
-              "value": 5.43
+            {
+              "display_name": "December",
+              "average": {
+                "display_name": "Average",
+                "value_type": "AVERAGE",
+                "value": 272.15
+              },
+              "standard_deviation": {
+                "display_name": "Standard Deviation",
+                "value_type": "STANDARD_DEVIATION",
+                "value": 6.01
+              }
             }
-          },
-          "12": {
-            "display_name": "December",
-            "average": {
-              "display_name": "Average",
-              "value_type": "AVERAGE",
-              "value": 272.15
-            },
-            "standard_deviation": {
-              "display_name": "Standard Deviation",
-              "value_type": "STANDARD_DEVIATION",
-              "value": 6.01
-            }
-          }
+          ]
+        },
+        "daily": {
+          "display_name": "Daily"
         }
       },
-      "heating_degree_days_10.0": {
-        "display_name": "Heating Degree Days (10.0°C)",
+      "heating_degree_days": {
+        "base_temperature": 283.15,
         "units": "Kday",
         "annual": {
           "display_name": "Annual",
           "value_type": "SUM",
           "values": 1593
-        }
+        },
+        "monthly": [
+          {
+            "display_name": "January",
+            "value_type": "SUM",
+            "values": 430
+          }
+        ]
       },
       "heating_degree_days_18.3": {},
       "cooling_degree_days_10.0": {},
@@ -265,65 +274,63 @@
             "values": 296.55,
             "coincident": {
               "dry_bulb_temperature": {
-                "display_name": "Dry-bulb temperature",
-                "units": "K",
-                "value_type": "CONTINUOUS_PERCENTILE",
-                "values": 306.05
+                "display_name": "Mean Coincident Dry-bulb temperature",
+                "value_type": "AVERAGE",
+                "values": 301.45
               },
               "humidity_ratio": {
                 "display_name": "Humidity Ratio",
-                "units": "-",
-                "value_type": "CONTINUOUS_PERCENTILE",
+                "value_type": "INSTANTANEOUS",
                 "values": 0.0186
               }
             }
           },
           "percentile01.0": {
-          "display_name": "1st Percentile",
-          "value_type": "CONTINUOUS_PERCENTILE",
-          "values": 295.55
+            "display_name": "1st Percentile",
+            "value_type": "CONTINUOUS_PERCENTILE",
+            "values": 295.55
           },
           "percentile02.0": {
-          "display_name": "2nd Percentile",
-          "value_type": "CONTINUOUS_PERCENTILE",
-          "values": 294.65
+            "display_name": "2nd Percentile",
+            "value_type": "CONTINUOUS_PERCENTILE",
+            "values": 294.65
           },
           "percentile99.0": {
-          "display_name": "99th Percentile",
-          "value_type": "CONTINUOUS_PERCENTILE",
-          "values": 251.85
+            "display_name": "99th Percentile",
+            "value_type": "CONTINUOUS_PERCENTILE",
+            "values": 251.85
           },
           "percentile99.6": {
-          "display_name": "99.6th Percentile",
-          "value_type": "CONTINUOUS_PERCENTILE",
-          "values": 249.55
+            "display_name": "99.6th Percentile",
+            "value_type": "CONTINUOUS_PERCENTILE",
+            "values": 249.55
           }
         }
       }
-    },
-      "1": {
-        "type": "time_series",
-        "source_data_period": {
-            "id": "Hourly Typical Year - climate.onebuilding.org v2025-09",
-            "starting_time": "1991-01-01",
-            "end_time": "2020-12-31",
-            "labels": "class A",
-            "notes": "conditions for class A stations are based on at least 30 years of hourly data as per ASHRAE Handbook - Fundamentals 2025"
-          },
-        "dry_bulb_temperature": {
-            "display_name": "Dry-bulb temperature",
-            "units": "K",
-            "value_type": "INSTANTANEOUS",
-            "value_time_intervals": "Hourly Typical Year - climate.onebuilding.org v2025-09",
-            "values": []
-        },
-        "relative_humidity": {
-            "display_name": "Relative Humidity",
-            "units": "_",
-            "value_type": "INSTANTANEOUS",
-            "value_time_intervals": "Hourly Typical Year - climate.onebuilding.org v2025-09",
-            "values": []
-        }
+    }
+  ],
+  "time_series_data_sets": [
+    {
+      "source_data_period": {
+        "id": "Hourly Typical Year - climate.onebuilding.org v2025-09",
+        "starting_time": "1991-01-01",
+        "end_time": "2020-12-31",
+        "labels": "class A",
+        "notes": "conditions for class A stations are based on at least 30 years of hourly data as per ASHRAE Handbook - Fundamentals 2025"
+      },
+      "dry_bulb_temperature": {
+        "display_name": "Dry-bulb temperature",
+        "units": "K",
+        "value_type": "INSTANTANEOUS",
+        "value_time_intervals": "Hourly Typical Year - climate.onebuilding.org v2025-09",
+        "values": []
+      },
+      "relative_humidity": {
+        "display_name": "Relative Humidity",
+        "units": "_",
+        "value_type": "INSTANTANEOUS",
+        "value_time_intervals": "Hourly Typical Year - climate.onebuilding.org v2025-09",
+        "values": []
       }
     }
   ]
