@@ -23,10 +23,23 @@
     "anemometer_height": 10,
     "station_height": 1.8
   },
-  "climate_zone": {
-    "ashrae_169_2025": "5A",
-    "iecc_2021": "5A"
-  },
+  "climate_zone": [
+    {
+      "system": "ashrae",
+      "version": "2025",
+      "zone": "5A"
+    },
+    {
+      "system": "ashrae",
+      "version": "2021",
+      "zone": "5A"
+    },
+    {
+      "system": "iecc",
+      "version": "2021",
+      "zone": "5A"
+    }
+  ],
   "summary_data_sets": [
     {
       "source_data_period": {
@@ -42,7 +55,8 @@
         "display_name": "Dry-bulb temperature",
         "units": "K",
         "annual": {
-          "display_name": "Annual",
+          "mean": 283.85,
+          "standard_deviation": 10.95,
           "percentiles": [
             {
               "percentile": 0.4,
@@ -50,218 +64,147 @@
             },
             {
               "percentile": 1.0,
-              "value_type": "CONTINUOUS_PERCENTILE",
               "values": 304.65
             },
             {
               "percentile": 2.0,
-              "value_type": "CONTINUOUS_PERCENTILE",
               "values": 303.25
             },
             {
               "percentile": 99.0,
-              "value_type": "CONTINUOUS_PERCENTILE",
               "values": 257.85
             },
             {
               "percentile": 99.6,
-              "value_type": "CONTINUOUS_PERCENTILE",
               "values": 255.05
-            }
-          ],
-          "mean": {
-            "value_type": "AVERAGE",
-            "values": 283.85
-          },
-          "standard_deviation": {
-            "value_type": "STANDARD_DEVIATION",
-            "values": 10.95
-          }
-        },
-        "monthly": {
-          "display_name": "Monthly",
-          "data": [
-            {
-              "display_name": "January",
-              "average": {
-                "display_name": "Average",
-                "value_type": "AVERAGE",
-                "value": 269.25
-              },
-              "standard_deviation": {
-                "display_name": "Standard Deviation",
-                "value_type": "STANDARD_DEVIATION",
-                "value": 6.19
-              }
-            },
-            {
-              "display_name": "February",
-              "average": {
-                "display_name": "Average",
-                "value_type": "AVERAGE",
-                "value": 270.75
-              },
-              "standard_deviation": {
-                "display_name": "Standard Deviation",
-                "value_type": "STANDARD_DEVIATION",
-                "value": 6.15
-              }
-            },
-            {
-              "display_name": "March",
-              "average": {
-                "display_name": "Average",
-                "value_type": "AVERAGE",
-                "value": 276.95
-              },
-              "standard_deviation": {
-                "display_name": "Standard Deviation",
-                "value_type": "STANDARD_DEVIATION",
-                "value": 5.88
-              }
-            },
-            {
-              "display_name": "April",
-              "average": {
-                "display_name": "Average",
-                "value_type": "AVERAGE",
-                "value": 282.85
-              },
-              "standard_deviation": {
-                "display_name": "Standard Deviation",
-                "value_type": "STANDARD_DEVIATION",
-                "value": 5.09
-              }
-            },
-            {
-              "display_name": "May",
-              "average": {
-                "display_name": "Average",
-                "value_type": "AVERAGE",
-                "value": 288.85
-              },
-              "standard_deviation": {
-                "display_name": "Standard Deviation",
-                "value_type": "STANDARD_DEVIATION",
-                "value": 5.12
-              }
-            },
-            {
-              "display_name": "June",
-              "average": {
-                "display_name": "Average",
-                "value_type": "AVERAGE",
-                "value": 294.45
-              },
-              "standard_deviation": {
-                "display_name": "Standard Deviation",
-                "value_type": "STANDARD_DEVIATION",
-                "value": 3.98
-              }
-            },
-            {
-              "display_name": "July",
-              "average": {
-                "display_name": "Average",
-                "value_type": "AVERAGE",
-                "value": 297.05
-              },
-              "standard_deviation": {
-                "display_name": "Standard Deviation",
-                "value_type": "STANDARD_DEVIATION",
-                "value": 3.12
-              }
-            },
-            {
-              "display_name": "August",
-              "average": {
-                "display_name": "Average",
-                "value_type": "AVERAGE",
-                "value": 296.25
-              },
-              "standard_deviation": {
-                "display_name": "Standard Deviation",
-                "value_type": "STANDARD_DEVIATION",
-                "value": 2.85
-              }
-            },
-            {
-              "display_name": "September",
-              "average": {
-                "display_name": "Average",
-                "value_type": "AVERAGE",
-                "value": 292.35
-              },
-              "standard_deviation": {
-                "display_name": "Standard Deviation",
-                "value_type": "STANDARD_DEVIATION",
-                "value": 4.14
-              }
-            },
-            {
-              "display_name": "October",
-              "average": {
-                "display_name": "Average",
-                "value_type": "AVERAGE",
-                "value": 285.35
-              },
-              "standard_deviation": {
-                "display_name": "Standard Deviation",
-                "value_type": "STANDARD_DEVIATION",
-                "value": 5.02
-              }
-            },
-            {
-              "display_name": "November",
-              "average": {
-                "display_name": "Average",
-                "value_type": "AVERAGE",
-                "value": 278.45
-              },
-              "standard_deviation": {
-                "display_name": "Standard Deviation",
-                "value_type": "STANDARD_DEVIATION",
-                "value": 5.43
-              }
-            },
-            {
-              "display_name": "December",
-              "average": {
-                "display_name": "Average",
-                "value_type": "AVERAGE",
-                "value": 272.15
-              },
-              "standard_deviation": {
-                "display_name": "Standard Deviation",
-                "value_type": "STANDARD_DEVIATION",
-                "value": 6.01
-              }
             }
           ]
         },
-        "daily": {
-          "display_name": "Daily"
-        }
-      },
-      "heating_degree_days": {
-        "base_temperature": 283.15,
-        "units": "Kday",
-        "annual": {
-          "display_name": "Annual",
-          "value_type": "SUM",
-          "values": 1593
-        },
         "monthly": [
           {
-            "display_name": "January",
-            "value_type": "SUM",
-            "values": 430
+            "average": 269.25,
+            "standard_deviation": 6.19
+          },
+          {
+            "average": 270.75,
+            "standard_deviation": 6.15
+          },
+          {
+            "average": 276.95,
+            "standard_deviation": 5.88
+          },
+          {
+            "average": 282.85,
+            "standard_deviation": 5.09
+          },
+          {
+            "average": 288.85,
+            "standard_deviation": 5.12
+          },
+          {
+            "average": 288.85,
+            "standard_deviation": 5.12
+          },
+          {
+            "average": 294.45,
+            "standard_deviation": 3.98
+          },
+          {
+            "average": 297.05,
+            "standard_deviation": 3.12
+          },
+          {
+            "average": 296.25,
+            "standard_deviation": 2.85
+          },
+          {
+            "average": 296.25,
+            "standard_deviation": 2.85
+          },
+          {
+            "average": 292.35,
+            "standard_deviation": 4.14
+          },
+          {
+            "average": 285.35,
+            "standard_deviation": 5.02
+          },
+          {
+            "average": 278.45,
+            "standard_deviation": 5.43
+          },
+          {
+            "average": 272.15,
+            "standard_deviation": 6.01
           }
-        ]
+        ],
+        "daily": []
       },
-      "heating_degree_days_18.3": {},
-      "cooling_degree_days_10.0": {},
-      "cooling_degree_days_18.3": {},
+      "heating_degree_days": [
+        {
+          "base_temperature": 283.15,
+          "units": "K-day",
+          "annual": 1593,
+          "monthly": [
+            {
+              "sum": 430
+            },
+            {
+              "sum": 349
+            },
+            {
+              "sum": 208
+            },
+            {
+              "sum": 65
+            },
+            {
+              "sum": 8
+            },
+            {
+              "sum": 0
+            },
+            {
+              "sum": 0
+            },
+            {
+              "sum": 0
+            },
+            {
+              "sum": 0
+            },
+            {
+              "sum": 34
+            },
+            {
+              "sum": 158
+            },
+            {
+              "sum": 342
+            }
+          ]
+        },
+        {
+          "base_temperature": 291.45,
+          "units": "K-day",
+          "annual": 3346,
+          "monthly": []
+        }
+      ],
+      "cooling_degree_days": [
+        {
+          "base_temperature": 283.15,
+          "units": "K-day",
+          "annual": 1833,
+          "monthly": []
+        },
+        {
+          "base_temperature": 291.45,
+          "units": "K-day",
+          "annual": 542,
+          "monthly": []
+        }
+      ],
       "wind_speed": {},
       "dew_point_temperature": {
         "display_name": "Dew-point temperature",
