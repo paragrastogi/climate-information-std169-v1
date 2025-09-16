@@ -3,7 +3,6 @@ doit task/build automation
 """
 
 import os
-from doit.tools import create_folder
 
 from lattice import Lattice
 
