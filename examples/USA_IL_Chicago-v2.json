@@ -211,43 +211,40 @@
         "units": "K",
         "annual": {
           "display_name": "Annual",
-          "percentile00.4": {
-            "display_name": "0.4th Percentile",
-            "value_type": "CONTINUOUS_PERCENTILE",
-            "values": 296.55,
-            "coincident": {
-              "dry_bulb_temperature": {
-                "display_name": "Mean Coincident Dry-bulb temperature",
-                "value_type": "AVERAGE",
-                "values": 301.45
-              },
-              "humidity_ratio": {
-                "display_name": "Humidity Ratio",
-                "value_type": "INSTANTANEOUS",
-                "values": 0.0186
+          "percentiles": [
+            {
+              "percentile": 0.4,
+              "values": 296.55,
+              "coincident": {
+                "dry_bulb_temperature": {
+                  "display_name": "Mean Coincident Dry-bulb temperature",
+                  "value_type": "AVERAGE",
+                  "values": 301.45
+                },
+                "humidity_ratio": {
+                  "display_name": "Humidity Ratio",
+                  "value_type": "INSTANTANEOUS",
+                  "values": 0.0186
+                }
               }
+            },
+            {
+              "percentile": 1.0,
+              "values": 295.55
+            },
+            {
+              "percentile": 2.0,
+              "values": 294.65
+            },
+            {
+              "percentile": 99.0,
+              "values": 251.85
+            },
+            {
+              "percentile": 99.6,
+              "values": 249.55
             }
-          },
-          "percentile01.0": {
-            "display_name": "1st Percentile",
-            "value_type": "CONTINUOUS_PERCENTILE",
-            "values": 295.55
-          },
-          "percentile02.0": {
-            "display_name": "2nd Percentile",
-            "value_type": "CONTINUOUS_PERCENTILE",
-            "values": 294.65
-          },
-          "percentile99.0": {
-            "display_name": "99th Percentile",
-            "value_type": "CONTINUOUS_PERCENTILE",
-            "values": 251.85
-          },
-          "percentile99.6": {
-            "display_name": "99.6th Percentile",
-            "value_type": "CONTINUOUS_PERCENTILE",
-            "values": 249.55
-          }
+          ]
         }
       }
     }
