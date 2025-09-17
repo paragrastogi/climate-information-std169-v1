@@ -3,15 +3,11 @@ name = "climate-information"
 version = "0.1.0"
 description = "Climate Information Data Model"
 authors = [{ name = "IBPSA-USA" }]
-requires-python = "~=3.10"
-dependencies = ["lattice",
-                "pyyaml>=6.0.1"]
+requires-python = ">=3.10"
+dependencies = ["lattice"]
 
 [dependency-groups]
-dev = [
-    "doit==0.36.0",
-    "tomli==2.0.1"
-]
+dev = ["doit"]
 
 [build-system]
 requires = ["hatchling"]
