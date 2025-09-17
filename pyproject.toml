@@ -17,4 +17,4 @@ build-backend = "hatchling.build"
 packages = ["climate-information"]
 
 [tool.uv.sources]
-lattice = { git = "https://github.com/bigladder/lattice.git", branch = "climate-info-update" }
+lattice = { git = "https://github.com/bigladder/lattice.git", branch = "additional-232-enhancements" } # { git = "https://github.com/bigladder/lattice.git", branch = "main" } { path = "../lattice", editable = true }
