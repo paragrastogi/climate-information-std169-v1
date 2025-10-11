@@ -25,22 +25,44 @@
   },
   "climate_zones": [
     {
-      "system": "ASHRAE",
+      "system": "ASHRAE 169",
       "system_version": "2025",
       "source_data_set": "NOAA Integrated Surface Database (ISD)",
       "source_data_version": "2022",
       "zone": "5A",
-      "notes": "Based on ASHRAE Handbook - Fundamentals 2025"
+      "notes": "Based on ASHRAE Standard 169:2025, DuPage County, IL."
     },
     {
-      "system": "ASHRAE",
-      "version": "2021",
-      "zone": "5A"
+      "system": "ASHRAE 169",
+      "system_version": "2021",
+      "source_data_set": "NOAA Integrated Surface Database (ISD)",
+      "source_data_version": "2019",
+      "zone": "5A",
+      "notes": "DuPage County, IL."
     },
     {
       "system": "IECC",
-      "version": "2021",
-      "zone": "5A"
+      "system_version": "2021",
+      "source_data_set": "NOAA Integrated Surface Database (ISD)",
+      "source_data_version": "2019",
+      "zone": "5A",
+      "notes": "Based on ASHRAE 169:2021, DuPage County, IL."
+    },
+    {
+      "system": "Koppen-Geiger-Beck",
+      "system_version": "2018",
+      "source_data_set": "Beck et al. 2018",
+      "source_data_version": "2018",
+      "zone": "Cwb",
+      "notes": "Based on Beck et al. 2018."
+    },
+    {
+      "system": "Koeppen-Geiger",
+      "system_version": "1936",
+      "source_data_set": "Peel et al. 2007",
+      "source_data_version": "2007",
+      "zone": "Dfa",
+      "notes": "Based on Peel et al. 2007."
     }
   ],
   "summary_data_sets": [
@@ -249,6 +271,14 @@
             }
           ]
         }
+      },
+      "climate_zone": {
+        "system": "ASHRAE",
+        "system_version": "2025",
+        "source_data_set": "NOAA Integrated Surface Database (ISD)",
+        "source_data_version": "2022",
+        "zone": "5A",
+        "notes": "Based on ASHRAE Handbook - Fundamentals 2025"
       }
     }
   ],
