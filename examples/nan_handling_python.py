@@ -11,6 +11,7 @@ a = np.arange(10, dtype=float).reshape(2, 5)
 a[1, 1] = np.nan
 b = a.tolist()
 file_path = "path.json"  ## your path variable
+
 json.dump(
     b,
     codecs.open(file_path, "w", encoding="utf-8"),
@@ -19,7 +20,9 @@ json.dump(
     indent=4,
 )
 
+file_path_1 = "path_1.json"  ## your path variable
 
-with open(file_path) as f:
+with open(file_path_1) as f:
     d = json.load(f)
     print(d)
+    # print(np.isnan(d[1][1]))  # Check if the value is NaN
