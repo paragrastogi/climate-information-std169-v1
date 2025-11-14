@@ -1,0 +1,521 @@
+{
+  "metadata": {
+    "data_model": "IBPSA_BDE",
+    "schema": "CLIMATE_INFORMATION",
+    "schema_version": "0.2.0",
+    "id": "",
+    "description": "Chicago Ohare Intl Ap, IL, USA ASHRAE Design Conditions 2025",
+    "data_timestamp": "2025-09-09T10:00Z",
+    "data_version": 2,
+    "data_source": "WMO#725300; ASHRAE Handbook - Fundamentals 2025; Period of record as per ASHRAE Handbook - Fundamentals 2025"
+  },
+  "location": {
+    "name": "Chicago Ohare Intl Ap",
+    "country_code": "USA",
+    "subdivision": "IL",
+    "wmo_station_id": "725300",
+    "wban_station_id": "94846",
+    "icao_station_id": "ORD",
+    "latitude": 41.98,
+    "longitude": -87.92,
+    "time_zone_offset": -6.0,
+    "elevation": 201.0,
+    "anemometer_height": 10,
+    "station_height": 1.8,
+    "climate_zones": [ // List of climate zone classifications that are applicable to this location ONLY, not necessarily applicable to a "nearby" site.
+      {
+        "system": "ASHRAE 169",
+        "system_version": "2025",
+        "source_data_set": "NOAA Integrated Surface Database (ISD)",
+        "source_data_version": "2022",
+        "zone": "5A",
+        "notes": "Based on ASHRAE Standard 169:2025, DuPage County, IL."
+      },
+      {
+        "system": "ASHRAE 169",
+        "system_version": "2021",
+        "source_data_set": "NOAA Integrated Surface Database (ISD)",
+        "source_data_version": "2019",
+        "zone": "5A",
+        "notes": "DuPage County, IL."
+      },
+      {
+        "system": "IECC",
+        "system_version": "2021",
+        "source_data_set": "NOAA Integrated Surface Database (ISD)",
+        "source_data_version": "2019",
+        "zone": "5A",
+        "notes": "Based on ASHRAE 169:2021, DuPage County, IL."
+      },
+      {
+        "system": "Koppen-Geiger-Beck",
+        "system_version": "2018",
+        "source_data_set": "Beck et al. 2018",
+        "source_data_version": "2018",
+        "zone": "Cwb",
+        "notes": "Based on Beck et al. 2018."
+      },
+      {
+        "system": "Koeppen-Geiger",
+        "system_version": "1936",
+        "source_data_set": "Peel et al. 2007",
+        "source_data_version": "2007",
+        "zone": "Dfa",
+        "notes": "Based on Peel et al. 2007."
+      }
+    ]
+  },
+  "summary_data_sets": [
+    {
+      "source_data_period": {
+        "id": "Handbook 2025 period of record",
+        "starting_time": "1991-01-01",
+        "end_time": "2023-12-31",
+        "labels": "ASHRAE Fundamentals - Handbook 2025: Grade A",
+        "notes": "conditions for grade A stations are based on at least 30 years of hourly data as per ASHRAE Handbook - Fundamentals 2025"
+      },
+      "climate_data_type": "MEASURED",
+      "notes": "Example file generated from ASHRAE Handbook - Fundamentals 2025",
+      "summary_data": {
+        "dry_bulb_temperature": {
+          "display_name": "Dry-bulb temperature",
+          "units": "K",
+          "annual": {
+            "mean": 283.85,
+            "standard_deviation": 10.95,
+            "mean_minimum": null,
+            "mean_maximum": null,
+            "standard_deviation_minimum": null,
+            "standard_deviation_maximum": null,
+            "percent_exceedance": [
+              {
+                "percent_time_exceeded": 0.4,
+                "values": 306.05
+              },
+              {
+                "percent_time_exceeded": 1.0,
+                "values": 304.65
+              },
+              {
+                "percent_time_exceeded": 2.0,
+                "values": 303.25
+              },
+              {
+                "percent_time_exceeded": 99.0,
+                "values": 257.85
+              },
+              {
+                "percent_time_exceeded": 99.6,
+                "values": 255.05
+              }
+            ]
+          },
+          "monthly_alt": {
+            "mean": [
+              283.85,
+              285.35,
+              288.45,
+              292.15,
+              296.25,
+              296.25,
+              297.05,
+              294.45,
+              288.85,
+              288.85,
+              282.85,
+              276.95
+            ],
+            "standard_deviation": [
+              10.95,
+              10.02,
+              8.43,
+              6.78,
+              5.43,
+              5.02,
+              3.12,
+              3.98,
+              5.12,
+              5.09,
+              5.88,
+              6.15
+            ],
+            "mean_minimum": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "mean_maximum": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "standard_deviation_minimum": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "standard_deviation_maximum": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "percent_exceedance": [
+              {
+                "percent_time_exceeded": 0.4,
+                "annual": 306.05,
+                "monthly": [
+                  306.05,
+                  305.25,
+                  303.85,
+                  301.15,
+                  298.25,
+                  297.85,
+                  296.95,
+                  297.55,
+                  300.15,
+                  302.25,
+                  304.65,
+                  306.05
+                ]
+              },
+              {
+                "percent_time_exceeded": 1.0,
+                "annual": 304.65, // 88 hours per year
+                "monthly": [
+                  304.65, // 1% time exceeded in January (7.2 hours)
+                  303.85,
+                  302.45,
+                  299.75,
+                  296.85,
+                  296.45,
+                  295.55,
+                  296.15,
+                  298.75,
+                  300.85,
+                  303.25,
+                  304.65
+                ]
+              },
+              {
+                "percent_time_exceeded": 2.0,
+                "annual": 303.25,
+                "monthly": [
+                  303.25,
+                  302.45,
+                  301.05,
+                  298.35,
+                  295.45,
+                  295.05,
+                  294.15,
+                  294.75,
+                  297.35,
+                  299.45,
+                  301.85,
+                  303.25
+                ]
+              },
+              {
+                "percent_time_exceeded": 5.0,
+                "annual": 27.5,
+                "monthly": [
+                  [6.1, 4.1],
+                  8.5,
+                  15.8,
+                  299.75,
+                  296.85,
+                  296.45,
+                  295.55,
+                  296.15,
+                  298.75,
+                  300.85,
+                  303.25,
+                  304.65
+                ]
+              },
+              {
+                "percent_time_exceeded": 99.0,
+                "annual": 257.85,
+                "monthly": [
+                  257.85,
+                  259.25,
+                  261.65,
+                  264.85,
+                  268.95,
+                  269.35,
+                  270.25,
+                  269.65,
+                  266.05,
+                  263.95,
+                  260.55,
+                  257.85
+                ]
+              },
+              {
+                "percent_time_exceeded": 99.6,
+                "annual": 255.05,
+                "monthly": [
+                  255.05,
+                  256.45,
+                  258.85,
+                  262.05,
+                  266.15,
+                  266.55,
+                  267.45,
+                  266.85,
+                  263.25,
+                  261.15,
+                  257.75,
+                  255.05
+                ]
+              }
+            ]
+          },
+          "monthly": [ // List of monthly elements must be 12 elements long and ordered, from January to December. If data is missing, use null.
+            {
+              "mean": 269.25,
+              "standard_deviation": 6.19,
+              "mean_minimum": null,
+              "mean_maximum": null,
+              "standard_deviation_minimum": null,
+              "standard_deviation_maximum": null,
+              "percent_exceedance": [
+                {
+                  "percent_time_exceeded": 0.4,
+                  "values": 306.05
+                },
+                {
+                  "percent_time_exceeded": 1.0,
+                  "values": 304.65
+                },
+                {
+                  "percent_time_exceeded": 2.0,
+                  "values": 303.25
+                },
+                {
+                  "percent_time_exceeded": 99.0,
+                  "values": 257.85
+                },
+                {
+                  "percent_time_exceeded": 99.6,
+                  "values": 255.05
+                }
+              ]
+            },
+            {
+              "mean": 270.75,
+              "standard_deviation": 6.15
+            },
+            {
+              "mean": 276.95,
+              "standard_deviation": 5.88
+            },
+            {
+              "mean": 282.85,
+              "standard_deviation": 5.09
+            },
+            {
+              "mean": 288.85,
+              "standard_deviation": 5.12
+            },
+            {
+              "mean": 288.85,
+              "standard_deviation": 5.12
+            },
+            {
+              "mean": 294.45,
+              "standard_deviation": 3.98
+            },
+            {
+              "mean": 297.05,
+              "standard_deviation": 3.12
+            },
+            {
+              "mean": 296.25,
+              "standard_deviation": 2.85
+            },
+            {
+              "mean": 296.25,
+              "standard_deviation": 2.85
+            },
+            {
+              "mean": 292.35,
+              "standard_deviation": 4.14
+            },
+            {
+              "mean": 285.35,
+              "standard_deviation": 5.02
+            },
+            {
+              "mean": 278.45,
+              "standard_deviation": 5.43
+            },
+            {
+              "mean": 272.15,
+              "standard_deviation": 6.01
+            }
+          ],
+          "daily": []
+        },
+        "mean_coincident_variables": [
+          {
+            "base": "dry_bulb_temperature",
+            "coincident": [
+              "wet_bulb_temperature",
+              "relative_humidity",
+              "wind_speed"
+            ]
+          }
+        ],
+        "solar_irradiance": {},
+        "solar_irradiation": {},
+        "relative_humidity": {},
+        "heating_degree_days": [
+          {
+            "base_temperature": 283.15,
+            "units": "K-day",
+            "annual": 1593,
+            "monthly": // List of monthly elements must be 12 elements long and ordered, from January to December. If data is missing, use null.
+            [
+              430,
+              349,
+              208,
+              65,
+              8,
+              0,
+              0,
+              0,
+              0,
+              34,
+              158,
+              342
+            ]
+          },
+          {
+            "base_temperature": 291.45,
+            "units": "K-day",
+            "annual": 3346,
+            "monthly": []
+          }
+        ],
+        "cooling_degree_days": [
+          {
+            "base_temperature": 283.15,
+            "units": "K-day",
+            "annual": 1833,
+            "monthly": []
+          },
+          {
+            "base_temperature": 291.45,
+            "units": "K-day",
+            "annual": 542,
+            "monthly": []
+          }
+        ],
+        "wind_speed": {},
+        "dew_point_temperature": {
+          "display_name": "Dew-point temperature",
+          "units": "K",
+          "annual": {
+            "display_name": "Annual",
+            "percent_exceedance": [
+              {
+                "percent_time_exceeded": 0.4,
+                "values": 296.55,
+                "coincident": {
+                  "dry_bulb_temperature": {
+                    "display_name": "Mean Coincident Dry-bulb temperature",
+                    "value_type": "AVERAGE",
+                    "values": 301.45
+                  },
+                  "humidity_ratio": {
+                    "display_name": "Humidity Ratio",
+                    "value_type": "INSTANTANEOUS",
+                    "values": 0.0186
+                  }
+                }
+              },
+              {
+                "percent_time_exceeded": 1.0,
+                "values": 295.55
+              },
+              {
+                "percent_time_exceeded": 2.0,
+                "values": 294.65
+              },
+              {
+                "percent_time_exceeded": 99.0,
+                "values": 251.85
+              },
+              {
+                "percent_time_exceeded": 99.6,
+                "values": 249.55
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "time_series_data_sets": [
+    {
+      "source_data_period": {
+        "id": "Hourly Typical Year - climate.onebuilding.org v2025-09",
+        "starting_time": "1991-01-01",
+        "end_time": "2020-12-31",
+        "labels": "class A",
+        "notes": "conditions for class A stations are based on at least 30 years of hourly data as per ASHRAE Handbook - Fundamentals 2025"
+      },
+      "dry_bulb_temperature": {
+        "display_name": "Dry-bulb temperature",
+        "units": "K",
+        "value_type": "INSTANTANEOUS",
+        "value_time_intervals": "Hourly Typical Year - climate.onebuilding.org v2025-09",
+        "values": []
+      },
+      "relative_humidity": {
+        "display_name": "Relative Humidity",
+        "units": "_",
+        "value_type": "INSTANTANEOUS",
+        "value_time_intervals": "Hourly Typical Year - climate.onebuilding.org v2025-09",
+        "values": []
+      }
+    }
+  ]
+}

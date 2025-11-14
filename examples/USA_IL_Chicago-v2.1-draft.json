@@ -22,7 +22,7 @@
     "elevation": 201.0,
     "anemometer_height": 10,
     "station_height": 1.8,
-    "climate_zones": [ // List of climate zone classifications that are applicable to this location ONLY, not necessarily applicable to a "nearby" site.
+    "climate_zones": [
       {
         "system": "ASHRAE 169",
         "system_version": "2025",
@@ -87,30 +87,30 @@
             "mean_maximum": null,
             "standard_deviation_minimum": null,
             "standard_deviation_maximum": null,
-            "percentiles": [
+            "percent_exceedance": [
               {
-                "percentile": 0.4,
+                "percent_time_exceeded": 0.4,
                 "values": 306.05
               },
               {
-                "percentile": 1.0,
+                "percent_time_exceeded": 1.0,
                 "values": 304.65
               },
               {
-                "percentile": 2.0,
+                "percent_time_exceeded": 2.0,
                 "values": 303.25
               },
               {
-                "percentile": 99.0,
+                "percent_time_exceeded": 99.0,
                 "values": 257.85
               },
               {
-                "percentile": 99.6,
+                "percent_time_exceeded": 99.6,
                 "values": 255.05
               }
             ]
           },
-          "monthly_alt": {
+          "monthly": {
             "mean": [
               283.85,
               285.35,
@@ -196,9 +196,9 @@
               null,
               null
             ],
-            "percentiles": [
+            "percent_exceedance": [
               {
-                "percentile": 0.4,
+                "percent_time_exceeded": 0.4,
                 "annual": 306.05,
                 "monthly": [
                   306.05,
@@ -216,7 +216,7 @@
                 ]
               },
               {
-                "percentile": 1.0,
+                "percent_time_exceeded": 1.0,
                 "annual": 304.65,
                 "monthly": [
                   304.65,
@@ -234,7 +234,7 @@
                 ]
               },
               {
-                "percentile": 2.0,
+                "percent_time_exceeded": 2.0,
                 "annual": 303.25,
                 "monthly": [
                   303.25,
@@ -252,7 +252,28 @@
                 ]
               },
               {
-                "percentile": 99.0,
+                "percent_time_exceeded": 5.0,
+                "annual": 27.5,
+                "monthly": [
+                  [
+                    6.1,
+                    4.1
+                  ],
+                  8.5,
+                  15.8,
+                  299.75,
+                  296.85,
+                  296.45,
+                  295.55,
+                  296.15,
+                  298.75,
+                  300.85,
+                  303.25,
+                  304.65
+                ]
+              },
+              {
+                "percent_time_exceeded": 99.0,
                 "annual": 257.85,
                 "monthly": [
                   257.85,
@@ -270,7 +291,7 @@
                 ]
               },
               {
-                "percentile": 99.6,
+                "percent_time_exceeded": 99.6,
                 "annual": 255.05,
                 "monthly": [
                   255.05,
@@ -289,92 +310,18 @@
               }
             ]
           },
-          "monthly": [ // List of monthly elements must be 12 elements long and ordered, from January to December. If data is missing, use null.
-            {
-              "mean": 269.25,
-              "standard_deviation": 6.19,
-              "mean_minimum": null,
-              "mean_maximum": null,
-              "standard_deviation_minimum": null,
-              "standard_deviation_maximum": null,
-              "percentiles": [
-                {
-                  "percentile": 0.4,
-                  "values": 306.05
-                },
-                {
-                  "percentile": 1.0,
-                  "values": 304.65
-                },
-                {
-                  "percentile": 2.0,
-                  "values": 303.25
-                },
-                {
-                  "percentile": 99.0,
-                  "values": 257.85
-                },
-                {
-                  "percentile": 99.6,
-                  "values": 255.05
-                }
-              ]
-            },
-            {
-              "mean": 270.75,
-              "standard_deviation": 6.15
-            },
-            {
-              "mean": 276.95,
-              "standard_deviation": 5.88
-            },
-            {
-              "mean": 282.85,
-              "standard_deviation": 5.09
-            },
-            {
-              "mean": 288.85,
-              "standard_deviation": 5.12
-            },
-            {
-              "mean": 288.85,
-              "standard_deviation": 5.12
-            },
-            {
-              "mean": 294.45,
-              "standard_deviation": 3.98
-            },
-            {
-              "mean": 297.05,
-              "standard_deviation": 3.12
-            },
-            {
-              "mean": 296.25,
-              "standard_deviation": 2.85
-            },
-            {
-              "mean": 296.25,
-              "standard_deviation": 2.85
-            },
-            {
-              "mean": 292.35,
-              "standard_deviation": 4.14
-            },
-            {
-              "mean": 285.35,
-              "standard_deviation": 5.02
-            },
-            {
-              "mean": 278.45,
-              "standard_deviation": 5.43
-            },
-            {
-              "mean": 272.15,
-              "standard_deviation": 6.01
-            }
-          ],
           "daily": []
         },
+        "mean_coincident_variables": [
+          {
+            "base": "dry_bulb_temperature",
+            "coincident": [
+              "wet_bulb_temperature",
+              "relative_humidity",
+              "wind_speed"
+            ]
+          }
+        ],
         "solar_irradiance": {},
         "solar_irradiation": {},
         "relative_humidity": {},
@@ -383,8 +330,7 @@
             "base_temperature": 283.15,
             "units": "K-day",
             "annual": 1593,
-            "monthly": // List of monthly elements must be 12 elements long and ordered, from January to December. If data is missing, use null.
-            [
+            "monthly": [
               430,
               349,
               208,
@@ -426,9 +372,9 @@
           "units": "K",
           "annual": {
             "display_name": "Annual",
-            "percentiles": [
+            "percent_exceedance": [
               {
-                "percentile": 0.4,
+                "percent_time_exceeded": 0.4,
                 "values": 296.55,
                 "coincident": {
                   "dry_bulb_temperature": {
@@ -444,19 +390,19 @@
                 }
               },
               {
-                "percentile": 1.0,
+                "percent_time_exceeded": 1.0,
                 "values": 295.55
               },
               {
-                "percentile": 2.0,
+                "percent_time_exceeded": 2.0,
                 "values": 294.65
               },
               {
-                "percentile": 99.0,
+                "percent_time_exceeded": 99.0,
                 "values": 251.85
               },
               {
-                "percentile": 99.6,
+                "percent_time_exceeded": 99.6,
                 "values": 249.55
               }
             ]
