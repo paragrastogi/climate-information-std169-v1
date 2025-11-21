@@ -7,7 +7,7 @@
     "description": "Chicago Ohare Intl Ap, IL, USA ASHRAE Design Conditions 2025",
     "data_timestamp": "2025-09-09T10:00Z",
     "data_version": 2,
-    "data_source": "WMO#725300; ASHRAE Handbook - Fundamentals 2025; Period of record as per ASHRAE Handbook - Fundamentals 2025"
+    "data_source": "[THIS IS NOT AN ACCURATE RECREATION OF THE DATA FROM THE ASHRAE HANDBOOK - FUNDAMENTALS. This file is only provided as an example.] WMO#725300; ASHRAE Handbook - Fundamentals 2025; Period of record as per ASHRAE Handbook - Fundamentals 2025"
   },
   "location": {
     "name": "Chicago Ohare Intl Ap",
@@ -253,14 +253,14 @@
               },
               {
                 "percent_time_exceeded": 5.0,
-                "annual": 27.5,
+                "annual": 300.65,
                 "monthly": [
                   [
-                    6.1,
-                    4.1
+                    279.25,
+                    277.25
                   ],
-                  8.5,
-                  15.8,
+                  281.65,
+                  288.95,
                   299.75,
                   296.85,
                   296.45,
@@ -312,13 +312,43 @@
           },
           "daily": []
         },
-        "mean_coincident_variables": [
+        "dry_bulb_temperature_mean_coincident_wet_bulb_temperature": {
+          "percent_time_exceeded": 0.4,
+          "annual": 299.15,
+          "monthly": []
+        },
+        "coincident_variables": [
           {
             "base": "dry_bulb_temperature",
             "coincident": [
-              "wet_bulb_temperature",
-              "relative_humidity",
-              "wind_speed"
+              {
+                "variable": "wet_bulb_temperature",
+                "statistic": "mean",
+                "value": 299.15,
+                "percent_time_exceeded": 0.4
+              }
+            ]
+          },
+          {
+            "base": "dry_bulb_temperature",
+            "coincident": [
+              {
+                "variable": "wet_bulb_temperature",
+                "statistic": "mean",
+                "value": 287.15,
+                "percent_time_exceeded": 99.6
+              }
+            ]
+          },
+          {
+            "base": "dew_point_temperature",
+            "coincident": [
+              {
+                "variable": "dry_bulb_temperature",
+                "statistic": "mean",
+                "value": 301.45,
+                "percent_time_exceeded": 0.4
+              }
             ]
           }
         ],
@@ -367,47 +397,10 @@
           }
         ],
         "wind_speed": {},
-        "dew_point_temperature": {
-          "display_name": "Dew-point temperature",
-          "units": "K",
-          "annual": {
-            "display_name": "Annual",
-            "percent_exceedance": [
-              {
-                "percent_time_exceeded": 0.4,
-                "values": 296.55,
-                "coincident": {
-                  "dry_bulb_temperature": {
-                    "display_name": "Mean Coincident Dry-bulb temperature",
-                    "value_type": "AVERAGE",
-                    "values": 301.45
-                  },
-                  "humidity_ratio": {
-                    "display_name": "Humidity Ratio",
-                    "value_type": "INSTANTANEOUS",
-                    "values": 0.0186
-                  }
-                }
-              },
-              {
-                "percent_time_exceeded": 1.0,
-                "values": 295.55
-              },
-              {
-                "percent_time_exceeded": 2.0,
-                "values": 294.65
-              },
-              {
-                "percent_time_exceeded": 99.0,
-                "values": 251.85
-              },
-              {
-                "percent_time_exceeded": 99.6,
-                "values": 249.55
-              }
-            ]
-          }
-        }
+        "dew_point_temperature": {},
+        "humidity_ratio": {},
+        "absolute_humidity": {},
+        "atmospheric_pressure": {}
       }
     }
   ],
