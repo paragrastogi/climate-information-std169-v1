@@ -67,19 +67,29 @@
   },
   "summary_data_sets": [
     {
-      "source_data_period": {
-        "id": "Handbook 2025 period of record",
-        "starting_time": "1991-01-01",
-        "end_time": "2023-12-31",
-        "labels": "ASHRAE Fundamentals - Handbook 2025: Grade A",
-        "notes": "conditions for grade A stations are based on at least 30 years of hourly data as per ASHRAE Handbook - Fundamentals 2025"
-      },
+      "source_data_period": [
+        {
+          "id": "Handbook 2025 period of record",
+          "starting_time": "1991-01-01",
+          "end_time": "2023-12-31",
+          "labels": "ASHRAE Fundamentals - Handbook 2025: Grade A",
+          "notes": "conditions for grade A stations are based on at least 30 years of hourly data as per ASHRAE Handbook - Fundamentals 2025"
+        },
+        {
+          "id": "Handbook 2025 solar period of record créé par Michel Roth",
+          "starting_time": "2004-10-01",
+          "end_time": "2023-09-30",
+          "labels": "ASHRAE Fundamentals - Handbook 2025: Supplemental Year",
+          "notes": "Solar data period of record to most recent year available as per ASHRAE Handbook - Fundamentals 2025"
+        }
+      ],
       "climate_data_type": "MEASURED",
       "notes": "Example file generated from ASHRAE Handbook - Fundamentals 2025",
       "summary_data": {
         "dry_bulb_temperature": {
           "display_name": "Dry-bulb temperature",
           "units": "K",
+          "source_data_period": "Handbook 2025 period of record",
           "annual": {
             "mean": 283.85,
             "standard_deviation": 10.95,
@@ -349,8 +359,83 @@
             ]
           }
         ],
-        "solar_irradiance": {},
-        "solar_irradiation": {},
+        "clear_sky_beam_optical_depth": {
+          "display_name": "Clear sky pseudo-optical depth - beam",
+          "units": "_",
+          "source_data_period": "Handbook 2025 solar period of record créé par Michel Roth",
+          "monthly": [
+            0.61,
+            0.57,
+            0.53,
+            0.48,
+            0.44,
+            0.41,
+            0.40,
+            0.44,
+            0.48,
+            0.53,
+            0.57,
+            0.60
+          ]
+        },
+        "clear_sky_diffuse_optical_depth": {
+          "display_name": "Clear sky pseudo-optical depth - diffuse",
+          "units": "_",
+          "source_data_period": "Handbook 2025 solar period of record créé par Michel Roth",
+          "monthly": [
+            0.29,
+            0.33,
+            0.39,
+            0.45,
+            0.51,
+            0.55,
+            0.57,
+            0.52,
+            0.46,
+            0.39,
+            0.33,
+            0.29
+          ]
+        },
+        "daily_all_sky_solar_irradiation": {
+          "display_name": "Daily solar irradiation",
+          "units": "J/m2",
+          "source_data_period": "Handbook 2025 solar period of record créé par Michel Roth",
+          "annual": {
+            "mean": 19320000,
+            "standard_deviation": 9600000
+          },
+          "monthly": {
+            "mean": [
+              10260000,
+              13080000,
+              18900000,
+              24600000,
+              29520000,
+              33540000,
+              34020000,
+              29040000,
+              23400000,
+              17280000,
+              11940000,
+              9288000
+            ],
+            "standard_deviation": [
+              5600000,
+              6800000,
+              8800000,
+              9800000,
+              10200000,
+              11000000,
+              10800000,
+              9300000,
+              8000000,
+              6200000,
+              4500000,
+              3500000
+            ]
+          }
+        },
         "relative_humidity": {},
         "heating_degree_days": [
           {
