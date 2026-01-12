@@ -319,44 +319,35 @@
           },
           "daily": []
         },
-        "dry_bulb_temperature_mean_coincident_wet_bulb_temperature": {
-          "percent_time_exceeded": 0.4,
-          "annual": 299.15,
-          "monthly": []
-        },
-        "coincident_variables": [
+        "dry_bulb_temperature_coincident_mean_wet_bulb_temperature": [
           {
-            "base": "dry_bulb_temperature",
-            "coincident": [
-              {
-                "variable": "wet_bulb_temperature",
-                "statistic": "mean",
-                "value": 299.15,
-                "percent_time_exceeded": 0.4
-              }
-            ]
+            "percent_time_exceeded": 0.4,
+            "annual": 299.15,
+            "monthly": []
           },
           {
-            "base": "dry_bulb_temperature",
-            "coincident": [
-              {
-                "variable": "wet_bulb_temperature",
-                "statistic": "mean",
-                "value": 287.15,
-                "percent_time_exceeded": 99.6
-              }
-            ]
+            "percent_time_exceeded": 1.0,
+            "annual": 295.65,
+            "monthly": []
           },
           {
-            "base": "dew_point_temperature",
-            "coincident": [
-              {
-                "variable": "dry_bulb_temperature",
-                "statistic": "mean",
-                "value": 301.45,
-                "percent_time_exceeded": 0.4
-              }
-            ]
+            "percent_time_exceeded": 2.0,
+            "annual": 292.85,
+            "monthly": []
+          }
+        ],
+        "dry_bulb_temperature_coincident_mean_wind_speed": [
+          {
+            "percent_time_exceeded": 99.6,
+            "annual": 4.7,
+            "monthly": []
+          }
+        ],
+        "dry_bulb_temperature_coincident_prevailing_wind_direction": [
+          {
+            "percent_time_exceeded": 99.6,
+            "annual": 280,
+            "monthly": []
           }
         ],
         "clear_sky_beam_optical_depth": {

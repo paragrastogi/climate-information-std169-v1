@@ -24,3 +24,6 @@ perature". Should mean come first (`mean_minimum`) or minimum (`minimum_mean`).
     1. Support/define the variables but make them optional
     1. Guidelines or structure for extensibility / custom
     1. Make an auxiliary data model
+1. Is there a point to having daily values? What does it mean to have daily design values - 365 days or a "design day"?
+1. Appears to be no strong case to include trends in the data model.
+1. Outstanding variables: Enthalpy, 
