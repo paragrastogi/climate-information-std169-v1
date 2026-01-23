@@ -7,15 +7,17 @@
     "description": "Chicago Ohare Intl Ap, IL, USA ASHRAE Design Conditions 2025",
     "data_timestamp": "2025-09-09T10:00Z",
     "data_version": 2,
-    "data_source": "[THIS IS NOT AN ACCURATE RECREATION OF THE DATA FROM THE ASHRAE HANDBOOK - FUNDAMENTALS. This file is only provided as an example.] WMO#725300; ASHRAE Handbook - Fundamentals 2025; Period of record as per ASHRAE Handbook - Fundamentals 2025"
+    "data_source": "[THIS IS NOT AN ACCURATE RECREATION OF THE DATA FROM THE ASHRAE HANDBOOK - FUNDAMENTALS. This file is only provided as an example.] WMO#72530; ASHRAE Handbook - Fundamentals 2025; Period of record as per ASHRAE Handbook - Fundamentals 2025"
   },
   "location": {
     "name": "Chicago Ohare Intl Ap",
     "country_code": "USA",
     "subdivision": "IL",
-    "wmo_station_id": "725300",
+    "wmo_station_id": "72530",
     "wban_station_id": "94846",
-    "icao_station_id": "ORD",
+    "wigos_station_id": "US1ILCH0038",
+    "iata_station_id": "ORD",
+    "icao_station_id": "KORD",
     "latitude": 41.98,
     "longitude": -87.92,
     "time_zone_offset": -6.0,
@@ -63,7 +65,14 @@
         "zone": "Dfa",
         "notes": "Based on Peel et al. 2007."
       }
-    ]
+    ],
+    "quality_flags": [
+      {
+        "ashrae_station_grade": "A",
+        "other_grading_system": "X"
+      }
+    ],
+    "notes": "Station data from ASHRAE Handbook - Fundamentals 2025"
   },
   "summary_data_sets": [
     {
@@ -73,7 +82,7 @@
           "starting_time": "1991-01-01",
           "end_time": "2023-12-31",
           "labels": "ASHRAE Fundamentals - Handbook 2025: Grade A",
-          "notes": "conditions for grade A stations are based on at least 30 years of hourly data as per ASHRAE Handbook - Fundamentals 2025"
+          "notes": "Conditions for grade A stations are based on at least 30 years of hourly data as per ASHRAE Handbook - Fundamentals 2025"
         },
         {
           "id": "Handbook 2025 solar period of record créé par Michel Roth",
@@ -83,13 +92,14 @@
           "notes": "Solar data period of record to most recent year available as per ASHRAE Handbook - Fundamentals 2025"
         }
       ],
-      "climate_data_type": "MEASURED",
+      "climate_data_type": "PROJECTED",
       "notes": "Example file generated from ASHRAE Handbook - Fundamentals 2025",
       "summary_data": {
         "dry_bulb_temperature": {
           "display_name": "Dry-bulb temperature",
           "units": "K",
           "source_data_period": "Handbook 2025 period of record",
+          "source_data_type": "MODELED",
           "annual": {
             "mean": 283.85,
             "standard_deviation": 10.95,
@@ -350,6 +360,45 @@
             "monthly": []
           }
         ],
+        "precipitation": {
+          "display_name": "Precipitation",
+          "units": "m",
+          "source_data_period": "Handbook 2025 period of record",
+          "annual": {
+            "mean": 0.9916,
+            "standard_deviation": 0.1503
+          },
+          "monthly": {
+            "mean": [
+              0.0231,
+              0.0286,
+              0.0508,
+              0.0838,
+              0.0991,
+              0.1104,
+              0.1143,
+              0.0991,
+              0.0914,
+              0.0813,
+              0.0533,
+              0.0364
+            ],
+            "standard_deviation": [
+              0.0152,
+              0.0183,
+              0.0254,
+              0.0305,
+              0.0321,
+              0.0287,
+              0.0275,
+              0.0263,
+              0.0248,
+              0.0229,
+              0.0201,
+              0.0167
+            ]
+          }
+        },
         "clear_sky_beam_optical_depth": {
           "display_name": "Clear sky pseudo-optical depth - beam",
           "units": "_",
@@ -469,7 +518,54 @@
             "monthly": []
           }
         ],
-        "wind_speed": {},
+        "enthalpy_coincident_mean_dry_bulb_temperature": [
+          {
+            "percent_time_exceeded": 99.6,
+            "annual": 30.5,
+            "monthly": []
+          }
+        ],
+        "wind_speed": {
+          "display_name": "Wind speed",
+          "units": "K",
+          "source_data_period": "Handbook 2025 period of record",
+          "source_data_type": "MODELED",
+          "annual": {
+            "mean": 4.3,
+            "standard_deviation": null,
+            "percent_exceedance": [
+              {
+                "percent_time_exceeded": 1.0,
+                "values": 10.6
+              },
+              {
+                "percent_time_exceeded": 2.5,
+                "values": 9.4
+              },
+              {
+                "percent_time_exceeded": 5.0,
+                "values": 8.4
+              }
+            ]
+          },
+          "monthly": {
+            "mean": [
+              4.7,
+              4.8,
+              4.8,
+              4.9,
+              4.3,
+              3.8,
+              3.6,
+              3.4,
+              3.7,
+              4.2,
+              4.5,
+              4.5
+            ]
+          },
+          "daily": []
+        },
         "dew_point_temperature": {},
         "humidity_ratio": {},
         "absolute_humidity": {},

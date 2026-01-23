@@ -26,4 +26,25 @@ perature". Should mean come first (`mean_minimum`) or minimum (`minimum_mean`).
     1. Make an auxiliary data model
 1. Is there a point to having daily values? What does it mean to have daily design values - 365 days or a "design day"?
 1. Appears to be no strong case to include trends in the data model.
-1. Outstanding variables: Enthalpy, 
+1. Outstanding variables. Questions include whether we should include them in the base model or is it fine to only have them in the "ASHRAE flavour model". Some are excluded because they are derivable?
+  1. Hottest/Coldest Month - derivable
+  1. *WSF*: ASHRAE 62.2 specific?
+  1. Return periods - derivable (see Chpt. 14)
+  1. Range - derivable
+1. Align name of precipitation to that decided in v1 of consensus doc. Actually, review all variable names to make sure they are consistent.
+1. Should source_data_type have a different enumeration than that for time series? (DIRECT_MEASUREMENT, DERIVED_MEASUREMENT, MODELED, something else?)
+1. Should climate_data_type use a different enumeration table - only historical and projected?
+1. Can IBPSA have a survey to find out the source of climate / design data around the world?
+  1. Country-specific variables
+  1. Country-specific practices?
+  1. District heating and cooling networks, other "new" practices
+1. 
+
+
+# Next steps
+1. Parag to clean up above list of questions / concerns / etc. Separate out pending committee decisions (e.g., source data type) from "public review questions"
+1. Parag to clean up example file (up to a point). Decisions needed on "null" vs "omitted" - when if any should we enforce null.
+1. Volunteers (Parag/Neal/Sagar) to write schema
+1. Draft public review survey, share with IBPSA, CIBSE, ASHRAE 4.1, 4.7, JSHA, etc.
+1. IBPSA newsletter draft by end of Feb. If missed, next opportunity October publication. Survey needs to be ready - actual model files ready by end of March.
+1. 
