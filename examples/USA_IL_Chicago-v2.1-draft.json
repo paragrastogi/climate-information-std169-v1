@@ -7,7 +7,11 @@
     "description": "Chicago Ohare Intl Ap, IL, USA ASHRAE Design Conditions 2025",
     "data_timestamp": "2025-09-09T10:00Z",
     "data_version": 2,
-    "data_source": "[THIS IS NOT AN ACCURATE RECREATION OF THE DATA FROM THE ASHRAE HANDBOOK - FUNDAMENTALS. This file is only provided as an example.] WMO#72530; ASHRAE Handbook - Fundamentals 2025; Period of record as per ASHRAE Handbook - Fundamentals 2025"
+    "data_source": "[THIS IS NOT AN ACCURATE RECREATION OF THE DATA FROM THE ASHRAE HANDBOOK - FUNDAMENTALS. This file is only provided as an example.] WMO#72530; ASHRAE Handbook - Fundamentals 2025; Period of record as per ASHRAE Handbook - Fundamentals 2025",
+    "copyright_holder": "IBPSA USA",
+    "copyright_year": 2026,
+    "licensee": "IBPSA USA BDE Climate Working Group",
+    "license": "Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0)"
   },
   "location": {
     "name": "Chicago Ohare Intl Ap",
@@ -326,8 +330,7 @@
                 ]
               }
             ]
-          },
-          "daily": []
+          }
         },
         "dry_bulb_temperature_coincident_mean_wet_bulb_temperature": [
           {
@@ -360,7 +363,7 @@
             "monthly": []
           }
         ],
-        "precipitation": {
+        "liquid_precipitation_depth": {
           "display_name": "Precipitation",
           "units": "m",
           "source_data_period": "Handbook 2025 period of record",
