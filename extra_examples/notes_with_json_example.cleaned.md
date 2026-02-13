@@ -14,7 +14,7 @@ For example,
 1. Confidence intervals: how do we support them for each number/quantity? Decide whether to support an arbitrary range and how to express confidence level (confidence level vs confidence interval vs "n-sigma").
 1. Derived data handling: support/define variables but make them optional; guidelines/structure for extensibility/custom; or create an auxiliary data model.
 1. Derived variables: include them in the base model vs only in a model for a specific use case?
-    1. "ASHRAE flavour model." Some variables are excluded from the base data model so far because they are derivable. Examples: Hottest/Coldest Month (derivable); *WSF* (ASHRAE 62.2 specific?); Return periods (derivable, see Chpt. 14); Range (derivable).
+    1. "ASHRAE flavour model": Some variables are excluded from the base data model so far because they are derivable. Examples: Hottest/Coldest Month (derivable); *WSF* (ASHRAE 62.2 specific?); Return periods (derivable, see Chpt. 14); Range (derivable).
     1. Return periods: decision is NO (as of 19 Dec 2025). Notes should include references to calculation method. Consider whether to rename to corresponding probability; whether to show that probabilities are calculated using a mixture of the empirical distribution (mean, std) and a nominal distribution (Gumbel); and whether to parameterize or explicitly support this.
 1. Align name of precipitation to that decided in v1 of consensus doc. Review all variable names to ensure consistency.
 1. Should source_data_type have a different enumeration than that for time series (DIRECT_MEASUREMENT, DERIVED_MEASUREMENT, MODELED, something else)?

@@ -2,7 +2,7 @@ Schema:
   Object Type: "Meta"
   Title: "Climate Information"
   Description: "Schema for describing climate information"
-  Version: "0.1.0"
+  Version: "0.2.0"
   Root Data Group: "ClimateInformation"
   Unit Systems:
     ClimateUnits:
@@ -15,6 +15,7 @@ SchemaType:
     CLIMATE_INFORMATION:
       Description: "Climate information"
 
+# TODO: Add more enumerators for SUMMARY data source type, e.g., "measured", "modeled", "reanalysis", "assumption", etc. Rename this to TimeSeries Data Type.
 DataSourceType:
   Object Type: "Enumeration"
   Enumerators:
@@ -86,6 +87,29 @@ ClimateInformation:
       - "[1..]"
       Required: True
 
+ClimateZone:
+  Object Type: "Data Group"
+  Data Elements:
+    system:
+      Type: String
+      Description: "Climate zone classification system"
+      Required: True
+    system_version:
+      Type: String
+      Description: "Version of the climate zone classification system"
+      Required: True
+    source_data_set:
+      Type: String
+      Description: "Informative notes on the data set used to determine climate zone"
+    zone:
+      Type: String
+      Description: "Climate zone within the classification system"
+      Required: True
+    notes: 
+      Type: String
+      Description: "Informative notes about the climate zone classification"
+    
+
 Location:
   Object Type: "Data Group"
   Unit System: ClimateUnits
@@ -128,9 +152,13 @@ Location:
     time_zone_offset:
       Constraints: ">=-12.0, <=14.0"
       Type: Numeric
-      Description: "Time zone offset relative to UTC"
+      Description: "Time zone offset relative to UTC at time of dataset creation"
       Required: True
       Units: "h"
+    iana_time_zone_code:
+      Type: String # TODO: Make this an enumeration of valid IANA time zone codes, not free-form string. https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+      Description: "IANA time zone code"
+      Required: True
     elevation:
       Type: Numeric
       Description: "Station elevation relative to sea level (bottom of station)"
@@ -171,12 +199,14 @@ Location:
     maslib_catalog_number:
       Type: String
       Description: "Master Station Library Catalog Number"
-    # ashrae_climate_zone:
-    #   Type: "Enumeration(ASHRAEClimateZone)"
-    #   Description: "ASHRAE Climate Zone"
-    #   Notes: "Reference 169-2021"
-    # other_climate_zone:
-    #   Type: "Enumeration(ASHRAEClimateZone)"
+    climate_zones:
+      Type: "Array(Group(ClimateZone))"
+      Description: "Climate zones for this location"
+      Notes: "Climate zone object refers to list of climate zone classifications that are applicable to this location _only_, not necessarily applicable to a \"nearby\" site"
+    quality_flags:
+      Type: "Array(String)"
+      Description: "Quality flags for this location"
+      Notes: ["User-defined quality flags for this location", "Not intended to be a comprehensive list of all quality flags that may be relevant to this location, but rather a user-defined list of important quality flags that may be referenced in the TimeSeries data groups within the DataSet data group(s)"]
 
 DataSet:
   Object Type: Data Group
