@@ -54,7 +54,18 @@ TimeSeriesType:
       Description: "Cumulative"
       Notes: "Values reflect the cumulative sum between the starting timestamp and the current timestamp in the corresponding TimeInterval data group"
 
-ClimateDataType:
+SummaryClimateDataType:
+  Object Type: "Enumeration"
+  Enumerators:
+  # TODO: Check with Michael Roth.
+    MEASURED:
+      Description: "Measured climate data"
+    REANALYSIS:
+      Description: "Climate data from atmospheric reanalysis models used to provide weather and climatic data for historical periods worldwide"
+    PROJECTED:
+      Description: "Projected climate data from a numerical model of the global climate system that provide estimates of future weather data driven by meteorological and human factors"
+
+TimeSeriesClimateDataType:
   Object Type: "Enumeration"
   Enumerators:
     MEASURED:
@@ -135,6 +146,29 @@ Location:
       Type: String
       Description: "World Meteorological Organization Station Number"
       Notes: "World Meteorological Organization Station Number"
+    wmo_station_class:
+      Type: Integer
+      # TODO: Confirm enumeration of WMO station classes, and whether this should be an enumeration or integer.
+      Constraints: ">=1, <=5"
+      Description: "World Meteorological Organization Station Class"
+      Notes: "World Meteorological Organization Station Class, 1-3 for surface stations, 4 for upper air stations, 5 for ship-based stations, 6 for buoy-based stations, 7 for other platforms."
+    wigos_station_id:
+    # TODO: Add patterns for WIGOS, WBAN, IATA, and ICAO station identifiers. For WIGOS, see https://oscar.wmo.int/surface/index.html. For WBAN, see https://www.ncei.noaa.gov/data/global-hourly/doc/wban-station-ids.pdf. For IATA, see https://en.wikipedia.org/wiki/List_of_airports_by_IATA_code:_A. For ICAO, see https://en.wikipedia.org/wiki/List_of_airports_by_ICAO_code:_A.
+      Type: String
+      Description: "WIGOS Station Identifier"
+      Notes: "WMO Integrated Global Observing System, [https://oscar.wmo.int/surface/index.html](https://oscar.wmo.int/surface/index.html)"
+    wban_station_number:
+      Type: String
+      Description: "Weather Bureau Army Navy Number"
+    iata_station_id:
+      Type: String
+      Description: "International Air Transport Association Station Identifier"
+    icao_station_id:
+      Type: String
+      Description: "International Civil Aviation Organization Station Identifier"
+    maslib_catalog_number:
+      Type: String
+      Description: "Master Station Library Catalog Number"
     latitude:
       Constraints: ">=-90.0, <=90.0"
       Type: Numeric
@@ -178,27 +212,9 @@ Location:
       Notes: "Typically 1.8 m"
       Required: True
       Units: "m"
-    # terrain_class:
-    #   Type: "Enumeration(TerrainType)"
-    #   Description: "Roughness class of terrain surrounding weather station"
-    #   Notes: "Needs better definition, esp. enumeration of list."
-    wigos_station_id:
-      Type: String
-      Description: "WIGOS Station Identifier"
-      Notes: "WMO Integrated Global Observing System, [https://oscar.wmo.int/surface/index.html](https://oscar.wmo.int/surface/index.html)"
-    wban_station_number:
-      Type: String
-      Description: "Weather Bureau Army Navy Number"
-    # other_station_identifiers:
-    #   Type: "[Group(StationIdentifiers)]"
-    #   Description: "User-defined Station Identifiers"
-    #   Notes: "List"
     notes:
       Type: String
       Description: "Notes"
-    maslib_catalog_number:
-      Type: String
-      Description: "Master Station Library Catalog Number"
     climate_zones:
       Type: "Array(Group(ClimateZone))"
       Description: "Climate zones for this location"
@@ -206,13 +222,57 @@ Location:
     quality_flags:
       Type: "Array(String)"
       Description: "Quality flags for this location"
-      Notes: ["User-defined quality flags for this location", "Not intended to be a comprehensive list of all quality flags that may be relevant to this location, but rather a user-defined list of important quality flags that may be referenced in the TimeSeries data groups within the DataSet data group(s)"]
+      Notes: ["User-defined quality flags for this location", "Not intended to be a comprehensive list of all quality flags that may be relevant to this location, but rather a user-defined list of important quality flags that may be referenced in the TimeSeries data groups within the TimeSeriesDataSet data group(s)"]
 
-DataSet:
+SourceDataPeriod:
+  Object Type: "Data Group"
+  Data Elements:
+    id:
+      ID: True
+      Type: String
+      Description: Reference id
+      Required: True
+    starting_time:
+      Type: Timestamp
+      Description: Starting time of source data period
+      Required: True
+    ending_time:
+      Type: Timestamp
+      Description: Ending time of source data period
+      Required: True
+    notes:
+      Type: String
+      Description: Notes about this source data period
+    ashrae_grade:
+      Type: String
+      Constraints: '["A", "B", "C", "D", "E"]'
+      Description: ASHRAE grade of source data period based on ASHRAE Handbook - Fundamentals 2025 criteria for grade A-E
+
+SummaryDataSet:
+  Object Type: "Data Group"
+  Data Elements:
+    climate_data_type:
+      Type: Enumeration(SummaryClimateDataType)
+      Description: Type of summary climate data
+      Required: True
+    source_data_periods:
+      Type: "Array(Group(SourceDataPeriod))"
+      Description: Array of SourceDataPeriod data groups describing the time periods of the source data used to create this summary dataset
+      Required: True
+    summary_data:
+      Type: "Group(ClimateSummaryData)"
+      Description: Data group containing named summary data elements
+      Required: True
+    notes:
+      Type: String
+      Description: Supplementary information about this dataset
+    
+
+TimeSeriesDataSet:
   Object Type: Data Group
   Data Elements:
     climate_data_type:
-      Type: Enumeration(ClimateDataType)
+      Type: Enumeration(TimeSeriesClimateDataType)
       Description: Type of climate data
       Required: True
     time_intervals:
@@ -261,6 +321,16 @@ TimeInterval:
       Description: Notes about each time interval
       Type: "Array(String)"
       Constraints: "[1..]"
+
+ClimateSummaryData:
+  Object Type: "Data Group"
+  Data Elements:
+    dry_bulb_temperature:
+      Constraints:
+      - display_name="Dry-bulb temperature"
+      - units="K"
+      Description: Dry-bulb temperature
+      
 
 ClimateTimeSeries:
   Object Type: Data Group
@@ -657,6 +727,34 @@ ClimateTimeSeries:
       - values.Constraints=">=0"
       Type: "Group(TimeSeries)"
       Description: Total volatile organic compound concentration
+
+SummaryData:
+  # TODO: Should this continued to be called "SummaryData" or something like "elements", "parameters", or "variables"?
+  Object Type: "Data Group"
+  Data Elements:
+    display_name:
+      Type: String
+      Description: ""
+      Required: true
+    units:
+      Type: String
+      Description: ""
+      Required: true
+    source_data_period:
+      Description: "Reference to the source data period defined in the parent summary data set"
+      Type: "Reference(Group(SourceDataPeriod))"
+      Required: true
+    source_data_type:
+      Type: Enumeration(SummaryClimateDataType)
+      Description: "The type of source data for this summary data element"
+      Required: true
+    annual: DataGroup(Statistics)
+    monthly: DataGroup(Statistics)
+    notes: String
+
+
+    
+
 
 TimeSeries:
   Object Type: Data Group

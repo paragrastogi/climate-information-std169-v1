@@ -22,6 +22,7 @@
     "wigos_station_id": "US1ILCH0038",
     "iata_station_id": "ORD",
     "icao_station_id": "KORD",
+    "wmo_station_class": 1,
     "latitude": 41.98,
     "longitude": -87.92,
     "time_zone_offset": -6.0,
@@ -66,20 +67,15 @@
         "notes": "Based on Peel et al. 2007."
       }
     ],
-    "quality_flags": [
-      "ashrae_station_grade: A",
-      "other_grading_system : X"
-    ],
     "notes": "Station data from ASHRAE Handbook - Fundamentals 2025. Timezone America/Chicago. ASHRAE time zone code NAC."
   },
   "summary_data_sets": [
     {
-      "source_data_period": [
+      "source_data_periods": [
         {
           "id": "Handbook 2025 period of record",
           "starting_time": "1991-01-01",
           "end_time": "2023-12-31",
-          "labels": "ASHRAE Fundamentals - Handbook 2025: Grade A",
           "notes": "Conditions for grade A stations are based on at least 30 years of hourly data as per ASHRAE Handbook - Fundamentals 2025",
           "ashrae_grade": "A"
         },
@@ -87,7 +83,6 @@
           "id": "Handbook 2025 solar period of record créé par Michel Roth",
           "starting_time": "2004-10-01",
           "end_time": "2023-09-30",
-          "labels": "ASHRAE Fundamentals - Handbook 2025: Supplemental Year",
           "notes": "Solar data period of record to most recent year available as per ASHRAE Handbook - Fundamentals 2025",
           "ashrae_grade": "C"
         }
