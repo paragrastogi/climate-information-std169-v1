@@ -105,25 +105,47 @@
             "percent_exceedance": [
               {
                 "percent_time_exceeded": 0.4,
-                "values": 306.05
+                "value": 306.05
               },
               {
                 "percent_time_exceeded": 1.0,
-                "values": 304.65
+                "value": 304.65
               },
               {
                 "percent_time_exceeded": 2.0,
-                "values": 303.25
+                "value": 303.25
               },
               {
                 "percent_time_exceeded": 99.0,
-                "values": 257.85
+                "value": 257.85
               },
               {
                 "percent_time_exceeded": 99.6,
-                "values": 255.05
+                "value": 255.05
               }
-            ]
+            ],
+            "percent_exceedance_2": {
+              "grid_variables": {
+                "percent_times_exceeded": [
+                  0.4,
+                  1.0,
+                  2.0,
+                  5.0,
+                  99.0,
+                  99.6
+                ]
+              },
+              "lookup_variables": {
+                "values": [
+                  306.05,
+                  304.65,
+                  303.25,
+                  300.65,
+                  257.85,
+                  255.05
+                ]
+              }
+            }
           },
           "monthly": {
             "mean": [
@@ -214,8 +236,7 @@
             "percent_exceedance": [
               {
                 "percent_time_exceeded": 0.4,
-                "annual": 306.05,
-                "monthly": [
+                "values": [
                   306.05,
                   305.25,
                   303.85,
@@ -232,8 +253,7 @@
               },
               {
                 "percent_time_exceeded": 1.0,
-                "annual": 304.65,
-                "monthly": [
+                "values": [
                   304.65,
                   303.85,
                   302.45,
@@ -250,8 +270,7 @@
               },
               {
                 "percent_time_exceeded": 2.0,
-                "annual": 303.25,
-                "monthly": [
+                "values": [
                   303.25,
                   302.45,
                   301.05,
@@ -268,8 +287,7 @@
               },
               {
                 "percent_time_exceeded": 5.0,
-                "annual": 300.65,
-                "monthly": [
+                "values": [
                   279.25,
                   277.25,
                   281.65,
@@ -286,13 +304,12 @@
               },
               {
                 "percent_time_exceeded": 99.0,
-                "annual": 257.85,
-                "monthly": [
+                "values": [
                   257.85,
                   259.25,
                   261.65,
                   264.85,
-                  268.95,
+                  null,
                   269.35,
                   270.25,
                   269.65,
@@ -304,8 +321,7 @@
               },
               {
                 "percent_time_exceeded": 99.6,
-                "annual": 255.05,
-                "monthly": [
+                "values": [
                   255.05,
                   256.45,
                   258.85,

@@ -322,14 +322,23 @@ TimeInterval:
       Type: "Array(String)"
       Constraints: "[1..]"
 
+# TODO: Constraints the way they are written now may be redundant.
 ClimateSummaryData:
   Object Type: "Data Group"
   Data Elements:
     dry_bulb_temperature:
+      Type: Group(SummaryData)
       Constraints:
       - display_name="Dry-bulb temperature"
       - units="K"
       Description: Dry-bulb temperature
+    dew_point_temperature:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Dew-point temperature"
+      - units="K"
+      Description: Dew-point temperature
+
       
 
 ClimateTimeSeries:
@@ -748,13 +757,51 @@ SummaryData:
       Type: Enumeration(SummaryClimateDataType)
       Description: "The type of source data for this summary data element"
       Required: true
-    annual: DataGroup(Statistics)
-    monthly: DataGroup(Statistics)
+    annual: 
+      Type: "Group(Statistics)"
+      Description: "Annual summary data element"
+    monthly: 
+      Type: "Array(Group(Statistics))"
+      Constraints: "[12]"
+      Description: "Monthly summary data element"
     notes: String
 
 
-    
+Statistics:
+  Object Type: "Data Group"
+  Data Elements:
+    mean:
+      Type: Numeric
+      Description: "Arithmetic mean of the data"
+    standard_deviation:
+      Type: Numeric
+      Description: "Standard deviation of the data"
+    mean_minimum:
+      Type: Numeric
+      Description: "Mean of the minimum values for each year in the source data period"
+    mean_maximum:
+      Type: Numeric
+      Description: "Mean of the maximum values for each year in the source data period"
+    standard_deviation_minimum:
+      Type: Numeric
+      Description: "Standard deviation of the minimum values for each year in the source data period"
+    standard_deviation_maximum:
+      Type: Numeric
+      Description: "Standard deviation of the maximum values for each year in the source data period"
+    percent_exceedance:
+      Type: "Group(PercentTimeExceedance)"
+      Description: "Array of percent time exceedance values for this summary data element"
 
+PercentTimeExceedance:
+  Object Type: "Data Group"
+  Data Elements:
+    percent_time_exceeded:
+      Type: Array(Numeric)
+      Description: "Percent of time that the value exceeded a certain threshold during the source data period"
+      Constraints: ">=0, <=100"
+    value:
+      Type: Array(Numeric)
+      Description: "Threshold values for percent time exceedance"
 
 TimeSeries:
   Object Type: Data Group

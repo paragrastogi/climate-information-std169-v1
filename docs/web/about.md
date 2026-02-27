@@ -15,7 +15,7 @@ Some notes about this version and its expected evolution:
 - Dru Crawley
 - Chip Barnaby
 - Ben Brannon
-- Suhaas Bathur (Building Data Exchange Committee Secretary)
+- Suhaas Mathur (Building Data Exchange Committee Secretary)
 - Tim McDowell
 
 ## Contributors
