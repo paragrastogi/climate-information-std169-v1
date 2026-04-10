@@ -16,7 +16,7 @@ SchemaType:
       Description: "Climate information"
 
 # TODO: Add more enumerators for SUMMARY data source type, e.g., "measured", "modeled", "reanalysis", "assumption", etc. Rename this to TimeSeries Data Type.
-DataSourceType:
+TimeSeriesDataSourceType:
   Object Type: "Enumeration"
   Enumerators:
     DIRECT_MEASUREMENT:
@@ -54,16 +54,15 @@ TimeSeriesType:
       Description: "Cumulative"
       Notes: "Values reflect the cumulative sum between the starting timestamp and the current timestamp in the corresponding TimeInterval data group"
 
-SummaryClimateDataType:
+SummaryDataSourceType:
   Object Type: "Enumeration"
   Enumerators:
-  # TODO: Check with Michael Roth.
     MEASURED:
-      Description: "Measured climate data"
-    REANALYSIS:
-      Description: "Climate data from atmospheric reanalysis models used to provide weather and climatic data for historical periods worldwide"
-    PROJECTED:
-      Description: "Projected climate data from a numerical model of the global climate system that provide estimates of future weather data driven by meteorological and human factors"
+      Description: "Data measured from weather stations or other observational sources near the surface of the Earth. This would normally not include satellite data."
+      Display Text: "Measured"
+    MODELED:
+      Description: "Modeled climate data from a numerical model of the global climate system that provide estimates of weather data. These could be future projections, historical reconstructions, or other types of estimates."
+      Display Text: "Modeled"
 
 TimeSeriesClimateDataType:
   Object Type: "Enumeration"
@@ -91,12 +90,16 @@ ClimateInformation:
       Description: "Location data group"
       Type: "Group(Location)"
       Required: True
-    data_sets:
-      Description: "An array of climate data sets for this location"
-      Type: "Array(Group(DataSet))"
+    time_series_data_sets:
+      Description: "An array of time series climate data sets for this location"
+      Type: "Array(Group(TimeSeriesDataSet))"
       Constraints:
       - "[1..]"
-      Required: True
+    summary_data_sets:
+      Description: "An array of summary climate data sets for this location"
+      Type: "Array(Group(SummaryDataSet))"
+      Constraints:
+      - "[1..]"
 
 ClimateZone:
   Object Type: "Data Group"
@@ -331,14 +334,27 @@ ClimateSummaryData:
       Constraints:
       - display_name="Dry-bulb temperature"
       - units="K"
+      - annual.mean.Constraints=">0"
+      - annual.mean.Units="K"
+      - monthly.mean.Constraints=">0"
+      - monthly.mean.Units="K"
+      - annual.standard_deviation.Constraints=">=0"
+      - annual.standard_deviation.Units="K"
       Description: Dry-bulb temperature
     dew_point_temperature:
       Type: Group(SummaryData)
       Constraints:
       - display_name="Dew-point temperature"
       - units="K"
+      - values.Constraints=">0"
       Description: Dew-point temperature
-
+    relative_humidity:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Relative humidity"
+      - units="-"
+      - values.Constraints=">=0, <=1"
+      Description: Relative humidity
       
 
 ClimateTimeSeries:
