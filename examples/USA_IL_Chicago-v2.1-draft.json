@@ -339,23 +339,74 @@
             ]
           }
         },
-        "dry_bulb_temperature_coincident_mean_wet_bulb_temperature": [
-          {
-            "percent_time_exceeded": 0.4,
-            "annual": 299.15,
-            "monthly": []
+        "dry_bulb_temperature_coincident_mean_wet_bulb_temperature": {
+          "display_name": "Dry-bulb temperature coincident with mean wet-bulb temperature",
+          "units": "K",
+          "source_data_period": "Handbook 2025 period of record",
+          "annual": {
+            "percent_exceedance": [
+              {
+                "percent_time_exceeded": 99.6,
+                "value": 4.7
+              }
+            ]
           },
-          {
-            "percent_time_exceeded": 1.0,
-            "annual": 295.65,
-            "monthly": []
-          },
-          {
-            "percent_time_exceeded": 2.0,
-            "annual": 292.85,
-            "monthly": []
+          "monthly": {
+            "percent_exceedance": [
+              {
+                "percent_time_exceeded": 0.4,
+                "values": [
+                  306.05,
+                  305.25,
+                  303.85,
+                  301.15,
+                  298.25,
+                  297.85,
+                  296.95,
+                  297.55,
+                  300.15,
+                  302.25,
+                  304.65,
+                  306.05
+                ]
+              },
+              {
+                "percent_time_exceeded": 1.0,
+                "values": [
+                  304.65,
+                  303.85,
+                  302.45,
+                  299.75,
+                  296.85,
+                  296.45,
+                  295.55,
+                  296.15,
+                  298.75,
+                  300.85,
+                  303.25,
+                  304.65
+                ]
+              },
+              {
+                "percent_time_exceeded": 2.0,
+                "values": [
+                  303.25,
+                  302.45,
+                  301.05,
+                  298.35,
+                  295.45,
+                  295.05,
+                  294.15,
+                  294.75,
+                  297.35,
+                  299.45,
+                  301.85,
+                  303.25
+                ]
+              }
+            ]
           }
-        ],
+        },
         "dry_bulb_temperature_coincident_mean_wind_speed": [
           {
             "percent_time_exceeded": 99.6,

@@ -334,12 +334,15 @@ ClimateSummaryData:
       Constraints:
       - display_name="Dry-bulb temperature"
       - units="K"
-      - annual.mean.Constraints=">0"
-      - annual.mean.Units="K"
-      - monthly.mean.Constraints=">0"
-      - monthly.mean.Units="K"
-      - annual.standard_deviation.Constraints=">=0"
-      - annual.standard_deviation.Units="K"
+      - values.Constraints=">0"
+      # For all numerical values below, this constraint must apply. What is the syntax for such an instruction?
+      # Enumerating every instance/statistics is potentially redundant and too verbose, since the same could be achieved by taking a "join" of the constraints on the individual statistical elements. E.g., all statistics for dry-bulb temperature should have the unit "K" and values ">0", *unless* otherwise defined for a specific statistic, e.g., return period or variance.
+      # - annual.mean.Constraints=">0"
+      # - annual.mean.Units="K"
+      # - monthly.mean.Constraints=">0"
+      # - monthly.mean.Units="K"
+      # - annual.standard_deviation.Constraints=">=0"
+      # - annual.standard_deviation.Units="K"
       Description: Dry-bulb temperature
     dew_point_temperature:
       Type: Group(SummaryData)
@@ -355,6 +358,28 @@ ClimateSummaryData:
       - units="-"
       - values.Constraints=">=0, <=1"
       Description: Relative humidity
+    dry_bulb_temperature_coincident_mean_wet_bulb_temperature:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Dry-bulb temperature coincident with mean wet-bulb temperature"
+      - units="K"
+      - values.Constraints=">0"
+      Description: Dry-bulb temperature coincident with mean wet-bulb temperature
+    dry_bulb_temperature_coincident_mean_wind_speed:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Dry-bulb temperature coincident with mean wind speed"
+      - units="K"
+      - values.Constraints=">0"
+      Description: Dry-bulb temperature coincident with mean wind speed
+    daily_average_dry_bulb_temperature:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Daily average dry-bulb temperature"
+      - units="K"
+      - values.Constraints=">0"
+      Description: Daily average dry-bulb temperature
+      Notes: This is the sum of the daily minimum and maximum temperatures divided by 2. Generally used to estimate monthly degree days.
       
 
 ClimateTimeSeries:
@@ -805,6 +830,7 @@ Statistics:
       Type: Numeric
       Description: "Standard deviation of the maximum values for each year in the source data period"
     percent_exceedance:
+    # Should this be written as a group of arrays or an array of groups? 
       Type: "Group(PercentTimeExceedance)"
       Description: "Array of percent time exceedance values for this summary data element"
 
@@ -815,9 +841,28 @@ PercentTimeExceedance:
       Type: Array(Numeric)
       Description: "Percent of time that the value exceeded a certain threshold during the source data period"
       Constraints: ">=0, <=100"
+      Units: "%"
     value:
       Type: Array(Numeric)
       Description: "Threshold values for percent time exceedance"
+
+DegreeDay:
+  Object Type: "Data Group"
+  Data Elements:
+    base_temperature:
+      Type: Numeric
+      Description: "Base temperature for degree day calculation"
+      Units: "K"
+      Constraints: ">0"
+    annual:
+      Type: Numeric
+      Description: "Degree days calculated as the sum of the differences between the daily average temperature (min+max / 2) and the base temperature for each day in the source data period where the daily average temperature exceeds the base temperature"
+      Units: "K-day"
+    monthly:
+      Type: "Array(Numeric)"
+      Description: "Degree days calculated as the sum of the differences between the daily average temperature (min+max / 2) and the base temperature for each day in each month of the source data period where the daily average temperature exceeds the base temperature"
+      Constraints: "[12]"
+      Units: "K-day"
 
 TimeSeries:
   Object Type: Data Group
