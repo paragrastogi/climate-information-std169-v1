@@ -339,6 +339,45 @@
             ]
           }
         },
+        "daily_average_dry_bulb_temperature": {
+          "display_name": "Daily average dry-bulb temperature",
+          "units": "K",
+          "source_data_period": "Handbook 2025 period of record",
+          "annual": {
+            "mean": 283.85,
+            "standard_deviation": 10.95
+          },
+          "monthly": {
+            "mean": [
+              283.85,
+              285.35,
+              288.45,
+              292.15,
+              296.25,
+              296.25,
+              297.05,
+              294.45,
+              288.85,
+              288.85,
+              282.85,
+              276.95
+            ],
+            "standard_deviation": [
+              10.95,
+              10.02,
+              8.43,
+              6.78,
+              5.43,
+              5.02,
+              3.12,
+              3.98,
+              5.12,
+              5.09,
+              5.88,
+              6.15
+            ]
+          }
+        },
         "dry_bulb_temperature_coincident_mean_wet_bulb_temperature": {
           "display_name": "Dry-bulb temperature coincident with mean wet-bulb temperature",
           "units": "K",
