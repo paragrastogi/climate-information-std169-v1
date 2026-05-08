@@ -834,17 +834,38 @@ Statistics:
       Type: "Group(PercentTimeExceedance)"
       Description: "Array of percent time exceedance values for this summary data element"
 
+PercentTimeExceedanceGroup:
+
 PercentTimeExceedance:
   Object Type: "Data Group"
   Data Elements:
-    percent_time_exceeded:
-      Type: Array(Numeric)
-      Description: "Percent of time that the value exceeded a certain threshold during the source data period"
-      Constraints: ">=0, <=100"
-      Units: "%"
-    value:
-      Type: Array(Numeric)
-      Description: "Threshold values for percent time exceedance"
+    grid_variables:
+      percent_time_exceeded:
+          Type: Array(Numeric)
+          Description: "Percent of time that the value exceeded a certain threshold during the source data period"
+          Constraints: ">=0, <=100"
+          Units: "%"
+    lookup_variables:
+      values:
+        Type: Array(Numeric)
+        Description: "Threshold values for percent time exceedance"
+
+PercentTimeExceedanceCoincident:
+  Object Type: "Data Group"
+  Data Elements:
+    grid_variables:
+      percent_time_exceeded:
+          Type: Array(Numeric)
+          Description: "Percent of time that the value exceeded a certain threshold during the source data period, coincident with another variable exceeding a certain threshold"
+          Constraints: ">=0, <=100"
+          Units: "%"
+    lookup_variables:
+      values:
+        Type: Array(Numeric)
+        Description: "Threshold values for percent time exceedance coincident with another variable exceeding a certain threshold"
+      coincident_values:
+        Type: Array(Numeric)
+        Description: "Threshold values for the other variable for percent time exceedance coincident with another variable exceeding a certain threshold"
 
 DegreeDay:
   Object Type: "Data Group"
