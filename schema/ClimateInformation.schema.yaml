@@ -368,10 +368,10 @@ ClimateSummaryData:
     dry_bulb_temperature_coincident_mean_wind_speed:
       Type: Group(SummaryData)
       Constraints:
-      - display_name="Dry-bulb temperature coincident with mean wind speed"
+      - display_name="MCWS/DB"
       - units="K"
       - values.Constraints=">0"
-      Description: Dry-bulb temperature coincident with mean wind speed
+      Description: Mean wind speed coincident with given dry-bulb temperature statistic
     daily_average_dry_bulb_temperature:
       Type: Group(SummaryData)
       Constraints:
@@ -830,42 +830,64 @@ Statistics:
       Type: Numeric
       Description: "Standard deviation of the maximum values for each year in the source data period"
     percent_exceedance:
-    # Should this be written as a group of arrays or an array of groups? 
-      Type: "Group(PercentTimeExceedance)"
+      # This does not have to be this way. We can use only percent time exceedance here instead of Alternative. In this case, for coincident variables, the schema can look back to the corresponding percent time exceedance of the base variable.
+      Type: "Alternative(Group(PercentTimeExceedance), Group(PercentTimeExceedanceCoincident))"
       Description: "Array of percent time exceedance values for this summary data element"
 
-PercentTimeExceedanceGroup:
+StatisticType:
+  Object Type: "Enumeration"
+  Enumerators:
+    SINGLE_VALUE:
+      Description: "Single value exceeding a certain threshold during the source data period. Derived from the distribution of the value in the source data."
+    COINCIDENT_VALUES:
+      Description: "Values coincident with another variable exceeding a certain threshold. Derived from the joint distribution of a variable and another variable in the source data."
+
+PercentTimeExceedanceGridVariables:
+  Object Type: "Data Group"
+  Data Elements:
+    percent_time_exceeded:
+      Type: Array(Numeric)
+      Description: "Percent of time that the value exceeded a certain threshold during the source data period"
+      Constraints: ">=0, <=100"
+      Units: "%"
+
+PercentTimeExceedanceLookupVariables:
+  Object Type: "Data Group"
+  Data Elements:
+    values:
+      Type: Array(Numeric)
+      Description: "Threshold values for percent time exceedance"
+
+PercentTimeExceedanceCoincidentLookupVariables:
+  Object Type: "Data Group"
+  Data Elements:
+    values:
+      Type: Array(Numeric)
+      Description: "Threshold values for percent time exceedance coincident with another variable exceeding a certain threshold"
+    coincident_values:
+      Type: Array(Numeric)
+      Description: "Threshold values for the other variable for percent time exceedance coincident with another variable exceeding a certain threshold"
 
 PercentTimeExceedance:
   Object Type: "Data Group"
   Data Elements:
     grid_variables:
-      percent_time_exceeded:
-          Type: Array(Numeric)
-          Description: "Percent of time that the value exceeded a certain threshold during the source data period"
-          Constraints: ">=0, <=100"
-          Units: "%"
+      Type: Group(PercentTimeExceedanceGridVariables)
+      Description: "Percent of time that the value exceeded a certain threshold during the source data period"
     lookup_variables:
-      values:
-        Type: Array(Numeric)
-        Description: "Threshold values for percent time exceedance"
+      Type: Group(PercentTimeExceedanceLookupVariables)
+      Description: "Threshold values for percent time exceedance"
 
 PercentTimeExceedanceCoincident:
   Object Type: "Data Group"
   Data Elements:
     grid_variables:
       percent_time_exceeded:
-          Type: Array(Numeric)
+          Type: Group(PercentTimeExceedanceGridVariables)
           Description: "Percent of time that the value exceeded a certain threshold during the source data period, coincident with another variable exceeding a certain threshold"
-          Constraints: ">=0, <=100"
-          Units: "%"
     lookup_variables:
-      values:
-        Type: Array(Numeric)
-        Description: "Threshold values for percent time exceedance coincident with another variable exceeding a certain threshold"
-      coincident_values:
-        Type: Array(Numeric)
-        Description: "Threshold values for the other variable for percent time exceedance coincident with another variable exceeding a certain threshold"
+      Type: Group(PercentTimeExceedanceCoincidentLookupVariables)
+      Description: "Threshold values for percent time exceedance coincident with another variable exceeding a certain threshold"
 
 DegreeDay:
   Object Type: "Data Group"
