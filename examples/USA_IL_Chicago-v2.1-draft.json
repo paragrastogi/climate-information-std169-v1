@@ -689,10 +689,9 @@
           },
           "daily": []
         },
-        "dew_point_temperature": {},
+        "wet_bulb_temperature": {}, // TODO: What are we doing about extreme max WB and extreme annual mean and std of WB?
         "humidity_ratio": {},
-        "absolute_humidity": {},
-        "atmospheric_pressure": {}
+        "absolute_humidity": {}
       }
     }
   ],

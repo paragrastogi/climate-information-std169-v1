@@ -198,7 +198,7 @@ Location:
       Required: True
     elevation:
       Type: Numeric
-      Description: "Station elevation relative to sea level (bottom of station)"
+      Description: "Station elevation relative to sea level (bottom of station). To calculate the US standard pressure see Chapter 1 of ASHRAE Handbook - Fundamentals 2025."
       Required: True
       Units: "m"
     anemometer_height:
@@ -326,6 +326,7 @@ TimeInterval:
       Constraints: "[1..]"
 
 # TODO: Constraints the way they are written now may be redundant.
+# TODO: Add all the summary statistics variables from the ashrae design weather data set.
 ClimateSummaryData:
   Object Type: "Data Group"
   Data Elements:
@@ -380,7 +381,28 @@ ClimateSummaryData:
       - values.Constraints=">0"
       Description: Daily average dry-bulb temperature
       Notes: This is the sum of the daily minimum and maximum temperatures divided by 2. Generally used to estimate monthly degree days.
-      
+    liquid_precipitation_depth:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Liquid precipitation depth"
+      - units="m"
+      - values.Constraints=">=0"
+      Description: Liquid precipitation depth
+      Notes: The cumulative depth of precipitation in the past time step.
+    heating_degree_days:
+      Type: Array(Group(DegreeDays))
+      Constraints:
+      - units="K-day"
+      - values.Constraints=">=0"
+      Description: Heating degree days
+      Notes: Array of heating degree days defined by a base temperature. The cumulative number of degrees that a day's average temperature is below a base temperature, typically used for estimating heating energy requirements.
+    cooling_degree_days:
+      Type: Array(Group(DegreeDays))
+      Constraints:
+      - units="K-day"
+      - values.Constraints=">=0"
+      Description: Cooling degree days
+      Notes: Array of cooling degree days defined by a base temperature. The cumulative number of degrees that a day's average temperature is above a base temperature, typically used for estimating cooling energy requirements.
 
 ClimateTimeSeries:
   Object Type: Data Group
