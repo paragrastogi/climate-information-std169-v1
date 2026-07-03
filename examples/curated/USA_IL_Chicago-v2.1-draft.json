@@ -88,7 +88,6 @@
           "ashrae_grade": "C"
         }
       ],
-      "climate_data_type": "MEASURED",
       "notes": "Example file generated from the ASHRAE Handbook - Fundamentals 2025 design conditions. Values converted to SI base units (K, m, J/kg, J/m2, radians).",
       "summary_data": {
         "dry_bulb_temperature": {
@@ -812,30 +811,6 @@
         },
         "coldest_month": 1,
         "hottest_month": 7
-      }
-    }
-  ],
-  "time_series_data_sets": [
-    {
-      "source_data_period": {
-        "id": "Hourly Typical Year - climate.onebuilding.org",
-        "start_time": "1991-01-01",
-        "end_time": "2020-12-31",
-        "notes": "Placeholder for an hourly typical-year time series (values omitted in this example)."
-      },
-      "dry_bulb_temperature": {
-        "display_name": "Dry-bulb temperature",
-        "units": "K",
-        "value_type": "INSTANTANEOUS",
-        "value_time_intervals": "Hourly Typical Year - climate.onebuilding.org",
-        "values": []
-      },
-      "relative_humidity": {
-        "display_name": "Relative humidity",
-        "units": "-",
-        "value_type": "INSTANTANEOUS",
-        "value_time_intervals": "Hourly Typical Year - climate.onebuilding.org",
-        "values": []
       }
     }
   ]

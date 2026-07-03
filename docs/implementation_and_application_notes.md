@@ -1,67 +1,100 @@
 # Climate Information Data Model — Implementation & Application Notes
 
 A companion to `schema/ClimateInformation.schema.yaml` and the worked examples in
-`examples/`. It explains how the data model is structured, how the ASHRAE Handbook
-of Fundamentals (HOF) 2025 design-conditions data maps onto it, which ASHRAE
-quantities are **deliberately excluded** and why, and the open design questions that
-still need resolving.
+`examples/`. It explains how the data model is structured, the special-case
+conventions it uses, the unit system, and how two widely used external climate
+formats — the ASHRAE Handbook of Fundamentals (HOF) design conditions and the
+EnergyPlus Weather / TMY format — map onto it.
 
-> This is a *companion / design* document. The normative definition is the schema
-> YAML; the published specification is generated from it (see `docs/`). For the raw
-> running list of committee questions and decisions, see
-> `extra_examples/notes_with_json_example.cleaned.md`. The canonical list of
-> deliberate exclusions now lives in this document (§4).
+> This is a *companion / design* document, **not** the normative specification. The
+> schema YAML is normative; the published specification is generated from it (see
+> `docs/`). Design questions still to be resolved before publication are tracked in
+> `docs/open_questions_before_publishing.md`. The raw running list of committee
+> questions and decisions is in `docs/notes_with_json_example.cleaned.md`. The
+> column-level cross-check against the external formats is in
+> `docs/ashrae_dd_gap_analysis.md`.
 
 ---
 
 ## 1. How the model is structured
 
-A climate-information document is a single JSON object with four top-level members
-(`ClimateInformation` in the schema):
+A climate-information document is a single JSON object — `ClimateInformation` in the
+schema — with four top-level members:
 
 | Member | Purpose |
 |---|---|
 | `metadata` | Document-level provenance: schema id/version, description, timestamps, copyright/licence. |
 | `location` | The weather station: identifiers, coordinates, elevation, time zone, climate-zone classifications. |
-| `summary_data_sets` | One or more **statistical summaries** of the climate (the ASHRAE-style design conditions live here). |
+| `summary_data_sets` | One or more **statistical summaries** of the climate (means, extremes, exceedance/design conditions, degree days, …). |
 | `time_series_data_sets` | One or more **time series** (e.g. an hourly typical year). |
+
+```mermaid
+graph TD
+    CI["ClimateInformation<br/>(document root)"]
+    CI --> META["metadata"]
+    CI --> LOC["location"]
+    CI --> SDS["summary_data_sets [ ]<br/>Group(SummaryDataSet)"]
+    CI --> TDS["time_series_data_sets [ ]<br/>Group(TimeSeriesDataSet)"]
+```
+
+The two data-set families are deliberately **parallel**: each pairs a *time base*
+with a *named set of climate variables*, and each variable drills down to the actual
+numbers. A summary variable bottoms out in a `Statistics` block; a time-series
+variable bottoms out in an array of `values`. Sections 1.1–1.4 walk down each branch;
+section 1.5 lines them up side by side.
 
 ### 1.1 Summary data sets
 
-Each `SummaryDataSet` carries:
+A `SummaryDataSet` carries:
 
-- `source_data_periods` — an array of `SourceDataPeriod` (id, `start_time`,
+- `source_data_periods` — an array of `SourceDataPeriod` (`id`, `start_time`,
   `end_time`, `notes`, `ashrae_grade`). Different variables can reference different
-  periods — e.g. solar quantities typically use a shorter record than temperature.
-- `summary_data` — a `ClimateSummaryData` group whose members are the climate
-  variables (dry-bulb temperature, precipitation, degree days, …).
+  periods by `id` — e.g. solar quantities often use a shorter period of record than
+  temperature.
+- `summary_data` — a `ClimateSummaryData` group whose members are the individual
+  climate variables (dry-bulb temperature, wind speed, precipitation, degree days, …).
+- `notes` — optional supplementary text.
 
-Every ordinary variable is a `SummaryData` group:
+Each ordinary variable in `summary_data` is a `SummaryData` group:
 
 ```jsonc
 "dry_bulb_temperature": {
   "display_name": "Dry-bulb temperature",
   "units": "K",
-  "source_data_period": "Handbook 2025 period of record",  // -> SourceDataPeriod.id
-  "source_data_type": "MEASURED",                           // MEASURED | MODELED
+  "source_data_period": "period-of-record-1",   // -> a SourceDataPeriod.id
+  "source_data_type": "MEASURED",                // MEASURED | MODELED
   "annual":  { /* Statistics */ },
-  "monthly": { /* 12 monthly Statistics */ }
+  "monthly": [ /* 12 × Statistics, January … December */ ]
 }
 ```
 
-### 1.2 The `Statistics` block — the heart of the model
+```mermaid
+graph TD
+    SDS["Group(SummaryDataSet)"]
+    SDS --> SDP["source_data_periods [ ]<br/>Group(SourceDataPeriod)<br/>id · start_time · end_time · …"]
+    SDS --> CSD["summary_data<br/>Group(ClimateSummaryData)"]
+    CSD --> V["one entry per climate variable<br/>e.g. dry_bulb_temperature<br/>Group(SummaryData)"]
+    V --> ANN["annual<br/>Group(Statistics)"]
+    V --> MON["monthly [12]<br/>Group(Statistics)"]
+```
 
-Rather than hard-coding ASHRAE's specific percentiles as named fields (`Heating 99.6%`,
-`Cooling 0.4%`, …), the model stores a generic distribution summary per variable:
+A few members of `ClimateSummaryData` do not follow the `SummaryData` shape (degree
+days are arrays; the hottest/coldest-month indices are plain integers). Those are
+covered in §4.
 
-- Central tendency / spread: `mean`, `standard_deviation`.
-- Annual extremes: `mean_minimum`, `mean_maximum`,
-  `standard_deviation_minimum`, `standard_deviation_maximum` — the mean and standard
-  deviation of the per-year minima/maxima (this is exactly ASHRAE's *Extreme Annual*
-  block).
-- Single observed extremes: `maximum`, `minimum` (added for ASHRAE *Extreme Max WB*
-  and *Max/Min Precipitation*).
-- `percent_exceedance` — the design conditions, as a **grid + lookup** pair:
+### 1.2 The `Statistics` block (the leaf of a summary)
+
+`Statistics` is a **generic distribution summary** for one variable over one period
+(the `annual` block, or one of the 12 `monthly` blocks). It is intentionally not a
+fixed list of named design points; a provider populates whichever members it has:
+
+- **Central tendency / spread** — `mean`, `standard_deviation`.
+- **Annual extremes** — `mean_minimum`, `mean_maximum`, `standard_deviation_minimum`,
+  `standard_deviation_maximum`: the mean and standard deviation of the *per-year*
+  minima and maxima over the source period.
+- **Single observed extremes** — `maximum`, `minimum`: the highest / lowest single
+  value seen in the period.
+- **`percent_exceedance`** — a distribution stored as a **grid + lookup** pair:
 
 ```jsonc
 "percent_exceedance": {
@@ -71,56 +104,107 @@ Rather than hard-coding ASHRAE's specific percentiles as named fields (`Heating 
 ```
 
 `values[i]` is the threshold the variable exceeds `percent_time_exceeded[i]` % of the
-time. Low percentages (0.4/1/2) are the **cooling/hot** design conditions; high
-percentages (99/99.6) are the **heating/cold** ones. Storing the percentiles as data
-(not as schema keys) means a provider can publish any set of exceedance levels without
-a schema change.
+time. A **low** percentage names a value exceeded only rarely (a hot / high extreme); a
+**high** percentage names a value exceeded almost all the time (a cold / low extreme).
+Because the percentiles are stored as *data* rather than as schema keys, a provider can
+publish any set of exceedance levels without a schema change.
 
-### 1.3 Coincident variables
+> Coincident variables (where the lookup carries the *coincident* value of a second
+> variable) use a related grid/lookup form — see §4.1.
 
-ASHRAE pairs many design conditions with the *mean coincident* value of another
-variable (MCWB, MCDB, MCWS, PCWD, …). These are modelled as **separate named
-variables** following the convention
-`<base>_coincident_<statistic>_<other>`:
+### 1.3 Time series data sets
 
-| Model variable | ASHRAE quantity |
-|---|---|
-| `dry_bulb_temperature_coincident_mean_wet_bulb_temperature` | Cooling DB → MCWB |
-| `dry_bulb_temperature_coincident_mean_wind_speed` | MCWS to 0.4%/99.6% DB |
-| `dry_bulb_temperature_coincident_prevailing_wind_direction` | PCWD to 0.4%/99.6% DB |
-| `wet_bulb_temperature_coincident_mean_dry_bulb_temperature` | Evaporation WB → MCDB |
-| `dew_point_temperature_coincident_mean_dry_bulb_temperature` | Humidification/Dehumidification → MCDB |
-| `enthalpy_coincident_mean_dry_bulb_temperature` | Enthalpy → MCDB |
-| `wind_speed_coincident_mean_dry_bulb_temperature` | Coldest-month WS → MCDB |
+A `TimeSeriesDataSet` is the time-series counterpart of a `SummaryDataSet`:
 
-For a coincident variable, `percent_time_exceeded` refers to the percentile **of the
-base variable**, and `values` holds the coincident statistic at that percentile. For
-example, `wet_bulb_temperature_coincident_mean_dry_bulb_temperature` at
-`percent_time_exceeded = 0.4` is the mean DB observed when the WB is at its 0.4% design
-value.
+- `time_intervals` — an array of `TimeInterval` (`id`, plus either a `regular_interval`
+  in seconds **or** an explicit `timestamps` array; optional `starting_time`, `labels`,
+  `notes`). Variables reference an interval by `id`.
+- `time_series` — a `ClimateTimeSeries` group whose members are the individual
+  climate variables.
+- `notes` — optional supplementary text.
 
-### 1.4 Degree days
+Each variable in `time_series` is a `TimeSeries` group: `display_name`, `units`, a
+`value_type` (`INSTANTANEOUS` | `AVERAGE` | `SUM` | `CUMULATIVE`), a
+`value_time_intervals` reference to one `TimeInterval`, and the `values` array itself.
+Optional parallel arrays — `uncertainty`, `source`, `notes` — may each be aligned to
+their own interval (`uncertainty_time_intervals`, etc.).
 
-`heating_degree_days` / `cooling_degree_days` are **arrays** of `DegreeDay` groups, one
-per base temperature, each with `base_temperature` (K), `annual`, and optional
-`monthly[12]`. The examples include the two ASHRAE bases: 10 °C = 283.15 K and
-18.3 °C = 291.45 K.
+```mermaid
+graph TD
+    TDS["Group(TimeSeriesDataSet)"]
+    TDS --> TI["time_intervals [ ]<br/>Group(TimeInterval)<br/>regular_interval | timestamps"]
+    TDS --> CTS["time_series<br/>Group(ClimateTimeSeries)"]
+    CTS --> V2["one entry per climate variable<br/>e.g. dry_bulb_temperature<br/>Group(TimeSeries)"]
+    V2 --> VAL["values [ ]<br/>(+ optional uncertainty · source · notes)"]
+    V2 -. "value_time_intervals (reference)" .-> TI
+```
 
-### 1.5 Time series data sets
+### 1.4 Summaries and time series are parallel
 
-`TimeSeriesDataSet` holds `TimeInterval`s (regular interval or explicit timestamps) and
-named `TimeSeries` variables that reference an interval by id, plus optional
-`uncertainty`, `source`, and per-step `notes`. The example files include only a
-skeleton (values omitted) — the focus of these examples is the summary/design data.
+| Summary branch | Time-series branch | Role |
+|---|---|---|
+| `SummaryDataSet` | `TimeSeriesDataSet` | one statistical summary / one time series |
+| `source_data_periods[]` → `SourceDataPeriod` | `time_intervals[]` → `TimeInterval` | the time base referenced by variables, by `id` |
+| `summary_data` → `ClimateSummaryData` | `time_series` → `ClimateTimeSeries` | the named set of climate variables |
+| a variable → `SummaryData` | a variable → `TimeSeries` | one climate variable |
+| `annual` / `monthly[12]` → `Statistics` | `values[]` aligned to a `TimeInterval` | the actual numbers (the leaf) |
+
+The two families share the same variable vocabulary where it makes sense (e.g.
+`dry_bulb_temperature`, `wind_speed`, `liquid_precipitation_depth` appear on both
+sides), so a document can hold an hourly record and the statistical summary derived
+from it under one `location`.
 
 ---
 
-## 2. Units — everything is SI base
+## 2. From time series to summaries — what this version adds
 
-The schema is SI base throughout; the ASHRAE *SI* spreadsheet is **not** in base units,
-so values are converted on import:
+The data model began as a **time-series** weather model: the `ClimateTimeSeries`
+variable set (temperature, humidity, the solar irradiance/irradiation family, wind,
+sky cover, precipitation, and a broad air-quality/pollutant list) describes an hourly
+or sub-hourly record for a station. That side is mature and is unchanged here.
 
-| Quantity | ASHRAE (SI sheet) | Model | Conversion |
+**This version adds the summary / design-data side**: the `ClimateSummaryData` and
+`Statistics` groups (§1.2), so the same document can carry both the raw record and the
+statistical and design summaries derived from it. Concretely, this version introduces:
+
+**Schema (`ClimateInformation.schema.yaml`)**
+
+- `location.wmo_region` (Integer 1–6).
+- `Statistics.maximum` and `Statistics.minimum` (single observed extremes).
+- New `ClimateSummaryData` variables: `wet_bulb_temperature`, `wind_speed`,
+  `enthalpy`; the coincident variables
+  `dew_point_temperature_coincident_mean_dry_bulb_temperature`,
+  `wet_bulb_temperature_coincident_mean_dry_bulb_temperature`,
+  `dry_bulb_temperature_coincident_prevailing_wind_direction`,
+  `enthalpy_coincident_mean_dry_bulb_temperature`,
+  `wind_speed_coincident_mean_dry_bulb_temperature`;
+  `clear_sky_beam_optical_depth`, `clear_sky_diffuse_optical_depth`,
+  `daily_all_sky_solar_irradiation`; the five `daily_*_temperature_range*` variables;
+  and the `coldest_month` / `hottest_month` indices.
+
+**Nothing was removed.** Time-series variables already present but outside any design
+table (e.g. the air-quality and illuminance variables) were left in place.
+
+**Examples**
+
+- `examples/USA_IL_Chicago-v2.1-draft.json` — a full summary for Chicago O'Hare
+  (WMO 725300).
+- `examples/GBR_Scotland_Glasgow-Bishopton-v2.1-draft.json` — Glasgow Bishopton
+  (WMO 03134).
+- `examples/generated/` — EPW/DDY ↔ JSON round-trips produced by the `tools/`
+  converters.
+
+---
+
+## 3. Units — everything is SI base
+
+The model is **SI base throughout**: kelvin, joules, metres, seconds, radians, and
+pascals. Real source datasets rarely are — they mix °C, mm, kJ/kg, Wh/m², and degrees —
+so values are converted on import. The table below uses the ASHRAE *SI* spreadsheet
+(itself **not** in base units) as a concrete comparison; EPW/TMY uses a similar mix
+(see §7).
+
+| Quantity | Common source unit (e.g. ASHRAE SI sheet) | Model | Conversion |
 |---|---|---|---|
 | Temperature (absolute) | °C | K | `+ 273.15` |
 | Temperature **range** / standard deviation | °C | K | identical value (it is a difference) |
@@ -132,19 +216,86 @@ so values are converted on import:
 | Wind speed | m/s | m/s | — |
 | Optical depth (taub/taud) | — | — | dimensionless |
 
-> Note the distinction between **absolute** temperatures (add 273.15) and temperature
-> **ranges / standard deviations / degree-days** (a difference — the numeric value is
-> the same in K and °C). Getting this wrong is the easiest mistake to make.
+> Watch the distinction between **absolute** temperatures (add 273.15) and temperature
+> **ranges / standard deviations / degree-days**, which are *differences* and therefore
+> have the same numeric value in K and °C. Converting a difference as if it were an
+> absolute temperature is the most common import error.
 
 ---
 
-## 3. ASHRAE HOF 2025 coverage — what maps where
+## 4. Special cases & conventions
 
-The ASHRAE design-conditions spreadsheet (`HOF_2025_Climate_Design_Conditions_SI.xlsx`,
-single `Stations` sheet, 588 columns) is the source of truth for the variable list.
-Below is how its sections map onto the model.
+Most variables follow the `SummaryData` → `Statistics` shape in §1. A handful do not, or
+carry an extra convention worth stating explicitly.
 
-### 3.1 Station information (cols A–O) → `location`
+### 4.1 Coincident variables
+
+Some design points are paired with the *mean coincident* value of a second variable
+(for example, the mean wet-bulb temperature observed when dry-bulb is at its design
+value). These are modelled as **separate named variables** using the convention:
+
+```
+<base>_coincident_<statistic>_<other>
+```
+
+For a coincident variable, `percent_time_exceeded` refers to the percentile **of the
+base variable**, and the lookup holds the coincident statistic at that percentile. For
+example, `wet_bulb_temperature_coincident_mean_dry_bulb_temperature` at
+`percent_time_exceeded = 0.4` is the mean dry-bulb observed while wet-bulb is at its
+0.4 % value. (The reconciliation of the coincident grid/lookup group in the YAML is an
+open question — see `docs/open_questions_before_publishing.md`.)
+
+### 4.2 Degree days are arrays
+
+`heating_degree_days` / `cooling_degree_days` are **arrays** of `DegreeDay` groups, one
+entry per base temperature. Each entry has `base_temperature` (K), an `annual` total,
+and an optional `monthly[12]` array. This lets a single document publish several base
+temperatures side by side.
+
+### 4.3 Convenience indices break the group pattern
+
+`coldest_month` / `hottest_month` are plain integers (1–12) inside `ClimateSummaryData`,
+whereas every other member is a group. They are trivially derivable from the monthly
+mean dry-bulb temperatures and are included only for convenience. Treated as a
+pragmatic exception (also noted as an open question).
+
+### 4.4 Monthly arrays are ordered
+
+Wherever a variable carries 12 monthly values (a `monthly` block, a degree-day
+`monthly` array, an optical-depth series, …), index 0 is **January** and index 11 is
+**December**.
+
+### 4.5 Derived variables & extensibility
+
+The committee's working principle is that variables derivable from measured variables by
+a deterministic calculation should stay out of the **base** model, with guidance on how
+providers pre-compute them into use-case "flavours" (e.g. an *ASHRAE-flavour* output
+adding enthalpy, ranges, return periods, …). Open:
+
+*Should derived variables be (a) defined-but-optional in the base model, (b) supported only via documented extensibility/custom groups, or (c) split into a separate auxiliary model? See `docs/implementation_and_application_notes.md` §6 for the current exclusion list and the quantities carried despite being derivable.*
+
+---
+
+## 5. Mapping: ASHRAE Handbook of Fundamentals 2025 → model
+
+The ASHRAE design-conditions spreadsheet
+(`HOF_2025_Climate_Design_Conditions_SI.xlsx`, single `Stations` sheet, 588 columns)
+is the primary source for the summary variable list. This section is the section-level
+map; `docs/ashrae_dd_gap_analysis.md` carries the full column-by-column cross-check.
+
+### 5.1 Reading the percentiles as design conditions
+
+In ASHRAE terms, the **low** `percent_time_exceeded` values (0.4 / 1 / 2) are the
+**cooling / hot** design conditions and the **high** values (99 / 99.6) are the
+**heating / cold** ones; both live in the same `percent_exceedance` block (§1.2). The
+ASHRAE *Extreme Annual* block maps directly onto the `Statistics`
+`mean_minimum` / `mean_maximum` / `standard_deviation_minimum` /
+`standard_deviation_maximum` members, and the *Extreme Maximum Wet-Bulb* and
+*Max/Min Precipitation* onto `Statistics.maximum` / `minimum`. The two ASHRAE degree-day
+bases (10 °C = 283.15 K and 18.3 °C = 291.45 K) are two entries in the degree-day arrays
+(§4.2).
+
+### 5.2 Station information (cols A–O) → `location`
 
 | ASHRAE | Model | |
 |---|---|---|
@@ -157,7 +308,7 @@ Below is how its sections map onto the model.
 | **StdP** | — | *excluded — derived from elevation (HOF Ch. 1)* |
 | **TZ Code** | `iana_time_zone_code` instead | *the IANA code is stored in place of the ASHRAE code* |
 
-### 3.2 Design conditions → `summary_data`
+### 5.3 Design conditions → `summary_data`
 
 | ASHRAE section | Model representation |
 |---|---|
@@ -186,16 +337,28 @@ Below is how its sections map onto the model.
 | Clear-Sky Optical Depth beam/diffuse (taub/taud) | `clear_sky_beam_optical_depth` / `clear_sky_diffuse_optical_depth` |
 | All-Sky Avg/Std Monthly Global Horizontal Radiation | `daily_all_sky_solar_irradiation` (mean + standard_deviation) |
 
+### 5.4 The coincident variables, by ASHRAE quantity
+
+| Model variable | ASHRAE quantity |
+|---|---|
+| `dry_bulb_temperature_coincident_mean_wet_bulb_temperature` | Cooling DB → MCWB |
+| `dry_bulb_temperature_coincident_mean_wind_speed` | MCWS to 0.4%/99.6% DB |
+| `dry_bulb_temperature_coincident_prevailing_wind_direction` | PCWD to 0.4%/99.6% DB |
+| `wet_bulb_temperature_coincident_mean_dry_bulb_temperature` | Evaporation WB → MCDB |
+| `dew_point_temperature_coincident_mean_dry_bulb_temperature` | Humidification/Dehumidification → MCDB |
+| `enthalpy_coincident_mean_dry_bulb_temperature` | Enthalpy → MCDB |
+| `wind_speed_coincident_mean_dry_bulb_temperature` | Coldest-month WS → MCDB |
+
 ---
 
-## 4. Deliberate exclusions (vs the ASHRAE table)
+## 6. Exclusions: ASHRAE quantities deliberately omitted
 
 The model is **not** a 1:1 re-encoding of the ASHRAE table. Two principles drive
 exclusion:
 
 1. **Derivable quantities** are kept out of the base model where the cost of including
    them outweighs the convenience — providers can pre-compute them into an
-   "ASHRAE-flavour" extension. (See the open question in §6.)
+   "ASHRAE-flavour" extension (see `docs/open_questions_before_publishing.md`).
 2. **Obsolete quantities** whose use cases no longer exist are dropped.
 
 | Excluded | Cols | Reason |
@@ -210,14 +373,7 @@ exclusion:
 | Standard station pressure (StdP) | J | Derived from `elevation` (HOF Ch. 1). |
 | ASHRAE TZ Code | L | The IANA time-zone code is stored instead. |
 
-> An earlier short note enumerated only a subset of these exclusions; that note has
-> been folded into this table and removed.
-> The return-period **DB** exclusion, full **HR** exclusion, and the obsolete/derived
-> station-info items were confirmed during this update (2026-06-12). Return periods are
-> excluded in both flavours (DB and WB) for symmetry; if a provider needs them they
-> should be added in a derived extension with the calculation documented.
-
-### Included despite being derivable
+### 6.1 Included despite being derivable
 
 By explicit decision, the following derivable quantities **are** carried in the base
 model (they round-trip the ASHRAE table without a separate extension):
@@ -229,83 +385,106 @@ model (they round-trip the ASHRAE table without a separate extension):
 
 ---
 
-## 5. What was added in this revision
+## 7. Mapping: EPW / TMY → model
 
-**Schema (`ClimateInformation.schema.yaml`)**
+The EnergyPlus Weather format (`.epw`, and the closely related TMY/DDY files) is
+fundamentally a **time-series** format with an optional design-conditions header. It
+maps onto the model as below; `tools/epw_to_json.py` / `tools/json_to_epw.py` implement
+the mapping in both directions (likewise `ddy_to_json.py` / `json_to_ddy.py` for DDY),
+and the round-trip is checked by the test suite. The full field-level cross-check is in
+`docs/ashrae_dd_gap_analysis.md` (Part 2).
 
-- `Location.wmo_region` (Integer 1–6).
-- `Statistics.maximum`, `Statistics.minimum`.
-- `ClimateSummaryData`: `wet_bulb_temperature`, `wind_speed`, `enthalpy`,
-  `dew_point_temperature_coincident_mean_dry_bulb_temperature`,
-  `wet_bulb_temperature_coincident_mean_dry_bulb_temperature`,
-  `dry_bulb_temperature_coincident_prevailing_wind_direction`,
-  `enthalpy_coincident_mean_dry_bulb_temperature`,
-  `wind_speed_coincident_mean_dry_bulb_temperature`,
-  `clear_sky_beam_optical_depth`, `clear_sky_diffuse_optical_depth`,
-  `daily_all_sky_solar_irradiation`, the five `daily_*_temperature_range*` variables,
-  and the `coldest_month` / `hottest_month` indices.
+### 7.1 `LOCATION` line → `location`
 
-Nothing was removed: variables already present in the YAML/JSON but absent from the
-ASHRAE table (e.g. the air-quality and illuminance time-series variables) were left in
-place.
+`LOCATION, City, State, Country, Source, WMO, Lat, Lon, TZ, Elevation`
 
-**Examples**
+| EPW field | Model |
+|---|---|
+| City / State / Country | `name` / `subdivision` / `country_code` |
+| WMO | `wmo_station_id` |
+| Lat / Lon / TZ / Elevation | `latitude` / `longitude` / `time_zone_offset` / `elevation` |
+| *(none)* | `iana_time_zone_code` — EPW has no IANA code; inferred as `Etc/GMT±N` from the offset |
+| *(none)* | `anemometer_height` (10 m) / `station_height` (1.8 m) — assumed |
 
-- `examples/USA_IL_Chicago-v2.1-draft.json` — regenerated as valid JSON from the real
-  HOF 2025 row for Chicago O'Hare (WMO 72530), with all variables above.
-- `examples/GBR_Scotland_Glasgow-Bishopton-v2.1-draft.json` — new, from the HOF 2025
-  row for Glasgow Bishopton (WMO 03134).
+### 7.2 `DESIGN CONDITIONS` line → `summary_data`
 
----
+The EPW `DESIGN CONDITIONS` header is the ASHRAE spreadsheet columns **P–CL laid end to
+end** (`Heating` = P–AE, `Cooling` = AF–BK, `Extremes` = BL–CL). It maps to the
+**annual** design conditions exactly as in §5.3. It is the *only* summary an EPW
+carries — everything from spreadsheet column CM onward (degree days, monthly design
+tables, precipitation, solar) lives in the `.stat` file, not the EPW. The header is
+optional, so the converter treats it as opt-in.
 
-## 6. Open questions / known discrepancies
+### 7.3 Hourly records (35 fields) → `time_series`
 
-These are not blockers for the examples but should be resolved before the schema is
-finalised:
+| EPW field (index) | Model `ClimateTimeSeries` variable | Conversion to base SI |
+|---|---|---|
+| Dry-bulb temperature (6) | `dry_bulb_temperature` | °C → K |
+| Dew-point temperature (7) | `dew_point_temperature` | °C → K |
+| Relative humidity (8) | `relative_humidity` | % → fraction |
+| Atmospheric pressure (9) | `atmospheric_pressure` | Pa (as-is) |
+| Horizontal IR sky (12) | `horizontal_infrared_sky_irradiance` | Wh/m²·h ≈ W/m² |
+| Global horizontal radiation (13) | `global_horizontal_irradiation` (SUM) | Wh/m² → J/m² (×3600) |
+| Direct normal radiation (14) | `direct_normal_irradiation` (SUM) | Wh/m² → J/m² |
+| Diffuse horizontal radiation (15) | `diffuse_horizontal_irradiation` (SUM) | Wh/m² → J/m² |
+| Global/Direct/Diffuse illuminance (16/17/18) | `*_illuminance` | lux (as-is) |
+| Wind direction (20) | `wind_direction` | degrees → radians |
+| Wind speed (21) | `wind_speed` | m/s (as-is) |
+| Total / Opaque sky cover (22/23) | `total_sky_cover` / `opaque_sky_cover` | tenths → fraction |
+| Precipitable water (28) | `precipitable_water` | mm → m |
+| Aerosol optical depth (29) | `aerosol_optical_depth` | unitless |
+| Snow depth (30) | `snow_depth` | cm → m |
+| Albedo (32) | `albedo` | unitless |
+| Liquid precipitation depth (33) | `liquid_precipitation_depth` (SUM) | mm → m |
 
-1. **Monthly representation mismatch (YAML vs JSON).** The YAML defines
-   `SummaryData.monthly` as `Array(Group(Statistics))` (an array of 12 objects). The
-   JSON examples use the more compact **object-of-arrays** form
-   (`monthly: { "mean": [12], "standard_deviation": [12], … }`), which is what the
-   original `dry_bulb_temperature` example used. Pick one and align the other. The
-   examples here follow the established object-of-arrays convention.
-2. **Coincident-variable shape.** The earlier draft represented some coincident
-   variables as a flat array of `{percent_time_exceeded, annual, monthly}` and others
-   via the `percent_exceedance` grid. The examples here standardise on the
-   `percent_exceedance` grid/lookup form for all of them. The YAML's
-   `PercentTimeExceedanceCoincident` group should be reconciled with this.
-3. **`SummaryDataSet.climate_data_type`.** The JSON sets `climate_data_type`
-   (MEASURED/MODELED) at the data-set level, but the YAML `SummaryDataSet` group does
-   not define that field. Either add it to the group or drop it from the examples.
-4. **`metadata` block has no schema group.** `ClimateInformation.metadata` is typed
-   `Group(Metadata)`, but no `Metadata` group is defined. Define it (data_model,
-   schema, schema_version, id, description, data_timestamp, data_version, data_source,
-   copyright_*, licensee, license).
-5. **`DegreeDay` vs `DegreeDays`.** `ClimateSummaryData` references
-   `Array(Group(DegreeDays))` but the defined group is `DegreeDay` (singular). Align
-   the names.
-6. **Wind direction units.** The model stores direction in radians for consistency with
-   the `wind_direction` time-series variable. Confirm this is acceptable for the
-   prevailing-direction summary, or switch to degrees.
-7. **Month indices break the group pattern.** `coldest_month` / `hottest_month` are
-   plain integers inside `ClimateSummaryData`, whose other members are all
-   `Group(SummaryData)`. Acceptable as a pragmatic exception, but worth a second look.
+> EPW reports radiation as energy received over the hour (Wh/m²), so it maps to the
+> model's *irradiation* (`J/m²`, `value_type = SUM`) variables rather than the
+> instantaneous *irradiance* (`W/m²`) ones. The date/time columns are not stored as
+> variables — they are encoded in the `TimeInterval` instead.
 
 ---
 
-## 7. Application & publication rules
+## 8. Exclusions & missing values: EPW / TMY
 
-Carried over from the committee notes, plus a few implied by the structure:
+### 8.1 EPW fields with no model home
+
+Year/Month/Day/Hour/Minute (encoded in the `TimeInterval` instead), the
+data-source/uncertainty flag string, extraterrestrial horizontal & direct-normal
+radiation (10/11), zenith luminance (19), visibility (24), ceiling height (25),
+present-weather observation & codes (26/27), days since last snowfall (31), and
+liquid-precipitation quantity/hours (34).
+
+### 8.2 Model time-series variables not present in an EPW
+
+`wet_bulb_temperature`, `humidity_ratio`, the instantaneous irradiance forms
+(`global/direct/diffuse_*_irradiance`), `sky_type`, and the whole air-quality /
+pollutant set (`particulate_matter_*`, `carbon_dioxide`, `nitrogen_dioxide`,
+`nitrogen_oxide`, `sulphur_dioxide`, `ozone`, `ammonia`, `carbon_monoxide`,
+`formaldehyde`, `benzene`, `voc`, `turbidity`, `lead`, `mercury`).
+
+### 8.3 Missing values: EPW sentinels ↔ model `null`
+
+EPW has no blank/missing concept — every field carries a numeric sentinel (99.9 °C for
+temperature, 999 for %/direction/speed, 9999 for Wh/m², 999999 for pressure/illuminance,
+…). The model supports an explicit `null`, so on import each sentinel becomes `null` and
+on export each `null` returns to the sentinel
+(`tools/test_climate_helpers.py::test_null_roundtrip_epw_json`). On reverse conversion,
+quantities the model deliberately omits (humidity ratio, wind shelter factor, n-year
+return periods) come back blank, and the EPW fields in §8.1 come back as their
+sentinels. The modeled data round-trips exactly.
+
+---
+
+## 9. Application & publication rules
 
 - **Climate zones** listed for a location apply to *that location only* — not to a
   "nearby" site.
 - **Monthly arrays are ordered** January → December (index 0 = January).
 - Providers are **encouraged to document each statistic's calculation** in schema/notes
   fields and to reference the original source.
-- **`source_data_period` coverage** — open question: should a rule enforce that a
-  declared source period covers the full time span of the values it backs (especially
-  for time series)?
-- **Null vs omitted** — open question: when, if ever, should a missing value be an
-  explicit `null` rather than an omitted key? (See `nan_handling_python.py`.)
 - **Design days, not daily values** — the committee chose not to support 365 daily
   values; "design day" constructs are preferred.
+
+> Two related rules are still under discussion (source-period coverage enforcement, and
+> whether missing values must be an explicit `null` rather than an omitted key). They
+> are tracked in `docs/open_questions_before_publishing.md`.

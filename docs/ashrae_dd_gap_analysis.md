@@ -12,8 +12,9 @@ same set of summary variables** (verified programmatically — see Part 1.3). Wh
 are a handful of *structural* YAML↔JSON inconsistencies, called out in Part 1.4.
 
 > Companion: `docs/implementation_and_application_notes.md` explains the data model,
-> the unit conventions, and the full list of deliberate exclusions (its §4). This
-> document is the column-level cross-check.
+> the unit conventions, and the full list of deliberate exclusions (its "Exclusions"
+> section). Open questions are tracked in `docs/open_questions_before_publishing.md`.
+> This document is the column-level cross-check.
 
 ---
 
@@ -90,25 +91,25 @@ So the two are aligned: the schema defines exactly the variables the example use
 ### 1.4 Remaining YAML ↔ JSON inconsistencies (to resolve)
 
 These are *structural* mismatches between the YAML definitions and the JSON examples —
-not missing variables. They are the same open questions tracked in the companion notes
-(§6); listed here with their concrete locations.
+not missing variables. They are the same open questions tracked in
+`docs/open_questions_before_publishing.md`; listed here with their concrete locations.
 
 1. **`monthly` shape.** YAML `SummaryData.monthly` is `Array(Group(Statistics))` (an
    array of 12 `Statistics` objects); the JSON uses the compact object-of-arrays form
-   (`monthly: { "mean": [12], … }`). Pick one and align the other.
+   (`monthly: { "mean": [12], … }`). Pick one and align the other. -- PICK THE YAML SHAPE AND MAKE THE JSON ALIGN.
 2. **`DegreeDays` vs `DegreeDay`.** `ClimateSummaryData.heating_degree_days` /
    `cooling_degree_days` are typed `Array(Group(DegreeDays))`, but the defined group is
-   `DegreeDay` (singular) — `DegreeDays` is undefined.
+   `DegreeDay` (singular) — `DegreeDays` is undefined. -- USE PLURAL FOR GROUP NAME.
 3. **`SummaryDataSet.climate_data_type`.** The JSON sets `climate_data_type`
    (MEASURED/MODELED) at the data-set level, but the YAML `SummaryDataSet` group only
    defines `source_data_periods`, `summary_data`, `notes`. (Per-variable
-   `SummaryData.source_data_type` *is* defined and is what the generated examples use.)
+   `SummaryData.source_data_type` *is* defined and is what the generated examples use.) -- DATA TYPE IS ONLY DEFINED AT VARIABLE LEVEL. CHECK IN SUMMARY DATA AND TIME SERIES.
 4. **`metadata` has no group.** `ClimateInformation.metadata` is typed `Group(Metadata)`,
-   but no `Metadata` group is defined anywhere in the YAML.
+   but no `Metadata` group is defined anywhere in the YAML. -- METADATA IS DEFINED BY ASHRAE STANDARD 232, SO DOES NOT NEED TO BE REDEFINED HERE.
 5. **`ashrae_grade` constraint syntax.** `SourceDataPeriod.ashrae_grade` uses
    `Constraints: '["A", "B", "C", "D", "E"]'`, which `lattice` cannot parse — the schema
    currently fails to compile, so JSON-Schema validation of the examples is unavailable
-   until this is fixed.
+   until this is fixed. -- NEED TO UPDATE LATTICE.
 6. **Coincident / monthly percent-exceedance shape.** `PercentTimeExceedanceCoincident`
    is malformed (its `grid_variables` nests a `percent_time_exceeded` element instead of
    referencing `PercentTimeExceedanceGridVariables`), and the JSON's *monthly*
@@ -117,11 +118,13 @@ not missing variables. They are the same open questions tracked in the companion
 7. **Time-series data-set shape.** YAML `TimeSeriesDataSet` uses `time_intervals`
    (array of `TimeInterval`) + a `time_series` group; the curated draft used a singular
    `source_data_period` with variables inline. The EPW-generated examples
-   (`examples/generated/*-from-epw.v2.1.json`) follow the **YAML** shape.
+   (`examples/generated/*-from-epw.v2.1.json`) follow the **YAML** shape. -- TIME SERIES ARTEFACT DELETED FROM EXAMPLE.
 
 ---
 
 ## Part 2 — EPW ↔ schema
+
+TODO: USE https://bigladdersoftware.com/epx/docs/8-3/auxiliary-programs/energyplus-weather-file-epw-data-dictionary.html TO VALIDATE EPW CONVERTER AND ROUNDTRIP NULL
 
 An EPW file contributes a `LOCATION` line, an optional `DESIGN CONDITIONS` line and 8760
 hourly records. `tools/epw_to_json.py` performs this mapping, and `tools/json_to_epw.py`

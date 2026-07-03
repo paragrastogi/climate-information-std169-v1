@@ -1048,9 +1048,8 @@ PercentTimeExceedanceCoincident:
   Object Type: "Data Group"
   Data Elements:
     grid_variables:
-      percent_time_exceeded:
-          Type: Group(PercentTimeExceedanceGridVariables)
-          Description: "Percent of time that the value exceeded a certain threshold during the source data period, coincident with another variable exceeding a certain threshold"
+      Type: Group(PercentTimeExceedanceGridVariables)
+      Description: "Percent of time that the value exceeded a certain threshold during the source data period, coincident with another variable exceeding a certain threshold"
     lookup_variables:
       Type: Group(PercentTimeExceedanceCoincidentLookupVariables)
       Description: "Threshold values for percent time exceedance coincident with another variable exceeding a certain threshold"
