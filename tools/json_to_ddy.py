@@ -51,42 +51,31 @@ _MONTH_NAMES = [
     "DEC",
 ]
 
-# Each design day: (name suffix, percentile token, day-type, max-DB column,
-# humidity type, humidity-value column, enthalpy-magnitude column).
-# Mirrors the dispatch table in tools/ddy_to_json.py.
+# Each design day: (name suffix, day-type, max-DB column, humidity type,
+# humidity-value column, enthalpy-magnitude column, wind-speed column, wind-dir column).
+# The wind columns let each day carry its own design wind: cooling days carry the
+# cooling MCWS/PCWD (AT/AU), the coldest-month WS=>MCDB days carry the coldest-month
+# design wind speed itself (Y/AA), and the remaining heating days carry the heating
+# MCWS/PCWD (AC/AD). Mirrors the dispatch table in tools/ddy_to_json.py.
 _DESIGN_DAYS = [
-    ("Ann Htg 99.6% Condns DB", "WinterDesignDay", "Q", "Wetbulb", "Q", None),
-    ("Ann Htg 99% Condns DB", "WinterDesignDay", "R", "Wetbulb", "R", None),
-    ("Ann Hum_n 99.6% Condns DP=>MCDB", "WinterDesignDay", "U", "Dewpoint", "S", None),
-    ("Ann Hum_n 99% Condns DP=>MCDB", "WinterDesignDay", "X", "Dewpoint", "V", None),
-    (
-        "Ann Htg Wind 99.6% Condns WS=>MCDB",
-        "WinterDesignDay",
-        "Z",
-        "Wetbulb",
-        "Z",
-        None,
-    ),
-    (
-        "Ann Htg Wind 99% Condns WS=>MCDB",
-        "WinterDesignDay",
-        "AB",
-        "Wetbulb",
-        "AB",
-        None,
-    ),
-    ("Ann Clg .4% Condns DB=>MWB", "SummerDesignDay", "AH", "Wetbulb", "AI", None),
-    ("Ann Clg 1% Condns DB=>MWB", "SummerDesignDay", "AJ", "Wetbulb", "AK", None),
-    ("Ann Clg 2% Condns DB=>MWB", "SummerDesignDay", "AL", "Wetbulb", "AM", None),
-    ("Ann Clg .4% Condns WB=>MDB", "SummerDesignDay", "AO", "Wetbulb", "AN", None),
-    ("Ann Clg 1% Condns WB=>MDB", "SummerDesignDay", "AQ", "Wetbulb", "AP", None),
-    ("Ann Clg 2% Condns WB=>MDB", "SummerDesignDay", "AS", "Wetbulb", "AR", None),
-    ("Ann Clg .4% Condns DP=>MDB", "SummerDesignDay", "AX", "Dewpoint", "AV", None),
-    ("Ann Clg 1% Condns DP=>MDB", "SummerDesignDay", "BA", "Dewpoint", "AY", None),
-    ("Ann Clg 2% Condns DP=>MDB", "SummerDesignDay", "BD", "Dewpoint", "BB", None),
-    ("Ann Clg .4% Condns Enth=>MDB", "SummerDesignDay", "BF", "Enthalpy", None, "BE"),
-    ("Ann Clg 1% Condns Enth=>MDB", "SummerDesignDay", "BH", "Enthalpy", None, "BG"),
-    ("Ann Clg 2% Condns Enth=>MDB", "SummerDesignDay", "BJ", "Enthalpy", None, "BI"),
+    ("Ann Htg 99.6% Condns DB", "WinterDesignDay", "Q", "Wetbulb", "Q", None, "AC", "AD"),
+    ("Ann Htg 99% Condns DB", "WinterDesignDay", "R", "Wetbulb", "R", None, "AC", "AD"),
+    ("Ann Hum_n 99.6% Condns DP=>MCDB", "WinterDesignDay", "U", "Dewpoint", "S", None, "AC", "AD"),
+    ("Ann Hum_n 99% Condns DP=>MCDB", "WinterDesignDay", "X", "Dewpoint", "V", None, "AC", "AD"),
+    ("Ann Htg Wind 99.6% Condns WS=>MCDB", "WinterDesignDay", "Z", "Wetbulb", "Z", None, "Y", "AD"),
+    ("Ann Htg Wind 99% Condns WS=>MCDB", "WinterDesignDay", "AB", "Wetbulb", "AB", None, "AA", "AD"),
+    ("Ann Clg .4% Condns DB=>MWB", "SummerDesignDay", "AH", "Wetbulb", "AI", None, "AT", "AU"),
+    ("Ann Clg 1% Condns DB=>MWB", "SummerDesignDay", "AJ", "Wetbulb", "AK", None, "AT", "AU"),
+    ("Ann Clg 2% Condns DB=>MWB", "SummerDesignDay", "AL", "Wetbulb", "AM", None, "AT", "AU"),
+    ("Ann Clg .4% Condns WB=>MDB", "SummerDesignDay", "AO", "Wetbulb", "AN", None, "AT", "AU"),
+    ("Ann Clg 1% Condns WB=>MDB", "SummerDesignDay", "AQ", "Wetbulb", "AP", None, "AT", "AU"),
+    ("Ann Clg 2% Condns WB=>MDB", "SummerDesignDay", "AS", "Wetbulb", "AR", None, "AT", "AU"),
+    ("Ann Clg .4% Condns DP=>MDB", "SummerDesignDay", "AX", "Dewpoint", "AV", None, "AT", "AU"),
+    ("Ann Clg 1% Condns DP=>MDB", "SummerDesignDay", "BA", "Dewpoint", "AY", None, "AT", "AU"),
+    ("Ann Clg 2% Condns DP=>MDB", "SummerDesignDay", "BD", "Dewpoint", "BB", None, "AT", "AU"),
+    ("Ann Clg .4% Condns Enth=>MDB", "SummerDesignDay", "BF", "Enthalpy", None, "BE", "AT", "AU"),
+    ("Ann Clg 1% Condns Enth=>MDB", "SummerDesignDay", "BH", "Enthalpy", None, "BG", "AT", "AU"),
+    ("Ann Clg 2% Condns Enth=>MDB", "SummerDesignDay", "BJ", "Enthalpy", None, "BI", "AT", "AU"),
 ]
 
 
@@ -206,17 +195,26 @@ def climate_information_to_ddy(doc: dict) -> str:
             f" ! {pre} Annual Heating Design Conditions Wind Speed={_g(cols['AC'])}m/s "
             f"Wind Dir={_g(cols['AD'])}"
         )
+    if cm("AT", "AU"):
+        out.append(
+            f" ! {pre} Annual Cooling Design Conditions Wind Speed={_g(cols['AT'])}m/s "
+            f"Wind Dir={_g(cols['AU'])}"
+        )
     out.append(f" ! Coldest Month={_MONTH_NAMES[int(coldest) - 1]}")
     out.append(f" ! Hottest Month={_MONTH_NAMES[int(hottest) - 1]}")
     out.append("")
 
-    for suffix, day_type, maxdb_col, hum_type, humval_col, enth_col in _DESIGN_DAYS:
+    for suffix, day_type, maxdb_col, hum_type, humval_col, enth_col, ws_col, wd_col in _DESIGN_DAYS:
         if cols.get(maxdb_col) is None:
             continue
         month = coldest if day_type == "WinterDesignDay" else hottest
         enth_jkg = None
         if enth_col is not None and cols.get(enth_col) is not None:
             enth_jkg = round(cols[enth_col] * 1000.0)  # kJ/kg -> J/kg
+        # Per-day design wind: fall back to the heating MCWS/PCWD when the day's own
+        # column is absent, so the field is never blank.
+        day_ws = cols.get(ws_col) if cols.get(ws_col) is not None else wind_speed
+        day_wd = cols.get(wd_col) if cols.get(wd_col) is not None else wind_dir
         out.append(
             _design_day_block(
                 name=f"{pre} {suffix}",
@@ -227,8 +225,8 @@ def climate_information_to_ddy(doc: dict) -> str:
                 enth_jkg=enth_jkg,
                 month=int(month),
                 pressure=pressure,
-                wind_speed=wind_speed,
-                wind_dir=wind_dir,
+                wind_speed=day_ws,
+                wind_dir=day_wd,
             )
         )
         out.append("")

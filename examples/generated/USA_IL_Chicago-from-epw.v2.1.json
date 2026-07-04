@@ -191,6 +191,11 @@
               },
               "lookup_variables": {
                 "values": [
+                  306.05,
+                  304.65,
+                  303.25
+                ],
+                "coincident_values": [
                   296.35,
                   295.65,
                   294.95
@@ -214,6 +219,10 @@
               },
               "lookup_variables": {
                 "values": [
+                  306.05,
+                  255.05
+                ],
+                "coincident_values": [
                   5.1,
                   4.7
                 ]
@@ -236,6 +245,10 @@
               },
               "lookup_variables": {
                 "values": [
+                  306.05,
+                  255.05
+                ],
+                "coincident_values": [
                   3.8397,
                   4.8869
                 ]
@@ -261,6 +274,13 @@
               },
               "lookup_variables": {
                 "values": [
+                  296.55,
+                  295.55,
+                  294.65,
+                  251.85,
+                  249.55
+                ],
+                "coincident_values": [
                   301.45,
                   300.35,
                   299.45,
@@ -287,6 +307,11 @@
               },
               "lookup_variables": {
                 "values": [
+                  298.25,
+                  297.25,
+                  296.35
+                ],
+                "coincident_values": [
                   303.85,
                   302.25,
                   301.15
@@ -311,6 +336,11 @@
               },
               "lookup_variables": {
                 "values": [
+                  77500.0,
+                  73400.0,
+                  70000.0
+                ],
+                "coincident_values": [
                   303.95,
                   302.45,
                   301.15
@@ -334,6 +364,10 @@
               },
               "lookup_variables": {
                 "values": [
+                  11.7,
+                  10.7
+                ],
+                "coincident_values": [
                   272.55,
                   271.25
                 ]

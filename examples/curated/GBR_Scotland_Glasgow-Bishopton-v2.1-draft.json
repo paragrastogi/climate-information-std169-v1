@@ -100,55 +100,200 @@
               }
             }
           },
-          "monthly": {
-            "mean": [
-              277.35,
-              277.75,
-              278.95,
-              281.25,
-              283.95,
-              286.85,
-              288.45,
-              287.85,
-              285.95,
-              282.85,
-              279.75,
-              277.55
-            ],
-            "standard_deviation": [
-              2.98,
-              2.65,
-              2.64,
-              2.36,
-              2.62,
-              2.22,
-              2.11,
-              1.92,
-              2.32,
-              2.42,
-              3.02,
-              3.6
-            ],
-            "percent_exceedance": [
-              {
-                "percent_time_exceeded": 0.4,
-                "values": [
-                  284.65,
-                  284.75,
-                  288.95,
-                  291.95,
-                  296.45,
-                  298.55,
-                  299.65,
-                  297.55,
-                  295.15,
-                  289.65,
-                  287.35,
-                  285.35
-                ]
+          "monthly": [
+            {
+              "mean": 277.35,
+              "standard_deviation": 2.98,
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    284.65
+                  ]
+                }
               }
-            ]
-          }
+            },
+            {
+              "mean": 277.75,
+              "standard_deviation": 2.65,
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    284.75
+                  ]
+                }
+              }
+            },
+            {
+              "mean": 278.95,
+              "standard_deviation": 2.64,
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    288.95
+                  ]
+                }
+              }
+            },
+            {
+              "mean": 281.25,
+              "standard_deviation": 2.36,
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    291.95
+                  ]
+                }
+              }
+            },
+            {
+              "mean": 283.95,
+              "standard_deviation": 2.62,
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    296.45
+                  ]
+                }
+              }
+            },
+            {
+              "mean": 286.85,
+              "standard_deviation": 2.22,
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    298.55
+                  ]
+                }
+              }
+            },
+            {
+              "mean": 288.45,
+              "standard_deviation": 2.11,
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    299.65
+                  ]
+                }
+              }
+            },
+            {
+              "mean": 287.85,
+              "standard_deviation": 1.92,
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    297.55
+                  ]
+                }
+              }
+            },
+            {
+              "mean": 285.95,
+              "standard_deviation": 2.32,
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    295.15
+                  ]
+                }
+              }
+            },
+            {
+              "mean": 282.85,
+              "standard_deviation": 2.42,
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    289.65
+                  ]
+                }
+              }
+            },
+            {
+              "mean": 279.75,
+              "standard_deviation": 3.02,
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    287.35
+                  ]
+                }
+              }
+            },
+            {
+              "mean": 277.55,
+              "standard_deviation": 3.6,
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    285.35
+                  ]
+                }
+              }
+            }
+          ]
         },
         "dew_point_temperature": {
           "display_name": "Dew-point temperature",
@@ -206,27 +351,176 @@
               }
             }
           },
-          "monthly": {
-            "percent_exceedance": [
-              {
-                "percent_time_exceeded": 0.4,
-                "values": [
-                  283.85,
-                  283.75,
-                  284.45,
-                  286.35,
-                  290.35,
-                  291.75,
-                  293.15,
-                  292.75,
-                  291.35,
-                  288.25,
-                  286.25,
-                  284.75
-                ]
+          "monthly": [
+            {
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    283.85
+                  ]
+                }
               }
-            ]
-          }
+            },
+            {
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    283.75
+                  ]
+                }
+              }
+            },
+            {
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    284.45
+                  ]
+                }
+              }
+            },
+            {
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    286.35
+                  ]
+                }
+              }
+            },
+            {
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    290.35
+                  ]
+                }
+              }
+            },
+            {
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    291.75
+                  ]
+                }
+              }
+            },
+            {
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    293.15
+                  ]
+                }
+              }
+            },
+            {
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    292.75
+                  ]
+                }
+              }
+            },
+            {
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    291.35
+                  ]
+                }
+              }
+            },
+            {
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    288.25
+                  ]
+                }
+              }
+            },
+            {
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    286.25
+                  ]
+                }
+              }
+            },
+            {
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    284.75
+                  ]
+                }
+              }
+            }
+          ]
         },
         "enthalpy": {
           "display_name": "Enthalpy",
@@ -276,22 +570,44 @@
               }
             }
           },
-          "monthly": {
-            "mean": [
-              4.2,
-              4.3,
-              4.2,
-              4.0,
-              3.8,
-              3.5,
-              3.3,
-              3.4,
-              3.6,
-              3.7,
-              3.8,
-              4.0
-            ]
-          }
+          "monthly": [
+            {
+              "mean": 4.2
+            },
+            {
+              "mean": 4.3
+            },
+            {
+              "mean": 4.2
+            },
+            {
+              "mean": 4.0
+            },
+            {
+              "mean": 3.8
+            },
+            {
+              "mean": 3.5
+            },
+            {
+              "mean": 3.3
+            },
+            {
+              "mean": 3.4
+            },
+            {
+              "mean": 3.6
+            },
+            {
+              "mean": 3.7
+            },
+            {
+              "mean": 3.8
+            },
+            {
+              "mean": 4.0
+            }
+          ]
         },
         "dry_bulb_temperature_coincident_mean_wet_bulb_temperature": {
           "display_name": "Mean wet-bulb temperature coincident with design dry-bulb temperature",
@@ -309,6 +625,11 @@
               },
               "lookup_variables": {
                 "values": [
+                  296.35,
+                  294.45,
+                  292.85
+                ],
+                "coincident_values": [
                   290.45,
                   289.35,
                   288.55
@@ -332,6 +653,10 @@
               },
               "lookup_variables": {
                 "values": [
+                  296.35,
+                  269.05
+                ],
+                "coincident_values": [
                   3.5,
                   1.5
                 ]
@@ -354,6 +679,10 @@
               },
               "lookup_variables": {
                 "values": [
+                  296.35,
+                  269.05
+                ],
+                "coincident_values": [
                   1.7453,
                   5.7596
                 ]
@@ -379,6 +708,13 @@
               },
               "lookup_variables": {
                 "values": [
+                  289.85,
+                  289.05,
+                  288.25,
+                  268.35,
+                  266.95
+                ],
+                "coincident_values": [
                   292.65,
                   291.55,
                   290.55,
@@ -405,6 +741,11 @@
               },
               "lookup_variables": {
                 "values": [
+                  291.25,
+                  290.25,
+                  289.35
+                ],
+                "coincident_values": [
                   294.95,
                   293.25,
                   291.95
@@ -429,6 +770,11 @@
               },
               "lookup_variables": {
                 "values": [
+                  51400.0,
+                  48300.0,
+                  45600.0
+                ],
+                "coincident_values": [
                   295.05,
                   293.35,
                   291.95
@@ -452,6 +798,10 @@
               },
               "lookup_variables": {
                 "values": [
+                  14.1,
+                  12.7
+                ],
+                "coincident_values": [
                   280.55,
                   281.45
                 ]
@@ -468,36 +818,56 @@
             "mean": 282.35,
             "standard_deviation": 4.78
           },
-          "monthly": {
-            "mean": [
-              277.35,
-              277.75,
-              278.95,
-              281.25,
-              283.95,
-              286.85,
-              288.45,
-              287.85,
-              285.95,
-              282.85,
-              279.75,
-              277.55
-            ],
-            "standard_deviation": [
-              2.98,
-              2.65,
-              2.64,
-              2.36,
-              2.62,
-              2.22,
-              2.11,
-              1.92,
-              2.32,
-              2.42,
-              3.02,
-              3.6
-            ]
-          }
+          "monthly": [
+            {
+              "mean": 277.35,
+              "standard_deviation": 2.98
+            },
+            {
+              "mean": 277.75,
+              "standard_deviation": 2.65
+            },
+            {
+              "mean": 278.95,
+              "standard_deviation": 2.64
+            },
+            {
+              "mean": 281.25,
+              "standard_deviation": 2.36
+            },
+            {
+              "mean": 283.95,
+              "standard_deviation": 2.62
+            },
+            {
+              "mean": 286.85,
+              "standard_deviation": 2.22
+            },
+            {
+              "mean": 288.45,
+              "standard_deviation": 2.11
+            },
+            {
+              "mean": 287.85,
+              "standard_deviation": 1.92
+            },
+            {
+              "mean": 285.95,
+              "standard_deviation": 2.32
+            },
+            {
+              "mean": 282.85,
+              "standard_deviation": 2.42
+            },
+            {
+              "mean": 279.75,
+              "standard_deviation": 3.02
+            },
+            {
+              "mean": 277.55,
+              "standard_deviation": 3.6
+            }
+          ]
         },
         "liquid_precipitation_depth": {
           "display_name": "Liquid precipitation depth",
@@ -510,64 +880,80 @@
             "maximum": 1.348,
             "minimum": 0.81
           },
-          "monthly": {
-            "mean": [
-              0.12,
-              0.086,
-              0.093,
-              0.054,
-              0.059,
-              0.058,
-              0.065,
-              0.078,
-              0.101,
-              0.118,
-              0.118,
-              0.113
-            ],
-            "standard_deviation": [
-              0.05,
-              0.054,
-              0.045,
-              0.027,
-              0.037,
-              0.024,
-              0.034,
-              0.045,
-              0.055,
-              0.06,
-              0.046,
-              0.051
-            ],
-            "maximum": [
-              0.23,
-              0.218,
-              0.18,
-              0.11,
-              0.143,
-              0.1,
-              0.147,
-              0.164,
-              0.258,
-              0.249,
-              0.189,
-              0.237
-            ],
-            "minimum": [
-              0.035,
-              0.006,
-              0.017,
-              0.005,
-              0.007,
-              0.01,
-              0.012,
-              0.012,
-              0.011,
-              0.03,
-              0.017,
-              0.03
-            ]
-          }
+          "monthly": [
+            {
+              "mean": 0.12,
+              "standard_deviation": 0.05,
+              "maximum": 0.23,
+              "minimum": 0.035
+            },
+            {
+              "mean": 0.086,
+              "standard_deviation": 0.054,
+              "maximum": 0.218,
+              "minimum": 0.006
+            },
+            {
+              "mean": 0.093,
+              "standard_deviation": 0.045,
+              "maximum": 0.18,
+              "minimum": 0.017
+            },
+            {
+              "mean": 0.054,
+              "standard_deviation": 0.027,
+              "maximum": 0.11,
+              "minimum": 0.005
+            },
+            {
+              "mean": 0.059,
+              "standard_deviation": 0.037,
+              "maximum": 0.143,
+              "minimum": 0.007
+            },
+            {
+              "mean": 0.058,
+              "standard_deviation": 0.024,
+              "maximum": 0.1,
+              "minimum": 0.01
+            },
+            {
+              "mean": 0.065,
+              "standard_deviation": 0.034,
+              "maximum": 0.147,
+              "minimum": 0.012
+            },
+            {
+              "mean": 0.078,
+              "standard_deviation": 0.045,
+              "maximum": 0.164,
+              "minimum": 0.012
+            },
+            {
+              "mean": 0.101,
+              "standard_deviation": 0.055,
+              "maximum": 0.258,
+              "minimum": 0.011
+            },
+            {
+              "mean": 0.118,
+              "standard_deviation": 0.06,
+              "maximum": 0.249,
+              "minimum": 0.03
+            },
+            {
+              "mean": 0.118,
+              "standard_deviation": 0.046,
+              "maximum": 0.189,
+              "minimum": 0.017
+            },
+            {
+              "mean": 0.113,
+              "standard_deviation": 0.051,
+              "maximum": 0.237,
+              "minimum": 0.03
+            }
+          ]
         },
         "heating_degree_days": [
           {
@@ -598,44 +984,88 @@
           "units": "-",
           "source_data_period": "Handbook 2025 solar period of record",
           "source_data_type": "MODELED",
-          "monthly": {
-            "mean": [
-              0.338,
-              0.34,
-              0.361,
-              0.375,
-              0.384,
-              0.39,
-              0.386,
-              0.375,
-              0.366,
-              0.345,
-              0.334,
-              0.333
-            ]
-          }
+          "monthly": [
+            {
+              "mean": 0.338
+            },
+            {
+              "mean": 0.34
+            },
+            {
+              "mean": 0.361
+            },
+            {
+              "mean": 0.375
+            },
+            {
+              "mean": 0.384
+            },
+            {
+              "mean": 0.39
+            },
+            {
+              "mean": 0.386
+            },
+            {
+              "mean": 0.375
+            },
+            {
+              "mean": 0.366
+            },
+            {
+              "mean": 0.345
+            },
+            {
+              "mean": 0.334
+            },
+            {
+              "mean": 0.333
+            }
+          ]
         },
         "clear_sky_diffuse_optical_depth": {
           "display_name": "Clear-sky diffuse pseudo-optical depth (taud)",
           "units": "-",
           "source_data_period": "Handbook 2025 solar period of record",
           "source_data_type": "MODELED",
-          "monthly": {
-            "mean": [
-              2.404,
-              2.399,
-              2.321,
-              2.307,
-              2.314,
-              2.336,
-              2.366,
-              2.4,
-              2.421,
-              2.468,
-              2.47,
-              2.443
-            ]
-          }
+          "monthly": [
+            {
+              "mean": 2.404
+            },
+            {
+              "mean": 2.399
+            },
+            {
+              "mean": 2.321
+            },
+            {
+              "mean": 2.307
+            },
+            {
+              "mean": 2.314
+            },
+            {
+              "mean": 2.336
+            },
+            {
+              "mean": 2.366
+            },
+            {
+              "mean": 2.4
+            },
+            {
+              "mean": 2.421
+            },
+            {
+              "mean": 2.468
+            },
+            {
+              "mean": 2.47
+            },
+            {
+              "mean": 2.443
+            }
+          ]
         },
         "daily_all_sky_solar_irradiation": {
           "display_name": "Daily all-sky global horizontal solar irradiation",
@@ -645,146 +1075,276 @@
           "annual": {
             "mean": 8793000
           },
-          "monthly": {
-            "mean": [
-              1620000,
-              3816000,
-              7776000,
-              13392000,
-              16740000,
-              16992000,
-              15912000,
-              12528000,
-              8712000,
-              4716000,
-              2160000,
-              1152000
-            ],
-            "standard_deviation": [
-              252000,
-              468000,
-              648000,
-              1188000,
-              1332000,
-              1872000,
-              1512000,
-              1080000,
-              720000,
-              576000,
-              252000,
-              144000
-            ]
-          }
+          "monthly": [
+            {
+              "mean": 1620000,
+              "standard_deviation": 252000
+            },
+            {
+              "mean": 3816000,
+              "standard_deviation": 468000
+            },
+            {
+              "mean": 7776000,
+              "standard_deviation": 648000
+            },
+            {
+              "mean": 13392000,
+              "standard_deviation": 1188000
+            },
+            {
+              "mean": 16740000,
+              "standard_deviation": 1332000
+            },
+            {
+              "mean": 16992000,
+              "standard_deviation": 1872000
+            },
+            {
+              "mean": 15912000,
+              "standard_deviation": 1512000
+            },
+            {
+              "mean": 12528000,
+              "standard_deviation": 1080000
+            },
+            {
+              "mean": 8712000,
+              "standard_deviation": 720000
+            },
+            {
+              "mean": 4716000,
+              "standard_deviation": 576000
+            },
+            {
+              "mean": 2160000,
+              "standard_deviation": 252000
+            },
+            {
+              "mean": 1152000,
+              "standard_deviation": 144000
+            }
+          ]
         },
         "daily_dry_bulb_temperature_range": {
           "display_name": "Mean daily dry-bulb temperature range",
           "units": "K",
           "source_data_period": "Handbook 2025 period of record",
           "source_data_type": "MEASURED",
-          "monthly": {
-            "mean": [
-              4.5,
-              5.3,
-              6.4,
-              8.0,
-              8.2,
-              8.1,
-              7.7,
-              7.4,
-              6.8,
-              6.0,
-              5.2,
-              4.8
-            ]
-          }
+          "monthly": [
+            {
+              "mean": 4.5
+            },
+            {
+              "mean": 5.3
+            },
+            {
+              "mean": 6.4
+            },
+            {
+              "mean": 8.0
+            },
+            {
+              "mean": 8.2
+            },
+            {
+              "mean": 8.1
+            },
+            {
+              "mean": 7.7
+            },
+            {
+              "mean": 7.4
+            },
+            {
+              "mean": 6.8
+            },
+            {
+              "mean": 6.0
+            },
+            {
+              "mean": 5.2
+            },
+            {
+              "mean": 4.8
+            }
+          ]
         },
         "daily_dry_bulb_temperature_range_at_design_dry_bulb_temperature": {
           "display_name": "Mean daily dry-bulb temperature range at the 5% design dry-bulb temperature",
           "units": "K",
           "source_data_period": "Handbook 2025 period of record",
           "source_data_type": "MEASURED",
-          "monthly": {
-            "mean": [
-              5.0,
-              5.3,
-              7.6,
-              10.9,
-              11.8,
-              11.5,
-              10.7,
-              9.4,
-              8.2,
-              6.4,
-              5.2,
-              5.2
-            ]
-          }
+          "monthly": [
+            {
+              "mean": 5.0
+            },
+            {
+              "mean": 5.3
+            },
+            {
+              "mean": 7.6
+            },
+            {
+              "mean": 10.9
+            },
+            {
+              "mean": 11.8
+            },
+            {
+              "mean": 11.5
+            },
+            {
+              "mean": 10.7
+            },
+            {
+              "mean": 9.4
+            },
+            {
+              "mean": 8.2
+            },
+            {
+              "mean": 6.4
+            },
+            {
+              "mean": 5.2
+            },
+            {
+              "mean": 5.2
+            }
+          ]
         },
         "daily_wet_bulb_temperature_range_at_design_dry_bulb_temperature": {
           "display_name": "Mean daily wet-bulb temperature range at the 5% design dry-bulb temperature",
           "units": "K",
           "source_data_period": "Handbook 2025 period of record",
           "source_data_type": "MEASURED",
-          "monthly": {
-            "mean": [
-              4.9,
-              4.5,
-              5.2,
-              6.6,
-              6.9,
-              6.7,
-              5.9,
-              5.6,
-              5.1,
-              4.9,
-              4.8,
-              5.1
-            ]
-          }
+          "monthly": [
+            {
+              "mean": 4.9
+            },
+            {
+              "mean": 4.5
+            },
+            {
+              "mean": 5.2
+            },
+            {
+              "mean": 6.6
+            },
+            {
+              "mean": 6.9
+            },
+            {
+              "mean": 6.7
+            },
+            {
+              "mean": 5.9
+            },
+            {
+              "mean": 5.6
+            },
+            {
+              "mean": 5.1
+            },
+            {
+              "mean": 4.9
+            },
+            {
+              "mean": 4.8
+            },
+            {
+              "mean": 5.1
+            }
+          ]
         },
         "daily_dry_bulb_temperature_range_at_design_wet_bulb_temperature": {
           "display_name": "Mean daily dry-bulb temperature range at the 5% design wet-bulb temperature",
           "units": "K",
           "source_data_period": "Handbook 2025 period of record",
           "source_data_type": "MEASURED",
-          "monthly": {
-            "mean": [
-              5.0,
-              4.9,
-              6.8,
-              9.3,
-              10.3,
-              10.3,
-              9.6,
-              8.3,
-              6.9,
-              5.5,
-              5.2,
-              5.2
-            ]
-          }
+          "monthly": [
+            {
+              "mean": 5.0
+            },
+            {
+              "mean": 4.9
+            },
+            {
+              "mean": 6.8
+            },
+            {
+              "mean": 9.3
+            },
+            {
+              "mean": 10.3
+            },
+            {
+              "mean": 10.3
+            },
+            {
+              "mean": 9.6
+            },
+            {
+              "mean": 8.3
+            },
+            {
+              "mean": 6.9
+            },
+            {
+              "mean": 5.5
+            },
+            {
+              "mean": 5.2
+            },
+            {
+              "mean": 5.2
+            }
+          ]
         },
         "daily_wet_bulb_temperature_range_at_design_wet_bulb_temperature": {
           "display_name": "Mean daily wet-bulb temperature range at the 5% design wet-bulb temperature",
           "units": "K",
           "source_data_period": "Handbook 2025 period of record",
           "source_data_type": "MEASURED",
-          "monthly": {
-            "mean": [
-              5.0,
-              4.6,
-              5.2,
-              6.1,
-              6.5,
-              6.3,
-              5.7,
-              5.5,
-              5.0,
-              4.8,
-              5.1,
-              5.2
-            ]
-          }
+          "monthly": [
+            {
+              "mean": 5.0
+            },
+            {
+              "mean": 4.6
+            },
+            {
+              "mean": 5.2
+            },
+            {
+              "mean": 6.1
+            },
+            {
+              "mean": 6.5
+            },
+            {
+              "mean": 6.3
+            },
+            {
+              "mean": 5.7
+            },
+            {
+              "mean": 5.5
+            },
+            {
+              "mean": 5.0
+            },
+            {
+              "mean": 4.8
+            },
+            {
+              "mean": 5.1
+            },
+            {
+              "mean": 5.2
+            }
+          ]
         },
         "coldest_month": 1,
         "hottest_month": 7

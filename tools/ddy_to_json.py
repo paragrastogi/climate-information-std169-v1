@@ -65,7 +65,9 @@ _MONTHS = {
 # field[10] (the coincident wet-bulb / dew-point value).
 _HEATING_DB = {"99.6": ("Q", None), "99": ("R", None)}
 _HUMIDIFICATION = {"99.6": ("U", "S"), "99": ("X", "V")}
-_HEATING_WIND = {"99.6": ("Z", None), "99": ("AB", None)}
+# The WS=>MCDB days also carry the coldest-month design wind speed itself (field 16),
+# which is ASHRAE column Y (0.4%, named "99.6%" here) / AA (1%, named "99%").
+_HEATING_WIND = {"99.6": ("Z", None, "Y"), "99": ("AB", None, "AA")}
 _COOLING_DB = {".4": ("AH", "AI"), "1": ("AJ", "AK"), "2": ("AL", "AM")}
 _EVAPORATION = {".4": ("AO", "AN"), "1": ("AQ", "AP"), "2": ("AS", "AR")}
 _DEHUMIDIFICATION = {".4": ("AX", "AV"), "1": ("BA", "AY"), "2": ("BD", "BB")}
@@ -108,8 +110,10 @@ def _design_day_columns(name: str) -> Optional[dict]:
     table = _SUFFIX_DISPATCH.get(suffix)
     if table is None or pct not in table:
         return None
-    maxdb_col, humval_col = table[pct]
-    return {"maxdb": maxdb_col, "humval": humval_col}
+    entry = table[pct]
+    maxdb_col, humval_col = entry[0], entry[1]
+    windspeed_col = entry[2] if len(entry) > 2 else None
+    return {"maxdb": maxdb_col, "humval": humval_col, "windspeed": windspeed_col}
 
 
 def ddy_design_columns(text: str) -> dict:
@@ -125,10 +129,14 @@ def ddy_design_columns(text: str) -> dict:
             continue
         maxdb = obj[5].strip()
         humval = obj[10].strip() if len(obj) > 10 else ""
+        windspeed = obj[16].strip() if len(obj) > 16 else ""
         if maxdb:
             cols[roles["maxdb"]] = float(maxdb)
         if roles["humval"] and humval:
             cols[roles["humval"]] = float(humval)
+        # WS=>MCDB days carry the coldest-month design wind speed in the Wind Speed field.
+        if roles.get("windspeed") and windspeed:
+            cols[roles["windspeed"]] = float(windspeed)
         # Enthalpy design days may carry the enthalpy magnitude in field 13 {J/kg}.
         # The onebuilding DDYs leave it blank; JSON-generated DDYs fill it.
         em = re.search(r"Ann Clg ([\d.]+)% Condns Enth=>MDB", name)
@@ -164,6 +172,11 @@ def ddy_design_columns(text: str) -> dict:
         r"Annual Heating Design Conditions Wind Speed=([\d.]+)m/s\s*Wind Dir=(\d+)",
         ("AC", 1),
         ("AD", 2),
+    )
+    grab(
+        r"Annual Cooling Design Conditions Wind Speed=([\d.]+)m/s\s*Wind Dir=(\d+)",
+        ("AT", 1),
+        ("AU", 2),
     )
 
     m = re.search(r"Coldest Month=(\w{3})", text)

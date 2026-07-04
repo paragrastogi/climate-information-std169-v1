@@ -191,6 +191,11 @@
               },
               "lookup_variables": {
                 "values": [
+                  296.35,
+                  294.45,
+                  292.85
+                ],
+                "coincident_values": [
                   290.45,
                   289.35,
                   288.55
@@ -208,11 +213,17 @@
             "percent_exceedance": {
               "grid_variables": {
                 "percent_time_exceeded": [
+                  0.4,
                   99.6
                 ]
               },
               "lookup_variables": {
                 "values": [
+                  296.35,
+                  269.05
+                ],
+                "coincident_values": [
+                  3.5,
                   1.5
                 ]
               }
@@ -228,11 +239,17 @@
             "percent_exceedance": {
               "grid_variables": {
                 "percent_time_exceeded": [
+                  0.4,
                   99.6
                 ]
               },
               "lookup_variables": {
                 "values": [
+                  296.35,
+                  269.05
+                ],
+                "coincident_values": [
+                  1.7453,
                   5.7596
                 ]
               }
@@ -257,6 +274,13 @@
               },
               "lookup_variables": {
                 "values": [
+                  289.85,
+                  289.05,
+                  288.25,
+                  268.35,
+                  266.95
+                ],
+                "coincident_values": [
                   292.65,
                   291.55,
                   290.55,
@@ -283,6 +307,11 @@
               },
               "lookup_variables": {
                 "values": [
+                  291.25,
+                  290.25,
+                  289.35
+                ],
+                "coincident_values": [
                   294.95,
                   293.25,
                   291.95
@@ -307,6 +336,11 @@
               },
               "lookup_variables": {
                 "values": [
+                  51400.0,
+                  48300.0,
+                  45600.0
+                ],
+                "coincident_values": [
                   295.05,
                   293.35,
                   291.95
@@ -330,6 +364,10 @@
               },
               "lookup_variables": {
                 "values": [
+                  14.1,
+                  12.7
+                ],
+                "coincident_values": [
                   280.55,
                   281.45
                 ]

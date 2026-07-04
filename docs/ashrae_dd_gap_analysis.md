@@ -5,11 +5,16 @@ How the ASHRAE *Handbook of Fundamentals 2025* design-conditions spreadsheet
 header rows 1–4) and the EnergyPlus Weather (`.epw`) format map onto
 `schema/ClimateInformation.schema.yaml` and the worked examples in `examples/`.
 
-This revision (2026-06-17) reflects the expanded schema. The earlier draft listed many
+This revision (2026-07-03) reflects the expanded schema. The earlier draft listed many
 ASHRAE quantities as *missing* from the YAML; almost all of those were added in the
 2026-06-12 schema update, so **the YAML and the curated JSON example now describe the
-same set of summary variables** (verified programmatically — see Part 1.3). What remains
-are a handful of *structural* YAML↔JSON inconsistencies, called out in Part 1.4.
+same set of summary variables** (verified programmatically — see Part 1.3). The
+*structural* YAML↔JSON inconsistencies that earlier drafts tracked have been resolved and
+the curated examples now match the YAML shapes; the one remaining caveat is a tooling
+dependency — the current `lattice` build cannot parse the `ashrae_grade` constraint
+(`'["A", "B", "C", "D", "E"]'`), so JSON-Schema generation/validation of the examples is
+unavailable until `lattice` is updated. The EPW converter has been validated field-by-field
+against the EnergyPlus data dictionary (Part 2).
 
 > Companion: `docs/implementation_and_application_notes.md` explains the data model,
 > the unit conventions, and the full list of deliberate exclusions (its "Exclusions"
@@ -88,43 +93,25 @@ Comparing the YAML `ClimateSummaryData` data elements against the curated
 So the two are aligned: the schema defines exactly the variables the example uses, plus
 `relative_humidity` in reserve.
 
-### 1.4 Remaining YAML ↔ JSON inconsistencies (to resolve)
-
-These are *structural* mismatches between the YAML definitions and the JSON examples —
-not missing variables. They are the same open questions tracked in
-`docs/open_questions_before_publishing.md`; listed here with their concrete locations.
-
-1. **`monthly` shape.** YAML `SummaryData.monthly` is `Array(Group(Statistics))` (an
-   array of 12 `Statistics` objects); the JSON uses the compact object-of-arrays form
-   (`monthly: { "mean": [12], … }`). Pick one and align the other. -- PICK THE YAML SHAPE AND MAKE THE JSON ALIGN.
-2. **`DegreeDays` vs `DegreeDay`.** `ClimateSummaryData.heating_degree_days` /
-   `cooling_degree_days` are typed `Array(Group(DegreeDays))`, but the defined group is
-   `DegreeDay` (singular) — `DegreeDays` is undefined. -- USE PLURAL FOR GROUP NAME.
-3. **`SummaryDataSet.climate_data_type`.** The JSON sets `climate_data_type`
-   (MEASURED/MODELED) at the data-set level, but the YAML `SummaryDataSet` group only
-   defines `source_data_periods`, `summary_data`, `notes`. (Per-variable
-   `SummaryData.source_data_type` *is* defined and is what the generated examples use.) -- DATA TYPE IS ONLY DEFINED AT VARIABLE LEVEL. CHECK IN SUMMARY DATA AND TIME SERIES.
-4. **`metadata` has no group.** `ClimateInformation.metadata` is typed `Group(Metadata)`,
-   but no `Metadata` group is defined anywhere in the YAML. -- METADATA IS DEFINED BY ASHRAE STANDARD 232, SO DOES NOT NEED TO BE REDEFINED HERE.
-5. **`ashrae_grade` constraint syntax.** `SourceDataPeriod.ashrae_grade` uses
-   `Constraints: '["A", "B", "C", "D", "E"]'`, which `lattice` cannot parse — the schema
-   currently fails to compile, so JSON-Schema validation of the examples is unavailable
-   until this is fixed. -- NEED TO UPDATE LATTICE.
-6. **Coincident / monthly percent-exceedance shape.** `PercentTimeExceedanceCoincident`
-   is malformed (its `grid_variables` nests a `percent_time_exceeded` element instead of
-   referencing `PercentTimeExceedanceGridVariables`), and the JSON's *monthly*
-   `percent_exceedance` (`[{percent_time_exceeded, values:[12]}]`) matches neither
-   percent-exceedance group. The *annual* grid/lookup form is consistent.
-7. **Time-series data-set shape.** YAML `TimeSeriesDataSet` uses `time_intervals`
-   (array of `TimeInterval`) + a `time_series` group; the curated draft used a singular
-   `source_data_period` with variables inline. The EPW-generated examples
-   (`examples/generated/*-from-epw.v2.1.json`) follow the **YAML** shape. -- TIME SERIES ARTEFACT DELETED FROM EXAMPLE.
-
 ---
 
 ## Part 2 — EPW ↔ schema
 
-TODO: USE https://bigladdersoftware.com/epx/docs/8-3/auxiliary-programs/energyplus-weather-file-epw-data-dictionary.html TO VALIDATE EPW CONVERTER AND ROUNDTRIP NULL
+> **Validation (2026-07-03).** The converter's EPW field table (`EPW_FIELDS` in
+> `tools/epw_to_json.py`) was cross-checked field-by-field against the EnergyPlus EPW
+> data dictionary
+> ([bigladdersoftware EPW data dictionary](https://bigladdersoftware.com/epx/docs/8-3/auxiliary-programs/energyplus-weather-file-epw-data-dictionary.html);
+> a local copy is kept at `docs/epw_data_dictionary.md`).
+> All 21 mapped hourly fields agree with the dictionary on **position, unit, and
+> missing-value sentinel** (§2.3); the 9 unmapped fields are exactly the ones with no
+> schema home (§2.3 / §8.1) and are re-emitted with their correct sentinels. A generated
+> EPW (`examples/generated/USA_IL_Chicago-from-json.epw`) parses to 8760 records of
+> exactly 35 fields with the expected header blocks. The sentinel↔`null` round-trip and
+> the EPW→JSON→EPW round-trip pass (`tools/test_climate_helpers.py`,
+> `test_null_roundtrip_epw_json` / `test_roundtrip_json_epw`). One benign deviation: the
+> dictionary marks the three illuminance fields (16/17/18) missing when a value is
+> `>= 999900`, whereas the converter's sentinel test is `>= 999999`; real EPW writers emit
+> exactly `999999`, so files round-trip correctly (see §2.4).
 
 An EPW file contributes a `LOCATION` line, an optional `DESIGN CONDITIONS` line and 8760
 hourly records. `tools/epw_to_json.py` performs this mapping, and `tools/json_to_epw.py`
@@ -204,6 +191,12 @@ sentinel becomes `null` and on export (`json_to_epw.py`) each `null` returns to 
 sentinel. This is exercised by
 `tools/test_climate_helpers.py::test_null_roundtrip_epw_json` (and is the round-trip
 illustrated by `extra_examples/test_20251017.json`).
+
+> One sentinel edge case: the data dictionary flags the three illuminance fields
+> (global/direct/diffuse) as missing when a value is `>= 999900`, but the converter tests
+> `>= 999999` (the printed sentinel). Every real EPW writer emits exactly `999999` for a
+> missing illuminance, so this has no practical effect on the round-trip; it is noted only
+> for completeness.
 
 When the reverse converter re-emits an EPW, quantities the model deliberately drops
 (humidity ratio, wind shelter factor, n-year return periods) come back blank, and EPW

@@ -13,6 +13,7 @@
  ! Chicago OHare Intl AP Extreme Annual Temperatures, Max Drybulb=35.4C Min Drybulb=-21.7C
  ! Chicago OHare Intl AP Extreme Annual Temperatures, Max Wetbulb=26.5C Min Wetbulb=-22.2C
  ! Chicago OHare Intl AP Annual Heating Design Conditions Wind Speed=4.7m/s Wind Dir=280
+ ! Chicago OHare Intl AP Annual Cooling Design Conditions Wind Speed=5.1m/s Wind Dir=220
  ! Coldest Month=JAN
  ! Hottest Month=JUL
 
@@ -144,7 +145,7 @@
   ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
            ,      !- Daily Wet-Bulb Temperature Range {deltaC}
   98886.,      !- Barometric Pressure {Pa}
-  4.7,      !- Wind Speed {m/s}
+  11.7,      !- Wind Speed {m/s}
   280,      !- Wind Direction {Degrees; N=0, S=180}
          No,      !- Rain {Yes/No}
          No,      !- Snow on ground {Yes/No}
@@ -172,7 +173,7 @@
   ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
            ,      !- Daily Wet-Bulb Temperature Range {deltaC}
   98886.,      !- Barometric Pressure {Pa}
-  4.7,      !- Wind Speed {m/s}
+  10.7,      !- Wind Speed {m/s}
   280,      !- Wind Direction {Degrees; N=0, S=180}
          No,      !- Rain {Yes/No}
          No,      !- Snow on ground {Yes/No}
@@ -200,8 +201,8 @@
   ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
            ,      !- Daily Wet-Bulb Temperature Range {deltaC}
   98886.,      !- Barometric Pressure {Pa}
-  4.7,      !- Wind Speed {m/s}
-  280,      !- Wind Direction {Degrees; N=0, S=180}
+  5.1,      !- Wind Speed {m/s}
+  220,      !- Wind Direction {Degrees; N=0, S=180}
          No,      !- Rain {Yes/No}
          No,      !- Snow on ground {Yes/No}
          No,      !- Daylight Savings Time Indicator
@@ -228,8 +229,8 @@
   ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
            ,      !- Daily Wet-Bulb Temperature Range {deltaC}
   98886.,      !- Barometric Pressure {Pa}
-  4.7,      !- Wind Speed {m/s}
-  280,      !- Wind Direction {Degrees; N=0, S=180}
+  5.1,      !- Wind Speed {m/s}
+  220,      !- Wind Direction {Degrees; N=0, S=180}
          No,      !- Rain {Yes/No}
          No,      !- Snow on ground {Yes/No}
          No,      !- Daylight Savings Time Indicator
@@ -256,8 +257,8 @@
   ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
            ,      !- Daily Wet-Bulb Temperature Range {deltaC}
   98886.,      !- Barometric Pressure {Pa}
-  4.7,      !- Wind Speed {m/s}
-  280,      !- Wind Direction {Degrees; N=0, S=180}
+  5.1,      !- Wind Speed {m/s}
+  220,      !- Wind Direction {Degrees; N=0, S=180}
          No,      !- Rain {Yes/No}
          No,      !- Snow on ground {Yes/No}
          No,      !- Daylight Savings Time Indicator
@@ -284,8 +285,8 @@
   ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
            ,      !- Daily Wet-Bulb Temperature Range {deltaC}
   98886.,      !- Barometric Pressure {Pa}
-  4.7,      !- Wind Speed {m/s}
-  280,      !- Wind Direction {Degrees; N=0, S=180}
+  5.1,      !- Wind Speed {m/s}
+  220,      !- Wind Direction {Degrees; N=0, S=180}
          No,      !- Rain {Yes/No}
          No,      !- Snow on ground {Yes/No}
          No,      !- Daylight Savings Time Indicator
@@ -312,8 +313,8 @@
   ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
            ,      !- Daily Wet-Bulb Temperature Range {deltaC}
   98886.,      !- Barometric Pressure {Pa}
-  4.7,      !- Wind Speed {m/s}
-  280,      !- Wind Direction {Degrees; N=0, S=180}
+  5.1,      !- Wind Speed {m/s}
+  220,      !- Wind Direction {Degrees; N=0, S=180}
          No,      !- Rain {Yes/No}
          No,      !- Snow on ground {Yes/No}
          No,      !- Daylight Savings Time Indicator
@@ -340,8 +341,8 @@
   ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
            ,      !- Daily Wet-Bulb Temperature Range {deltaC}
   98886.,      !- Barometric Pressure {Pa}
-  4.7,      !- Wind Speed {m/s}
-  280,      !- Wind Direction {Degrees; N=0, S=180}
+  5.1,      !- Wind Speed {m/s}
+  220,      !- Wind Direction {Degrees; N=0, S=180}
          No,      !- Rain {Yes/No}
          No,      !- Snow on ground {Yes/No}
          No,      !- Daylight Savings Time Indicator
@@ -368,8 +369,8 @@
   ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
            ,      !- Daily Wet-Bulb Temperature Range {deltaC}
   98886.,      !- Barometric Pressure {Pa}
-  4.7,      !- Wind Speed {m/s}
-  280,      !- Wind Direction {Degrees; N=0, S=180}
+  5.1,      !- Wind Speed {m/s}
+  220,      !- Wind Direction {Degrees; N=0, S=180}
          No,      !- Rain {Yes/No}
          No,      !- Snow on ground {Yes/No}
          No,      !- Daylight Savings Time Indicator
@@ -396,8 +397,8 @@
   ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
            ,      !- Daily Wet-Bulb Temperature Range {deltaC}
   98886.,      !- Barometric Pressure {Pa}
-  4.7,      !- Wind Speed {m/s}
-  280,      !- Wind Direction {Degrees; N=0, S=180}
+  5.1,      !- Wind Speed {m/s}
+  220,      !- Wind Direction {Degrees; N=0, S=180}
          No,      !- Rain {Yes/No}
          No,      !- Snow on ground {Yes/No}
          No,      !- Daylight Savings Time Indicator
@@ -424,8 +425,8 @@
   ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
            ,      !- Daily Wet-Bulb Temperature Range {deltaC}
   98886.,      !- Barometric Pressure {Pa}
-  4.7,      !- Wind Speed {m/s}
-  280,      !- Wind Direction {Degrees; N=0, S=180}
+  5.1,      !- Wind Speed {m/s}
+  220,      !- Wind Direction {Degrees; N=0, S=180}
          No,      !- Rain {Yes/No}
          No,      !- Snow on ground {Yes/No}
          No,      !- Daylight Savings Time Indicator
@@ -452,8 +453,8 @@
   77500,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
            ,      !- Daily Wet-Bulb Temperature Range {deltaC}
   98886.,      !- Barometric Pressure {Pa}
-  4.7,      !- Wind Speed {m/s}
-  280,      !- Wind Direction {Degrees; N=0, S=180}
+  5.1,      !- Wind Speed {m/s}
+  220,      !- Wind Direction {Degrees; N=0, S=180}
          No,      !- Rain {Yes/No}
          No,      !- Snow on ground {Yes/No}
          No,      !- Daylight Savings Time Indicator
@@ -480,8 +481,8 @@
   73400,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
            ,      !- Daily Wet-Bulb Temperature Range {deltaC}
   98886.,      !- Barometric Pressure {Pa}
-  4.7,      !- Wind Speed {m/s}
-  280,      !- Wind Direction {Degrees; N=0, S=180}
+  5.1,      !- Wind Speed {m/s}
+  220,      !- Wind Direction {Degrees; N=0, S=180}
          No,      !- Rain {Yes/No}
          No,      !- Snow on ground {Yes/No}
          No,      !- Daylight Savings Time Indicator
@@ -508,8 +509,8 @@
   70000,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
            ,      !- Daily Wet-Bulb Temperature Range {deltaC}
   98886.,      !- Barometric Pressure {Pa}
-  4.7,      !- Wind Speed {m/s}
-  280,      !- Wind Direction {Degrees; N=0, S=180}
+  5.1,      !- Wind Speed {m/s}
+  220,      !- Wind Direction {Degrees; N=0, S=180}
          No,      !- Rain {Yes/No}
          No,      !- Snow on ground {Yes/No}
          No,      !- Daylight Savings Time Indicator

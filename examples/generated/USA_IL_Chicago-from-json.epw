@@ -1,5 +1,5 @@
 LOCATION,Chicago OHare Intl AP,IL,USA,SRC-Generated,725300,41.96000,-87.93200,-6.0,205.0
-DESIGN CONDITIONS,1,2025 ASHRAE Handbook -- Fundamentals - Chapter 14 Climatic Design Information,Heating,1,-18.1,-15.3,-23.6,,-17.2,-21.3,,-14.7,,-0.6,,-1.9,4.7,280,,Cooling,7,,32.9,23.2,31.5,22.5,30.1,21.8,25.1,30.7,24.1,29.1,23.2,28,5.1,220,23.4,,28.3,22.4,,27.2,21.5,,26.3,77.5,30.8,73.4,29.3,70,28,28.6,Extremes,10.6,9.4,8.4,-21.7,35.4,3.4,1.9,,,,,,,,,-22.2,26.5,3.2,1,,,,,,,,
+DESIGN CONDITIONS,1,2025 ASHRAE Handbook -- Fundamentals - Chapter 14 Climatic Design Information,Heating,1,-18.1,-15.3,-23.6,,-17.2,-21.3,,-14.7,11.7,-0.6,10.7,-1.9,4.7,280,,Cooling,7,,32.9,23.2,31.5,22.5,30.1,21.8,25.1,30.7,24.1,29.1,23.2,28,5.1,220,23.4,,28.3,22.4,,27.2,21.5,,26.3,77.5,30.8,73.4,29.3,70,28,28.6,Extremes,10.6,9.4,8.4,-21.7,35.4,3.4,1.9,,,,,,,,,-22.2,26.5,3.2,1,,,,,,,,
 TYPICAL/EXTREME PERIODS,0
 GROUND TEMPERATURES,0
 HOLIDAYS/DAYLIGHT SAVINGS,No,0,0,0

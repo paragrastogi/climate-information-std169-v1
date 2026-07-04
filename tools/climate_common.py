@@ -171,15 +171,20 @@ _DESIGN_SPEC = [
             ),
         },
     ),
+    # Coincident variables use the PercentTimeExceedanceCoincident form: the lookup
+    # carries the *base* variable (`values`, whose percentile is the grid) alongside the
+    # *coincident* statistic of a second variable (`coincident_values`). Each
+    # "coincident_exceedance" entry is (percentiles, base_columns, coincident_columns).
     (
         "dry_bulb_temperature_coincident_mean_wet_bulb_temperature",
         "Mean wet-bulb temperature coincident with design dry-bulb temperature",
         "K",
         "MEASURED",
         {
-            "exceedance": (
+            "coincident_exceedance": (
                 [0.4, 1.0, 2.0],
-                [("AI", c_to_k), ("AK", c_to_k), ("AM", c_to_k)],
+                [("AH", c_to_k), ("AJ", c_to_k), ("AL", c_to_k)],  # base: cooling DB
+                [("AI", c_to_k), ("AK", c_to_k), ("AM", c_to_k)],  # coincident: MCWB
             ),
         },
     ),
@@ -189,9 +194,10 @@ _DESIGN_SPEC = [
         "m/s",
         "MEASURED",
         {
-            "exceedance": (
+            "coincident_exceedance": (
                 [0.4, 99.6],
-                [("AT", float), ("AC", float)],
+                [("AH", c_to_k), ("Q", c_to_k)],  # base: cooling/heating DB
+                [("AT", float), ("AC", float)],  # coincident: MCWS
             ),
         },
     ),
@@ -201,9 +207,10 @@ _DESIGN_SPEC = [
         "radians",
         "MEASURED",
         {
-            "exceedance": (
+            "coincident_exceedance": (
                 [0.4, 99.6],
-                [("AU", deg_to_rad), ("AD", deg_to_rad)],
+                [("AH", c_to_k), ("Q", c_to_k)],  # base: cooling/heating DB
+                [("AU", deg_to_rad), ("AD", deg_to_rad)],  # coincident: PCWD
             ),
         },
     ),
@@ -213,9 +220,10 @@ _DESIGN_SPEC = [
         "K",
         "MEASURED",
         {
-            "exceedance": (
+            "coincident_exceedance": (
                 [0.4, 1.0, 2.0, 99.0, 99.6],
-                [("AX", c_to_k), ("BA", c_to_k), ("BD", c_to_k), ("X", c_to_k), ("U", c_to_k)],
+                [("AV", c_to_k), ("AY", c_to_k), ("BB", c_to_k), ("V", c_to_k), ("S", c_to_k)],  # base: DP
+                [("AX", c_to_k), ("BA", c_to_k), ("BD", c_to_k), ("X", c_to_k), ("U", c_to_k)],  # coincident: MCDB
             ),
         },
     ),
@@ -225,9 +233,10 @@ _DESIGN_SPEC = [
         "K",
         "MEASURED",
         {
-            "exceedance": (
+            "coincident_exceedance": (
                 [0.4, 1.0, 2.0],
-                [("AO", c_to_k), ("AQ", c_to_k), ("AS", c_to_k)],
+                [("AN", c_to_k), ("AP", c_to_k), ("AR", c_to_k)],  # base: evaporation WB
+                [("AO", c_to_k), ("AQ", c_to_k), ("AS", c_to_k)],  # coincident: MCDB
             ),
         },
     ),
@@ -237,9 +246,10 @@ _DESIGN_SPEC = [
         "K",
         "MEASURED",
         {
-            "exceedance": (
+            "coincident_exceedance": (
                 [0.4, 1.0, 2.0],
-                [("BF", c_to_k), ("BH", c_to_k), ("BJ", c_to_k)],
+                [("BE", kjkg_to_jkg), ("BG", kjkg_to_jkg), ("BI", kjkg_to_jkg)],  # base: enthalpy
+                [("BF", c_to_k), ("BH", c_to_k), ("BJ", c_to_k)],  # coincident: MCDB
             ),
         },
     ),
@@ -249,9 +259,10 @@ _DESIGN_SPEC = [
         "K",
         "MEASURED",
         {
-            "exceedance": (
+            "coincident_exceedance": (
                 [0.4, 1.0],
-                [("Z", c_to_k), ("AB", c_to_k)],
+                [("Y", float), ("AA", float)],  # base: coldest-month WS
+                [("Z", c_to_k), ("AB", c_to_k)],  # coincident: MCDB
             ),
         },
     ),
@@ -281,6 +292,28 @@ def _build_exceedance(cols, percentiles, column_converters):
     }
 
 
+def _build_coincident_exceedance(cols, percentiles, base_cc, coincident_cc):
+    """Build a PercentTimeExceedanceCoincident block: `values` (base variable) plus
+    `coincident_values` (the coincident statistic). A grid point is emitted only when
+    *both* the base and coincident columns are present, so the two arrays stay aligned.
+    """
+    grid, values, coincident_values = [], [], []
+    for pct, (bcol, bconv), (ccol, cconv) in zip(percentiles, base_cc, coincident_cc):
+        braw = _get(cols, bcol)
+        craw = _get(cols, ccol)
+        if braw is None or craw is None:
+            continue
+        grid.append(pct)
+        values.append(bconv(braw))
+        coincident_values.append(cconv(craw))
+    if not grid:
+        return None
+    return {
+        "grid_variables": {"percent_time_exceeded": grid},
+        "lookup_variables": {"values": values, "coincident_values": coincident_values},
+    }
+
+
 def build_summary_data(cols: dict, source_data_period_id: str) -> dict:
     """Build a schema ``ClimateSummaryData`` group from ASHRAE column values.
 
@@ -299,6 +332,11 @@ def build_summary_data(cols: dict, source_data_period_id: str) -> dict:
         exc_spec = pieces.get("exceedance")
         if exc_spec is not None:
             exc = _build_exceedance(cols, exc_spec[0], exc_spec[1])
+            if exc is not None:
+                annual["percent_exceedance"] = exc
+        coinc_spec = pieces.get("coincident_exceedance")
+        if coinc_spec is not None:
+            exc = _build_coincident_exceedance(cols, *coinc_spec)
             if exc is not None:
                 annual["percent_exceedance"] = exc
         if not annual:
@@ -339,8 +377,8 @@ def summary_data_to_ashrae_cols(summary: dict) -> dict:
             if val is not None:
                 cols[column] = _INVERSE[conv](val)
 
-        exc_spec = pieces.get("exceedance")
         pe = annual.get("percent_exceedance")
+        exc_spec = pieces.get("exceedance")
         if exc_spec is not None and pe:
             percentiles, column_converters = exc_spec
             index_by_pct = {p: i for i, p in enumerate(percentiles)}
@@ -349,6 +387,21 @@ def summary_data_to_ashrae_cols(summary: dict) -> dict:
             for pct, val in zip(grid, values):
                 if pct in index_by_pct and val is not None:
                     column, conv = column_converters[index_by_pct[pct]]
+                    cols[column] = _INVERSE[conv](val)
+
+        coinc_spec = pieces.get("coincident_exceedance")
+        if coinc_spec is not None and pe:
+            percentiles, base_cc, coincident_cc = coinc_spec
+            index_by_pct = {p: i for i, p in enumerate(percentiles)}
+            grid = pe.get("grid_variables", {}).get("percent_time_exceeded", [])
+            lookup = pe.get("lookup_variables", {})
+            for pct, val in zip(grid, lookup.get("values", [])):
+                if pct in index_by_pct and val is not None:
+                    column, conv = base_cc[index_by_pct[pct]]
+                    cols[column] = _INVERSE[conv](val)
+            for pct, val in zip(grid, lookup.get("coincident_values", [])):
+                if pct in index_by_pct and val is not None:
+                    column, conv = coincident_cc[index_by_pct[pct]]
                     cols[column] = _INVERSE[conv](val)
 
     if isinstance(summary.get("coldest_month"), int):

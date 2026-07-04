@@ -23,11 +23,9 @@
 1. Should source_data_type have a different enumeration than that for time series (DIRECT_MEASUREMENT, DERIVED_MEASUREMENT, MODELED, something else)?
 1. Should climate_data_type use a different enumeration table: only historical and projected?
 
-## Publication Rules
-
-1. Climate zone object refers to list of climate zone classifications that are applicable to this location ONLY, not necessarily applicable to a "nearby" site.
-1. List of monthly elements must be ordered.
-1. Data providers are encouraged to include calculations for each statistic in schema notes and, preferably, reference original source.
-1. 
+> The **application & publication rules** that used to live here (climate zones apply to
+> the named location only; monthly arrays are ordered; providers should document each
+> statistic's calculation and cite its source) have been promoted to
+> `docs/implementation_and_application_notes.md` §9.
 
 

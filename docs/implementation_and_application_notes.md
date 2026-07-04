@@ -28,6 +28,12 @@ schema — with four top-level members:
 | `summary_data_sets` | One or more **statistical summaries** of the climate (means, extremes, exceedance/design conditions, degree days, …). |
 | `time_series_data_sets` | One or more **time series** (e.g. an hourly typical year). |
 
+> **`metadata` is defined externally.** `ClimateInformation.metadata` is typed
+> `Group(Metadata)`, but the `Metadata` group itself is **defined by ASHRAE Standard 232**
+> and is intentionally *not* redefined in this schema. The schema only references it and
+> constrains its `schema_name` to `CLIMATE_INFORMATION`; see the note on the `metadata`
+> element in `schema/ClimateInformation.schema.yaml`.
+
 ```mermaid
 graph TD
     CI["ClimateInformation<br/>(document root)"]
@@ -238,16 +244,57 @@ value). These are modelled as **separate named variables** using the convention:
 <base>_coincident_<statistic>_<other>
 ```
 
-For a coincident variable, `percent_time_exceeded` refers to the percentile **of the
-base variable**, and the lookup holds the coincident statistic at that percentile. For
-example, `wet_bulb_temperature_coincident_mean_dry_bulb_temperature` at
-`percent_time_exceeded = 0.4` is the mean dry-bulb observed while wet-bulb is at its
-0.4 % value. (The reconciliation of the coincident grid/lookup group in the YAML is an
-open question — see `docs/open_questions_before_publishing.md`.)
+Their `percent_exceedance` uses the **`PercentTimeExceedanceCoincident`** alternative
+(§1.2), whose lookup carries *two* aligned arrays rather than one:
+
+- `grid_variables.percent_time_exceeded` — the percentile grid, referring to the
+  **base** variable;
+- `lookup_variables.values` — the **base** variable at each percentile;
+- `lookup_variables.coincident_values` — the **coincident** statistic of the second
+  variable at that same percentile.
+
+For example, `dry_bulb_temperature_coincident_mean_wet_bulb_temperature` at
+`percent_time_exceeded = 1.0` carries the 1 % design dry-bulb in `values` and the mean
+coincident wet-bulb (MCWB) in `coincident_values`:
+
+```jsonc
+"dry_bulb_temperature_coincident_mean_wet_bulb_temperature": {
+  "units": "K",                                  // the coincident value's unit (MCWB)
+  "annual": {
+    "percent_exceedance": {
+      "grid_variables":   { "percent_time_exceeded": [0.4, 1.0, 2.0] },
+      "lookup_variables": {
+        "values":            [306.05, 304.65, 303.25],  // base: design dry-bulb (K)
+        "coincident_values": [296.35, 295.65, 294.95]   // coincident: mean wet-bulb (K)
+      }
+    }
+  }
+}
+```
+
+**Units are not restated inside the block.** Both `values` and `coincident_values` are
+quantities the model already defines in SI base — dry-bulb / wet-bulb / dew-point in K,
+enthalpy in J/kg, wind speed in m/s, wind direction in radians — so the unit of each
+array is fixed by the quantity its name points at (`<base>` for `values`, `<other>` for
+`coincident_values`). The variable's single `units` field names the **coincident** value
+it reports (matching its display name); the base `values` are in the base quantity's own
+defined unit. This is why the four mixed-unit pairs need no extra machinery: e.g.
+`enthalpy_coincident_mean_dry_bulb_temperature` has `units: "K"` (the coincident MCDB),
+`values` in J/kg (base enthalpy), and `coincident_values` in K — all implied, none
+restated.
+
+> This settles the earlier open question about the coincident grid/lookup group: the
+> `PercentTimeExceedanceCoincident` alternative is the intended representation, and it is
+> self-contained (it carries the base design value alongside the coincident statistic).
+> Both the curated examples and the EPW/DDY converters emit this form: the EPW header
+> supplies base and coincident for all seven pairs, and the DDY reader/writer round-trip
+> them too (it reads the coldest-month design wind speed and the cooling-side
+> MCWS/PCWD from the design days and comment block, closing the two gaps those columns
+> used to have).
 
 ### 4.2 Degree days are arrays
 
-`heating_degree_days` / `cooling_degree_days` are **arrays** of `DegreeDay` groups, one
+`heating_degree_days` / `cooling_degree_days` are **arrays** of `DegreeDays` groups, one
 entry per base temperature. Each entry has `base_temperature` (K), an `annual` total,
 and an optional `monthly[12]` array. This lets a single document publish several base
 temperatures side by side.

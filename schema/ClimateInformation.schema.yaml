@@ -86,6 +86,7 @@ ClimateInformation:
       Type: "Group(Metadata)"
       Constraints: schema_name="CLIMATE_INFORMATION"
       Required: True
+      Notes: "The Metadata data group is defined by ASHRAE Standard 232 and is intentionally not redefined in this schema."
     location:
       Description: "Location data group"
       Type: "Group(Location)"
@@ -1029,10 +1030,12 @@ PercentTimeExceedanceCoincidentLookupVariables:
   Data Elements:
     values:
       Type: Array(Numeric)
-      Description: "Threshold values for percent time exceedance coincident with another variable exceeding a certain threshold"
+      Description: "Base-variable value at each percent_time_exceeded grid point (the variable whose percentile the grid describes)"
+      Notes: "Unit is that of the base variable named in the coincident summary variable (e.g., dry-bulb temperature in K); it is not restated here."
     coincident_values:
       Type: Array(Numeric)
-      Description: "Threshold values for the other variable for percent time exceedance coincident with another variable exceeding a certain threshold"
+      Description: "Mean coincident value of the second variable at the same percent_time_exceeded grid point"
+      Notes: "Unit is that of the coincident variable named in the coincident summary variable (e.g., mean wet-bulb temperature in K, or mean dry-bulb temperature coincident with enthalpy in K); it is not restated here. Both arrays draw their units from the model's SI-base definition of each named quantity."
 
 PercentTimeExceedance:
   Object Type: "Data Group"
@@ -1054,7 +1057,7 @@ PercentTimeExceedanceCoincident:
       Type: Group(PercentTimeExceedanceCoincidentLookupVariables)
       Description: "Threshold values for percent time exceedance coincident with another variable exceeding a certain threshold"
 
-DegreeDay:
+DegreeDays:
   Object Type: "Data Group"
   Data Elements:
     base_temperature:
