@@ -1,4 +1,4 @@
-# EPW / DDY ↔ Climate Information v2.1 helpers
+# EPW / DDY <-> Climate Information v2.1 helpers
 
 Small, self-contained Python helpers that translate EnergyPlus weather files to and from
 Climate Information v2.1 JSON (the data model defined in
@@ -7,15 +7,15 @@ uses local paths inside this repository.
 
 | File | What it does |
 |---|---|
-| `climate_common.py` | Shared unit conversions and the design-conditions mapping, in both directions: `build_summary_data()` (`{ASHRAE column → value}` → schema `ClimateSummaryData`, base SI) and its inverse `summary_data_to_ashrae_cols()`. |
-| `epw_to_json.py` | **EPW → v2.1 JSON.** `LOCATION` → `location`, 8760 hourly records → `time_series_data_sets`. EPW missing-value sentinels become `null`. The `DESIGN CONDITIONS` header → `summary_data_sets` only with `--epw-header-design` (off by default — the DDY is the preferred design source). |
-| `ddy_to_json.py` | **DDY → v2.1 JSON.** `Site:Location` → `location`, `SizingPeriod:DesignDay` objects + header comments → `summary_data_sets`. |
-| `json_to_epw.py` | **v2.1 JSON → EPW** (reverse of `epw_to_json.py`). `null` becomes the EPW sentinel again. |
-| `json_to_ddy.py` | **v2.1 JSON → DDY** (reverse of `ddy_to_json.py`). |
+| `climate_common.py` | Shared unit conversions and the design-conditions mapping, in both directions: `build_summary_data()` (`{ASHRAE column -> value}` -> schema `ClimateSummaryData`, base SI) and its inverse `summary_data_to_ashrae_cols()`. |
+| `epw_to_json.py` | **EPW -> v2.1 JSON.** `LOCATION` -> `location`, 8760 hourly records -> `time_series_data_sets`. EPW missing-value sentinels become `null`. The `DESIGN CONDITIONS` header -> `summary_data_sets` only with `--epw-header-design` (off by default -- the DDY is the preferred design source). |
+| `ddy_to_json.py` | **DDY -> v2.1 JSON.** `Site:Location` -> `location`, `SizingPeriod:DesignDay` objects + header comments -> `summary_data_sets`. |
+| `json_to_epw.py` | **v2.1 JSON -> EPW** (reverse of `epw_to_json.py`). `null` becomes the EPW sentinel again. |
+| `json_to_ddy.py` | **v2.1 JSON -> DDY** (reverse of `ddy_to_json.py`). |
 | `extract_ashrae_reference.py` | One-off: pulls the two test rows out of the (off-repo, ~45 MB) ASHRAE HOF 2025 spreadsheet into the fixture below. |
-| `testdata/ashrae_hof2025_design_extract.json` | Committed fixture: Chicago + Glasgow rows, columns A–CL, in the spreadsheet's units. |
+| `testdata/ashrae_hof2025_design_extract.json` | Committed fixture: Chicago + Glasgow rows, columns A-CL, in the spreadsheet's units. |
 | `test_climate_helpers.py` | The tests (see below). |
-| `generate_examples.py` | Runs the full pipeline EPW/DDY → JSON → EPW/DDY for both stations, then the tests. |
+| `generate_examples.py` | Runs the full pipeline EPW/DDY -> JSON -> EPW/DDY for both stations, then the tests. |
 
 ## Setup
 
@@ -63,7 +63,7 @@ uv run --group dev doit
 ```
 
 If you prefer to work inside an already-activated virtualenv, drop the `uv run`
-prefix and call `python tools/…` directly.
+prefix and call `python tools/...` directly.
 
 The bundled inputs are the `*.zip` archives in `examples/` (the `.epw`/`.ddy` members
 are read straight from the zip). Generated files are written to `examples/generated/`
@@ -75,30 +75,30 @@ design-conditions only (~10 KB).
 
 `generate_examples.py` applies canonical overrides on import. For Chicago O'Hare it
 uses **WMO `725300`** and **elevation `205 m`** (the ASHRAE row), overriding the
-`201.8 m` the onebuilding EPW/DDY carry, so every generated artifact for Chicago — JSON,
-round-tripped EPW, round-tripped DDY — reports the ASHRAE values.
+`201.8 m` the onebuilding EPW/DDY carry, so every generated artifact for Chicago -- JSON,
+round-tripped EPW, round-tripped DDY -- reports the ASHRAE values.
 
 ## The tests
 
-1. **`test_ddy_matches_ashrae`** — the design conditions parsed out of each DDY file are
+1. **`test_ddy_matches_ashrae`** -- the design conditions parsed out of each DDY file are
    *identical* (to the published 0.1-unit precision) to the matching row of the ASHRAE
-   HOF 2025 spreadsheet. 43 design columns per station are compared against the committed
+   HOF 2025 spreadsheet. 47 design columns per station are compared against the committed
    extract. The EPW `DESIGN CONDITIONS` line, the DDY design days and the spreadsheet all
    map onto the same ASHRAE column letters, so the comparison is direct.
-2. **`test_null_roundtrip_epw_json`** — EPW has no blank/missing value (numeric sentinels
-   99.9, 999, 9999 …); the schema supports `null`. A sentinel becomes `null` on import and
+2. **`test_null_roundtrip_epw_json`** -- EPW has no blank/missing value (numeric sentinels
+   99.9, 999, 9999 ...); the schema supports `null`. A sentinel becomes `null` on import and
    the same sentinel returns on export, and `null` survives a JSON serialisation
    round-trip (the `extra_examples/test_20251017.json` scenario).
-3. **`test_roundtrip_json_epw` / `test_roundtrip_json_ddy`** — the reverse converters are
-   faithful: EPW → JSON → EPW → JSON preserves the summary and every hourly value, and
-   DDY → JSON → DDY → JSON preserves the design conditions and the location.
+3. **`test_roundtrip_json_epw` / `test_roundtrip_json_ddy`** -- the reverse converters are
+   faithful: EPW -> JSON -> EPW -> JSON preserves the summary and every hourly value, and
+   DDY -> JSON -> DDY -> JSON preserves the design conditions and the location.
 
 ## Notes / caveats
 
-- **Units.** The ASHRAE "SI" sheet is *not* base SI (°C, kJ/kg, mm, degrees). The
+- **Units.** The ASHRAE "SI" sheet is *not* base SI (degC, kJ/kg, mm, degrees). The
   converters move to/from base SI (K, J/kg, m, radians). The DDY test compares in the
   spreadsheet's own units, so no conversion is involved there.
-- **What the EPW header carries.** Only annual design conditions (columns P–CL). Monthly
+- **What the EPW header carries.** Only annual design conditions (columns P-CL). Monthly
   design tables, degree days, precipitation and solar live in the `.stat` file, so they
   are absent from an EPW-derived summary.
 - **What the DDY carries.** The annual design conditions, *including* the enthalpy
@@ -108,7 +108,7 @@ round-tripped EPW, round-tripped DDY — reports the ASHRAE values.
 - **Reverse-converter fidelity.** Quantities the model deliberately drops (humidity
   ratio, wind shelter factor, n-year return periods) come back **blank** in a generated
   EPW `DESIGN CONDITIONS` line; EPW fields the schema has no home for (extraterrestrial
-  radiation, zenith luminance, visibility, ceiling, present weather, …) come back as EPW
+  radiation, zenith luminance, visibility, ceiling, present weather, ...) come back as EPW
   missing-value sentinels; the other EPW header blocks (TYPICAL/EXTREME PERIODS, GROUND
   TEMPERATURES) are emitted empty; and the calendar is a single non-leap year. None of
   these affect the modeled data, which round-trips exactly.

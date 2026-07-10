@@ -4,13 +4,13 @@
 > the EnergyPlus Auxiliary Programs documentation:
 > <https://bigladdersoftware.com/epx/docs/8-3/auxiliary-programs/energyplus-weather-file-epw-data-dictionary.html>
 >
-> Kept in-repo so the EPW ↔ Climate Information converters (`tools/epw_to_json.py`,
+> Kept in-repo so the EPW <-> Climate Information converters (`tools/epw_to_json.py`,
 > `tools/json_to_epw.py`) can be validated against a stable snapshot of the format. The
-> field-by-field mapping onto the schema — and which fields the converter carries — is in
+> field-by-field mapping onto the schema -- and which fields the converter carries -- is in
 > `docs/ashrae_dd_gap_analysis.md` (Part 2). Numeric *missing* / *min* / *max* values below
 > are reproduced exactly as published.
 >
-> **License:** Documentation copyright © 1996–2015 The Board of Trustees of the University
+> **License:** Documentation copyright (c) 1996-2015 The Board of Trustees of the University
 > of Illinois and the Regents of the University of California, made available under the
 > [EnergyPlus Open Source License v1.0](http://bigladdersoftware.com/epx/open_source_agreement.pdf).
 
@@ -22,11 +22,11 @@ An EPW file is a set of **header records** followed by **hourly weather data rec
 Semicolons do not terminate lines. The format follows IDD (Input Data Dictionary)
 conventions, using backslash notations for constraints:
 
-- `\minimum` / `\minimum>` — values must be ≥ or > the specified number
-- `\maximum` / `\maximum<` — values must be ≤ or < the specified number
-- `\missing` — a value ≥ this number indicates missing data
-- `\default` — default value for blank fields
-- `\units` — expected measurement units
+- `\minimum` / `\minimum>` -- values must be >= or > the specified number
+- `\maximum` / `\maximum<` -- values must be <= or < the specified number
+- `\missing` -- a value >= this number indicates missing data
+- `\default` -- default value for blank fields
+- `\units` -- expected measurement units
 
 ---
 
@@ -38,15 +38,15 @@ Geographic and reference information for the weather-file location.
 
 | Field | Type | Description | Units | Range / Notes |
 |---|---|---|---|---|
-| City | Alpha | Location city name | — | — |
-| State/Province/Region | Alpha | State, province, or region | — | — |
-| Country | Alpha | Country name | — | — |
-| Source | Alpha | Data source identifier | — | — |
-| WMO | Alpha | World Meteorological Organization number (typically 6 digits) | — | Used for design-condition matching |
-| Latitude | Real | Geographic latitude | degrees | −90.0 … +90.0; + is North, − is South |
-| Longitude | Real | Geographic longitude | degrees | −180.0 … +180.0; − is West, + is East |
-| Time Zone | Real | Offset from GMT | hours | −12.0 … +12.0 |
-| Elevation | Real | Station elevation | meters | −1000.0 … +9999.9 |
+| City | Alpha | Location city name | -- | -- |
+| State/Province/Region | Alpha | State, province, or region | -- | -- |
+| Country | Alpha | Country name | -- | -- |
+| Source | Alpha | Data source identifier | -- | -- |
+| WMO | Alpha | World Meteorological Organization number (typically 6 digits) | -- | Used for design-condition matching |
+| Latitude | Real | Geographic latitude | degrees | -90.0 ... +90.0; + is North, - is South |
+| Longitude | Real | Geographic longitude | degrees | -180.0 ... +180.0; - is West, + is East |
+| Time Zone | Real | Offset from GMT | hours | -12.0 ... +12.0 |
+| Elevation | Real | Station elevation | meters | -1000.0 ... +9999.9 |
 
 *Location-header values override any Location object in the input file when a RunPeriod is used.*
 
@@ -78,10 +78,10 @@ Heuristically identified typical and extreme weather periods within the annual d
 
 **Date-format options** (used by several header records):
 
-- `<number>` — Julian day of year
-- `<number>/<number>` — Month/Day
-- `<number> Month` — Day and Month (e.g. "15 January")
-- `Month <number>` — Month and Day (e.g. "January 15")
+- `<number>` -- Julian day of year
+- `<number>/<number>` -- Month/Day
+- `<number> Month` -- Day and Month (e.g. "15 January")
+- `Month <number>` -- Month and Day (e.g. "January 15")
 - First 3 letters of month/weekday names are acceptable abbreviations.
 
 ### GROUND TEMPERATURES
@@ -91,15 +91,15 @@ Calculated by WeatherConverter from the annual weather data.
 
 | Field | Type | Units | Description |
 |---|---|---|---|
-| Number of Ground Temperature Depths | Numeric | — | Count of depth levels |
+| Number of Ground Temperature Depths | Numeric | -- | Count of depth levels |
 | Ground Temperature Depth *N* | Numeric | m | Depth of soil-temperature measurement |
-| Depth *N* Soil Conductivity | Numeric | W/m·K | Thermal conductivity |
-| Depth *N* Soil Density | Numeric | kg/m³ | Mass density |
-| Depth *N* Soil Specific Heat | Numeric | J/kg·K | Heat capacity |
-| Depth *N* Jan–Dec Average Temps | Numeric (×12) | °C | Monthly ground temperatures |
+| Depth *N* Soil Conductivity | Numeric | W/m-K | Thermal conductivity |
+| Depth *N* Soil Density | Numeric | kg/m3 | Mass density |
+| Depth *N* Soil Specific Heat | Numeric | J/kg-K | Heat capacity |
+| Depth *N* Jan-Dec Average Temps | Numeric (x12) | degC | Monthly ground temperatures |
 
 *"Undisturbed" temperatures are reference-only and too extreme for building-loss
-calculations; use the Slab/Basement preprocessors, or ~2 °C below average indoor space
+calculations; use the Slab/Basement preprocessors, or ~2 degC below average indoor space
 temperature for typical US commercial buildings.*
 
 ### HOLIDAYS/DAYLIGHT SAVINGS
@@ -125,94 +125,94 @@ Describes the structure and coverage of the hourly data blocks.
 
 | Field | Type | Description | Notes |
 |---|---|---|---|
-| Number of Data Periods | Numeric | Count of distinct data blocks | — |
+| Number of Data Periods | Numeric | Count of distinct data blocks | -- |
 | Number of Records per Hour | Numeric | Time steps per hour | Must match the RunPeriod setting |
-| Data Period *N* Name/Description | Alpha | Period label | — |
-| Data Period *N* Start Day of Week | Choice | Day of week of the first record | Sunday … Saturday |
-| Data Period *N* Start Day | Alpha | Period start date (date format) | — |
-| Data Period *N* End Day | Alpha | Period end date (date format) | — |
+| Data Period *N* Name/Description | Alpha | Period label | -- |
+| Data Period *N* Start Day of Week | Choice | Day of week of the first record | Sunday ... Saturday |
+| Data Period *N* Start Day | Alpha | Period start date (date format) | -- |
+| Data Period *N* End Day | Alpha | Period end date (date format) | -- |
 
 *RunPeriod objects cannot cross DataPeriod boundaries; multiple records per hour must match the simulation timestep.*
 
 ---
 
-## Weather Data — Hourly Records
+## Weather Data -- Hourly Records
 
-Each data line is comma-separated: 34 numeric fields (N1–N34) plus the data-source /
+Each data line is comma-separated: 34 numeric fields (N1-N34) plus the data-source /
 uncertainty flag string (A1). Field order below is authoritative.
 
-### Timestamp fields (N1–N5) and flags (A1)
+### Timestamp fields (N1-N5) and flags (A1)
 
 | # | Field | Units | Range | Missing | Notes |
 |---|---|---|---|---|---|
-| N1 | Year | — | — | — | Display only; not used by EnergyPlus |
-| N2 | Month | — | 1–12 | Cannot be missing | — |
-| N3 | Day | — | 1–31 | Cannot be missing | — |
-| N4 | Hour | — | 1–24 | Cannot be missing | Hour 1 = 00:01–01:00 |
-| N5 | Minute | — | 1–60 | — | — |
-| A1 | Data Source and Uncertainty Flags | — | — | — | Consolidated source/uncertainty indicators from the original data format |
+| N1 | Year | -- | -- | -- | Display only; not used by EnergyPlus |
+| N2 | Month | -- | 1-12 | Cannot be missing | -- |
+| N3 | Day | -- | 1-31 | Cannot be missing | -- |
+| N4 | Hour | -- | 1-24 | Cannot be missing | Hour 1 = 00:01-01:00 |
+| N5 | Minute | -- | 1-60 | -- | -- |
+| A1 | Data Source and Uncertainty Flags | -- | -- | -- | Consolidated source/uncertainty indicators from the original data format |
 
-### Temperature & moisture (N6–N9)
+### Temperature & moisture (N6-N9)
 
 | # | Field | Units | Min | Max | Missing | Notes |
 |---|---|---|---|---|---|---|
-| N6 | Dry Bulb Temperature | °C | >−70 | <70 | 99.9 | Full precision (e.g. 23.6) |
-| N7 | Dew Point Temperature | °C | >−70 | <70 | 99.9 | Full precision |
-| N8 | Relative Humidity | % | 0 | 110 | 999 | — |
+| N6 | Dry Bulb Temperature | degC | >-70 | <70 | 99.9 | Full precision (e.g. 23.6) |
+| N7 | Dew Point Temperature | degC | >-70 | <70 | 99.9 | Full precision |
+| N8 | Relative Humidity | % | 0 | 110 | 999 | -- |
 | N9 | Atmospheric Station Pressure | Pa | >31000 | <120000 | 999999 | Barometric pressure |
 
-### Radiation (N10–N15)
+### Radiation (N10-N15)
 
 | # | Field | Units | Min | Missing | Notes |
 |---|---|---|---|---|---|
-| N10 | Extraterrestrial Horizontal Radiation | Wh/m² | 0 | 9999 | Not currently used by EnergyPlus |
-| N11 | Extraterrestrial Direct Normal Radiation | Wh/m² | 0 | 9999 | Not currently used |
-| N12 | Horizontal Infrared Radiation Intensity | Wh/m² | 0 | 9999 | Calculated from opaque sky cover if missing (see below) |
-| N13 | Global Horizontal Radiation | Wh/m² | 0 | 9999 | Direct + diffuse on a horizontal surface |
-| N14 | Direct Normal Radiation | Wh/m² | 0 | 9999 | Missing or <0 values set to 0 |
-| N15 | Diffuse Horizontal Radiation | Wh/m² | 0 | 9999 | Missing or <0 values set to 0 |
+| N10 | Extraterrestrial Horizontal Radiation | Wh/m2 | 0 | 9999 | Not currently used by EnergyPlus |
+| N11 | Extraterrestrial Direct Normal Radiation | Wh/m2 | 0 | 9999 | Not currently used |
+| N12 | Horizontal Infrared Radiation Intensity | Wh/m2 | 0 | 9999 | Calculated from opaque sky cover if missing (see below) |
+| N13 | Global Horizontal Radiation | Wh/m2 | 0 | 9999 | Direct + diffuse on a horizontal surface |
+| N14 | Direct Normal Radiation | Wh/m2 | 0 | 9999 | Missing or <0 values set to 0 |
+| N15 | Diffuse Horizontal Radiation | Wh/m2 | 0 | 9999 | Missing or <0 values set to 0 |
 
-**Horizontal IR, if missing** — computed as `HorizontalIR = ε_sky · σ · T_drybulb⁴`, with
-σ = 5.6697 × 10⁻⁸ W/m²·K⁴ (Stefan–Boltzmann) and
-`ε_sky = (0.787 + 0.764·ln(T_dewpoint/273.0)) · (1 + 0.0224N − 0.0035N² + 0.00028N³)`,
+**Horizontal IR, if missing** -- computed as `HorizontalIR = eps_sky * sigma * T_drybulb^4`, with
+sigma = 5.6697e-8 W/m2-K4 (Stefan-Boltzmann) and
+`eps_sky = (0.787 + 0.764*ln(T_dewpoint/273.0)) * (1 + 0.0224N - 0.0035N^2 + 0.00028N^3)`,
 where `T_dewpoint` is in K and `N` is opaque sky cover in tenths.
 
-### Illuminance & luminance (N16–N19)
+### Illuminance & luminance (N16-N19)
 
 | # | Field | Units | Min | Missing | Notes |
 |---|---|---|---|---|---|
-| N16 | Global Horizontal Illuminance | lux | 0 | 999999 | Not currently used; **missing if ≥ 999900** |
-| N17 | Direct Normal Illuminance | lux | 0 | 999999 | Not currently used; **missing if ≥ 999900** |
-| N18 | Diffuse Horizontal Illuminance | lux | 0 | 999999 | Not currently used; **missing if ≥ 999900** |
-| N19 | Zenith Luminance | Cd/m² | 0 | 9999 | Not currently used; missing if ≥ 9999 |
+| N16 | Global Horizontal Illuminance | lux | 0 | 999999 | Not currently used; **missing if >= 999900** |
+| N17 | Direct Normal Illuminance | lux | 0 | 999999 | Not currently used; **missing if >= 999900** |
+| N18 | Diffuse Horizontal Illuminance | lux | 0 | 999999 | Not currently used; **missing if >= 999900** |
+| N19 | Zenith Luminance | Cd/m2 | 0 | 9999 | Not currently used; missing if >= 9999 |
 
-### Wind (N20–N21)
+### Wind (N20-N21)
 
 | # | Field | Units | Min | Max | Missing | Notes |
 |---|---|---|---|---|---|---|
-| N20 | Wind Direction | degrees | 0 | 360 | 999 | N=0°, E=90°, S=180°, W=270°; 0 if calm |
-| N21 | Wind Speed | m/s | 0 | 40 | 999 | — |
+| N20 | Wind Direction | degrees | 0 | 360 | 999 | N=0deg, E=90deg, S=180deg, W=270deg; 0 if calm |
+| N21 | Wind Speed | m/s | 0 | 40 | 999 | -- |
 
-### Sky cover (N22–N23)
+### Sky cover (N22-N23)
 
 | # | Field | Units | Min | Max | Missing | Notes |
 |---|---|---|---|---|---|---|
 | N22 | Total Sky Cover | tenths | 0 | 10 | 99 | 1 = 1/10 covered, 10 = fully covered |
 | N23 | Opaque Sky Cover | tenths | 0 | 10 | 99 | Used to calculate IR intensity if N12 missing |
 
-### Visibility & ceiling (N24–N25)
+### Visibility & ceiling (N24-N25)
 
 | # | Field | Units | Missing | Notes |
 |---|---|---|---|---|
 | N24 | Visibility | km | 9999 | Not currently used |
 | N25 | Ceiling Height | m | 99999 | 77777 = unlimited; 88888 = cirroform; not used |
 
-### Present weather (N26–N27)
+### Present weather (N26-N27)
 
 | # | Field | Format | Values | Notes |
 |---|---|---|---|---|
 | N26 | Present Weather Observation | single digit | 0 = observed; 9 = missing | Indicates whether the weather codes are present |
-| N27 | Present Weather Codes | 9 single digits | 0–9 per position | TMY2 convention; see table below |
+| N27 | Present Weather Codes | 9 single digits | 0-9 per position | TMY2 convention; see table below |
 
 **Present-weather codes (9-position field):**
 
@@ -230,14 +230,14 @@ where `T_dewpoint` is in K and `N` is opaque sky cover in tenths.
 
 *Example: codes "929999999" with observation 0 indicate heavy rain during the period.*
 
-### Atmospheric & precipitation tracers (N28–N34)
+### Atmospheric & precipitation tracers (N28-N34)
 
 | # | Field | Units | Missing | Notes |
 |---|---|---|---|---|
 | N28 | Precipitable Water | mm | 999 | Not current usage; reporting unreliable |
 | N29 | Aerosol Optical Depth | thousandths | 0.999 | Not currently used |
 | N30 | Snow Depth | cm | 999 | Indicates snow on ground; affects surface reflectance |
-| N31 | Days Since Last Snowfall | — | 99 | Not currently used |
+| N31 | Days Since Last Snowfall | -- | 99 | Not currently used |
 | N32 | Albedo | unitless | 999 | Ratio of reflected to global solar; not used |
 | N33 | Liquid Precipitation Depth | mm | 999 | Overrides weather codes if present; set to 1.5 if codes show rain but this is missing |
 | N34 | Liquid Precipitation Quantity | hours | 99 | Accumulation period; not currently used |
@@ -247,4 +247,4 @@ where `T_dewpoint` is in K and `N` is opaque sky cover in tenths.
 ## References
 
 - Walton, G. N. 1983. *Thermal Analysis Research Program Reference Manual.* NBSSIR 83-2655. National Bureau of Standards.
-- Clark, G. and C. Allen. 1978. "The Estimation of Atmospheric Radiation for Clear and Cloudy Skies." *Proceedings 2nd National Passive Solar Conference (AS/ISES)*, 675–678.
+- Clark, G. and C. Allen. 1978. "The Estimation of Atmospheric Radiation for Clear and Cloudy Skies." *Proceedings 2nd National Passive Solar Conference (AS/ISES)*, 675-678.

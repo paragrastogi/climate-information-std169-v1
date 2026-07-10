@@ -333,7 +333,7 @@ ClimateSummaryData:
       Constraints:
       - display_name="Dry-bulb temperature"
       - units="K"
-      - values.Constraints=">0"
+      # - values.Constraints=">0"
       # For all numerical values below, this constraint must apply. What is the syntax for such an instruction?
       # Enumerating every instance/statistics is potentially redundant and too verbose, since the same could be achieved by taking a "join" of the constraints on the individual statistical elements. E.g., all statistics for dry-bulb temperature should have the unit "K" and values ">0", *unless* otherwise defined for a specific statistic, e.g., return period or variance.
       # - annual.mean.Constraints=">0"
@@ -348,35 +348,35 @@ ClimateSummaryData:
       Constraints:
       - display_name="Dew-point temperature"
       - units="K"
-      - values.Constraints=">0"
+      # - values.Constraints=">0"
       Description: Dew-point temperature
     relative_humidity:
       Type: Group(SummaryData)
       Constraints:
       - display_name="Relative humidity"
       - units="-"
-      - values.Constraints=">=0, <=1"
+      # - values.Constraints=">=0, <=1"
       Description: Relative humidity
     dry_bulb_temperature_coincident_mean_wet_bulb_temperature:
       Type: Group(SummaryData)
       Constraints:
       - display_name="Dry-bulb temperature coincident with mean wet-bulb temperature"
       - units="K"
-      - values.Constraints=">0"
+      # - values.Constraints=">0"
       Description: Dry-bulb temperature coincident with mean wet-bulb temperature
     dry_bulb_temperature_coincident_mean_wind_speed:
       Type: Group(SummaryData)
       Constraints:
       - display_name="MCWS/DB"
       - units="K"
-      - values.Constraints=">0"
+      # - values.Constraints=">0"
       Description: Mean wind speed coincident with given dry-bulb temperature statistic
     daily_average_dry_bulb_temperature:
       Type: Group(SummaryData)
       Constraints:
       - display_name="Daily average dry-bulb temperature"
       - units="K"
-      - values.Constraints=">0"
+      # - values.Constraints=">0"
       Description: Daily average dry-bulb temperature
       Notes: This is the sum of the daily minimum and maximum temperatures divided by 2. Generally used to estimate monthly degree days.
     liquid_precipitation_depth:
@@ -384,30 +384,29 @@ ClimateSummaryData:
       Constraints:
       - display_name="Liquid precipitation depth"
       - units="m"
-      - values.Constraints=">=0"
+      # - values.Constraints=">=0"
       Description: Liquid precipitation depth
       Notes: The cumulative depth of precipitation in the past time step.
     heating_degree_days:
       Type: Array(Group(DegreeDays))
       Constraints:
       - units="K-day"
-      - values.Constraints=">=0"
+      # - values.Constraints=">=0"
       Description: Heating degree days
       Notes: Array of heating degree days defined by a base temperature. The cumulative number of degrees that a day's average temperature is below a base temperature, typically used for estimating heating energy requirements.
     cooling_degree_days:
       Type: Array(Group(DegreeDays))
       Constraints:
       - units="K-day"
-      - values.Constraints=">=0"
+      # - values.Constraints=">=0"
       Description: Cooling degree days
       Notes: Array of cooling degree days defined by a base temperature. The cumulative number of degrees that a day's average temperature is above a base temperature, typically used for estimating cooling energy requirements.
-    # --- Variables added from the ASHRAE Handbook - Fundamentals 2025 design conditions (see implementation_notes) ---
     wet_bulb_temperature:
       Type: Group(SummaryData)
       Constraints:
       - display_name="Wet-bulb temperature"
       - units="K"
-      - values.Constraints=">0"
+      # - values.Constraints=">0"
       Description: Wet-bulb temperature
       Notes: "Covers the ASHRAE annual and monthly design wet-bulb conditions (Evaporation WB), the extreme maximum wet-bulb (annual.maximum), and the extreme annual mean/standard deviation of the minimum/maximum wet-bulb."
     wind_speed:
@@ -415,7 +414,7 @@ ClimateSummaryData:
       Constraints:
       - display_name="Wind speed"
       - units="m/s"
-      - values.Constraints=">=0"
+      # - values.Constraints=">=0"
       Description: Wind speed
       Notes: "Wind speed at the anemometer height (typically 10 m). Covers the ASHRAE average annual/monthly wind speed (mean) and the extreme annual wind speed (percent_exceedance at 1/2.5/5%)."
     enthalpy:
@@ -423,7 +422,7 @@ ClimateSummaryData:
       Constraints:
       - display_name="Enthalpy"
       - units="J/kg"
-      - values.Constraints=">=0"
+      # - values.Constraints=">=0"
       Description: Moist-air specific enthalpy
       Notes: "Derivable from dry-bulb temperature, humidity, and station pressure; included for convenience to support the ASHRAE annual enthalpy design conditions (percent_exceedance at 0.4/1/2%)."
     dew_point_temperature_coincident_mean_dry_bulb_temperature:
@@ -431,7 +430,7 @@ ClimateSummaryData:
       Constraints:
       - display_name="Dry-bulb temperature coincident with dew-point temperature"
       - units="K"
-      - values.Constraints=">0"
+      # - values.Constraints=">0"
       Description: Mean dry-bulb temperature coincident with a given dew-point temperature statistic
       Notes: "ASHRAE humidification (99.0/99.6%) and dehumidification (0.4/1/2%) MCDB. The percent_time_exceeded grid refers to the percentile of the dew-point temperature."
     wet_bulb_temperature_coincident_mean_dry_bulb_temperature:
@@ -439,7 +438,7 @@ ClimateSummaryData:
       Constraints:
       - display_name="Dry-bulb temperature coincident with wet-bulb temperature"
       - units="K"
-      - values.Constraints=">0"
+      # - values.Constraints=">0"
       Description: Mean dry-bulb temperature coincident with a given wet-bulb temperature statistic
       Notes: "ASHRAE evaporation (Evaporation WB/MCDB) and monthly design wet-bulb MCDB. The percent_time_exceeded grid refers to the percentile of the wet-bulb temperature."
     dry_bulb_temperature_coincident_prevailing_wind_direction:
@@ -447,7 +446,7 @@ ClimateSummaryData:
       Constraints:
       - display_name="Prevailing wind direction coincident with dry-bulb temperature"
       - units="radians"
-      - values.Constraints=">=0, <=6.283185307179586"
+      # - values.Constraints=">=0, <=6.283185307179586"
       Description: Prevailing (most frequent) wind direction coincident with a given dry-bulb temperature statistic
       Notes: "ASHRAE PCWD to the 99.6% (heating) and 0.4% (cooling) design dry-bulb temperatures. Clockwise from north."
     enthalpy_coincident_mean_dry_bulb_temperature:
@@ -455,7 +454,7 @@ ClimateSummaryData:
       Constraints:
       - display_name="Dry-bulb temperature coincident with enthalpy"
       - units="K"
-      - values.Constraints=">0"
+      # - values.Constraints=">0"
       Description: Mean dry-bulb temperature coincident with a given enthalpy statistic
       Notes: "ASHRAE enthalpy MCDB at the 0.4/1/2% annual enthalpy design conditions."
     wind_speed_coincident_mean_dry_bulb_temperature:
@@ -463,7 +462,7 @@ ClimateSummaryData:
       Constraints:
       - display_name="Dry-bulb temperature coincident with wind speed"
       - units="K"
-      - values.Constraints=">0"
+      # - values.Constraints=">0"
       Description: Mean dry-bulb temperature coincident with a given wind-speed statistic
       Notes: "ASHRAE coldest-month wind speed MCDB at the 0.4/1% design wind speeds."
     clear_sky_beam_optical_depth:
@@ -471,7 +470,7 @@ ClimateSummaryData:
       Constraints:
       - display_name="Clear-sky beam (pseudo-)optical depth"
       - units="-"
-      - values.Constraints=">=0"
+      # - values.Constraints=">=0"
       Description: Clear-sky beam pseudo-optical depth (taub)
       Notes: "Monthly ASHRAE clear-sky beam optical depth (taub) for the 21st day of each month, used with the ASHRAE clear-sky solar model (Chapter 14). The clear-sky noon beam/diffuse irradiances derived from taub/taud are intentionally excluded (derivable)."
     clear_sky_diffuse_optical_depth:
@@ -479,7 +478,7 @@ ClimateSummaryData:
       Constraints:
       - display_name="Clear-sky diffuse (pseudo-)optical depth"
       - units="-"
-      - values.Constraints=">=0"
+      # - values.Constraints=">=0"
       Description: Clear-sky diffuse pseudo-optical depth (taud)
       Notes: "Monthly ASHRAE clear-sky diffuse optical depth (taud) for the 21st day of each month."
     daily_all_sky_solar_irradiation:
@@ -487,7 +486,7 @@ ClimateSummaryData:
       Constraints:
       - display_name="Daily all-sky global horizontal solar irradiation"
       - units="J/m2"
-      - values.Constraints=">=0"
+      # - values.Constraints=">=0"
       Description: Average daily all-sky global horizontal solar irradiation
       Notes: "ASHRAE all-sky average monthly global horizontal radiation (mean) and its standard deviation, expressed as energy per unit area per day."
     daily_dry_bulb_temperature_range:
@@ -495,7 +494,7 @@ ClimateSummaryData:
       Constraints:
       - display_name="Mean daily dry-bulb temperature range"
       - units="K"
-      - values.Constraints=">=0"
+      # - values.Constraints=">=0"
       Description: Mean daily dry-bulb temperature range
       Notes: "ASHRAE mean daily dry-bulb temperature range by month. This is a temperature difference, so its numeric value is identical in kelvin and degrees Celsius. The Hottest Month DB Range equals this variable in the hottest month and is therefore not stored separately."
     daily_dry_bulb_temperature_range_at_design_dry_bulb_temperature:
@@ -503,7 +502,7 @@ ClimateSummaryData:
       Constraints:
       - display_name="Mean daily dry-bulb temperature range at the design dry-bulb temperature"
       - units="K"
-      - values.Constraints=">=0"
+      # - values.Constraints=">=0"
       Description: Mean daily dry-bulb temperature range coincident with the 5% monthly design dry-bulb temperature
       Notes: "ASHRAE mean daily dry-bulb range coincident with the 5% design dry-bulb temperature, by month."
     daily_wet_bulb_temperature_range_at_design_dry_bulb_temperature:
@@ -511,7 +510,7 @@ ClimateSummaryData:
       Constraints:
       - display_name="Mean daily wet-bulb temperature range at the design dry-bulb temperature"
       - units="K"
-      - values.Constraints=">=0"
+      # - values.Constraints=">=0"
       Description: Mean daily wet-bulb temperature range coincident with the 5% monthly design dry-bulb temperature
       Notes: "ASHRAE mean daily wet-bulb range coincident with the 5% design dry-bulb temperature, by month."
     daily_dry_bulb_temperature_range_at_design_wet_bulb_temperature:
@@ -519,7 +518,7 @@ ClimateSummaryData:
       Constraints:
       - display_name="Mean daily dry-bulb temperature range at the design wet-bulb temperature"
       - units="K"
-      - values.Constraints=">=0"
+      # - values.Constraints=">=0"
       Description: Mean daily dry-bulb temperature range coincident with the 5% monthly design wet-bulb temperature
       Notes: "ASHRAE mean daily dry-bulb range coincident with the 5% design wet-bulb temperature, by month."
     daily_wet_bulb_temperature_range_at_design_wet_bulb_temperature:
@@ -527,7 +526,7 @@ ClimateSummaryData:
       Constraints:
       - display_name="Mean daily wet-bulb temperature range at the design wet-bulb temperature"
       - units="K"
-      - values.Constraints=">=0"
+      # - values.Constraints=">=0"
       Description: Mean daily wet-bulb temperature range coincident with the 5% monthly design wet-bulb temperature
       Notes: "ASHRAE mean daily wet-bulb range coincident with the 5% design wet-bulb temperature, by month."
     coldest_month:
@@ -964,7 +963,9 @@ SummaryData:
       Type: "Array(Group(Statistics))"
       Constraints: "[12]"
       Description: "Monthly summary data element"
-    notes: String
+    notes:
+      Type: String
+      Description: "Notes about this summary data element"
 
 
 Statistics:
