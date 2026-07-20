@@ -419,7 +419,7 @@ wheels = [
 [[package]]
 name = "lattice"
 version = "0.0.0"
-source = { git = "https://github.com/bigladder/lattice.git?branch=nested-attribute-constraints#3041824fc61a904ced7dd846527cd1eef6b8174f" }
+source = { git = "https://github.com/bigladder/lattice.git?branch=nested-attribute-constraints#5571b8a209ed34f2eac89ebf5123966a5a342fe6" }
 dependencies = [
     { name = "atheneum-forge" },
     { name = "casefy" },
