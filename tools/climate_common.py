@@ -16,9 +16,87 @@ Unit conventions (see docs/implementation_and_application_notes.md section 2):
 """
 
 import math
+import re
+import uuid
 import zipfile
 from pathlib import Path
 from typing import Optional
+
+# --------------------------------------------------------------------------- #
+# Document metadata (lattice-core ``Metadata`` data group)
+# --------------------------------------------------------------------------- #
+
+# Fixed provenance strings shared by every generated document.
+SCHEMA_AUTHOR = "IBPSA_BDE"
+SCHEMA_NAME = "CLIMATE_INFORMATION"
+AUTHOR = "IBPSA USA BDE Climate Working Group"
+COPYRIGHT = "Copyright (c) 2026 IBPSA USA. All rights reserved."
+LICENSE = (
+    "Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0)"
+)
+
+# ``time_of_creation`` is a *constant*, not ``datetime.now()``: the generated examples
+# under examples/generated/ are committed to the repository, so a wall-clock timestamp
+# would make every regeneration dirty them. Bump this deliberately when regenerating.
+TIME_OF_CREATION = "2026-07-19T12:00Z"
+
+# ``version`` tracks revisions of the *data* (semver). The generated examples are the
+# first published revision of each converted document.
+DATA_VERSION = "1.0.0"
+
+# Namespace for deterministic document ids, derived once from the project URL. Document
+# ids are UUID5 (name-based) rather than UUID4 so that regenerating an example yields
+# the same id instead of a spurious diff.
+_ID_NAMESPACE = uuid.uuid5(
+    uuid.NAMESPACE_URL, "https://github.com/IBPSA-USA/climate-information"
+)
+
+_SCHEMA_PATH = Path(__file__).resolve().parents[1] / "schema/ClimateInformation.schema.yaml"
+
+
+def make_document_id(key: str) -> str:
+    """Deterministic ``Metadata.id`` (UUID5) for a document identified by ``key``.
+
+    ``key`` must be stable for a given artifact -- the document ``description`` is used
+    by the converters, since it names both the station and the source format.
+    """
+    return str(uuid.uuid5(_ID_NAMESPACE, key))
+
+
+def schema_version() -> str:
+    """Read ``Schema.Version`` out of the schema YAML so metadata cannot drift from it."""
+    text = _SCHEMA_PATH.read_text(encoding="utf-8")
+    match = re.search(r'^\s+Version:\s*"([^"]+)"', text, flags=re.MULTILINE)
+    if match is None:
+        raise ValueError(f"no Schema Version found in {_SCHEMA_PATH}")
+    return match.group(1)
+
+
+def as_timestamp(date: str, time_of_day: str = "00:00") -> str:
+    """Format a lattice ``Timestamp``: ``YYYY-MM-DDThh:mmZ`` (UTC, minute precision).
+
+    The core schema pattern is ``^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}Z$``, so a
+    date alone and a seconds-bearing timestamp are both invalid.
+    """
+    return f"{date}T{time_of_day}Z"
+
+
+def build_metadata(description: str, source: str) -> dict:
+    """Build the lattice-core ``Metadata`` group for a generated document."""
+    return {
+        "schema_author": SCHEMA_AUTHOR,
+        "schema_name": SCHEMA_NAME,
+        "schema_version": schema_version(),
+        "author": AUTHOR,
+        "id": make_document_id(description),
+        "description": description,
+        "time_of_creation": TIME_OF_CREATION,
+        "version": DATA_VERSION,
+        "source": source,
+        "copyright": COPYRIGHT,
+        "license": LICENSE,
+    }
+
 
 # --------------------------------------------------------------------------- #
 # Unit conversions
@@ -329,16 +407,23 @@ def build_summary_data(cols: dict, source_data_period_id: str) -> dict:
             raw = _get(cols, column)
             if raw is not None:
                 annual[stat] = conv(raw)
+        # `Statistics.statistic_type` is required whenever `percent_exceedance` is
+        # present, and selects which alternative the block uses: SINGLE_VALUE for the
+        # plain grid/lookup form, COINCIDENT_VALUES for the form that also carries
+        # `coincident_values`. It matches the schema's per-variable
+        # `(annual|monthly).statistic_type=...` constraints.
         exc_spec = pieces.get("exceedance")
         if exc_spec is not None:
             exc = _build_exceedance(cols, exc_spec[0], exc_spec[1])
             if exc is not None:
                 annual["percent_exceedance"] = exc
+                annual["statistic_type"] = "SINGLE_VALUE"
         coinc_spec = pieces.get("coincident_exceedance")
         if coinc_spec is not None:
             exc = _build_coincident_exceedance(cols, *coinc_spec)
             if exc is not None:
                 annual["percent_exceedance"] = exc
+                annual["statistic_type"] = "COINCIDENT_VALUES"
         if not annual:
             continue
         summary[name] = {
