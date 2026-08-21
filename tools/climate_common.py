@@ -7,7 +7,7 @@ spreadsheet test fixture all speak the same language. ``build_summary_data`` tur
 a ``{column_letter: value}`` dict (values in the spreadsheet's degC / kJ/kg / deg /
 m/s units) into a schema-shaped ``ClimateSummaryData`` group in *base SI* units.
 
-Unit conventions (see docs/implementation_and_application_notes.md section 2):
+Unit conventions (see the "Units" section of the ClimateInformation specification):
   * absolute temperature  degC -> K          (+ 273.15)
   * temperature range/std degC -> K          (identical value, it is a difference)
   * enthalpy              kJ/kg -> J/kg       (x 1000)
