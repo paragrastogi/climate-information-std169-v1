@@ -45,7 +45,7 @@
           "ashrae_grade": "A"
         }
       ],
-      "notes": "Annual design conditions parsed from the DDY SizingPeriod:DesignDay objects and header comments, converted to base SI units. The DDY does not carry the extreme-max wet-bulb or the standard deviations of the extreme-annual values.",
+      "notes": "Annual design conditions parsed from the DDY SizingPeriod:DesignDay objects and header comments, converted to base SI units. The DDY does not carry the extreme-max wet-bulb or the standard deviations of the extreme-annual values. The daily ranges and clear-sky optical depths are populated only for the design months the design days state.",
       "summary_data": {
         "dry_bulb_temperature": {
           "display_name": "Dry-bulb temperature",
@@ -392,7 +392,161 @@
           }
         },
         "coldest_month": 1,
-        "hottest_month": 7
+        "hottest_month": 7,
+        "daily_dry_bulb_temperature_range": {
+          "display_name": "Mean daily dry-bulb temperature range",
+          "units": "K",
+          "source_data_period": "ASHRAE Handbook - Fundamentals 2025 design conditions",
+          "source_data_type": "MEASURED",
+          "monthly": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {
+              "mean": 9.5
+            },
+            {},
+            {},
+            {},
+            {},
+            {}
+          ]
+        },
+        "daily_dry_bulb_temperature_range_at_design_dry_bulb_temperature": {
+          "display_name": "Mean daily dry-bulb temperature range at the design dry-bulb temperature",
+          "units": "K",
+          "source_data_period": "ASHRAE Handbook - Fundamentals 2025 design conditions",
+          "source_data_type": "MEASURED",
+          "monthly": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {
+              "mean": 10.9
+            },
+            {},
+            {},
+            {},
+            {},
+            {}
+          ]
+        },
+        "daily_wet_bulb_temperature_range_at_design_dry_bulb_temperature": {
+          "display_name": "Mean daily wet-bulb temperature range at the design dry-bulb temperature",
+          "units": "K",
+          "source_data_period": "ASHRAE Handbook - Fundamentals 2025 design conditions",
+          "source_data_type": "MEASURED",
+          "monthly": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {
+              "mean": 4.6
+            },
+            {},
+            {},
+            {},
+            {},
+            {}
+          ]
+        },
+        "daily_dry_bulb_temperature_range_at_design_wet_bulb_temperature": {
+          "display_name": "Mean daily dry-bulb temperature range at the design wet-bulb temperature",
+          "units": "K",
+          "source_data_period": "ASHRAE Handbook - Fundamentals 2025 design conditions",
+          "source_data_type": "MEASURED",
+          "monthly": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {
+              "mean": 9.9
+            },
+            {},
+            {},
+            {},
+            {},
+            {}
+          ]
+        },
+        "daily_wet_bulb_temperature_range_at_design_wet_bulb_temperature": {
+          "display_name": "Mean daily wet-bulb temperature range at the design wet-bulb temperature",
+          "units": "K",
+          "source_data_period": "ASHRAE Handbook - Fundamentals 2025 design conditions",
+          "source_data_type": "MEASURED",
+          "monthly": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {
+              "mean": 5.0
+            },
+            {},
+            {},
+            {},
+            {},
+            {}
+          ]
+        },
+        "clear_sky_beam_optical_depth": {
+          "display_name": "Clear-sky beam (pseudo-)optical depth",
+          "units": "-",
+          "source_data_period": "ASHRAE Handbook - Fundamentals 2025 design conditions",
+          "source_data_type": "MEASURED",
+          "monthly": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {
+              "mean": 0.443
+            },
+            {},
+            {},
+            {},
+            {},
+            {}
+          ]
+        },
+        "clear_sky_diffuse_optical_depth": {
+          "display_name": "Clear-sky diffuse (pseudo-)optical depth",
+          "units": "-",
+          "source_data_period": "ASHRAE Handbook - Fundamentals 2025 design conditions",
+          "source_data_type": "MEASURED",
+          "monthly": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {
+              "mean": 2.236
+            },
+            {},
+            {},
+            {},
+            {},
+            {}
+          ]
+        }
       }
     }
   ]

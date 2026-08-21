@@ -37,8 +37,11 @@ REPO_ROOT = os.environ.get("REPO_ROOT") or str(Path(__file__).resolve().parents[
 sys.path.insert(0, REPO_ROOT)
 
 from tools.climate_common import (
+    DESIGN_DAY_RANGE_VARS,
+    OPTICAL_DEPTH_VARS,
     as_timestamp,
     build_metadata,
+    build_monthly_summary_data,
     build_summary_data,
     resolve_weather_inputs,
 )
@@ -106,12 +109,43 @@ def parse_idf_objects(text: str) -> list[list[str]]:
     return objects
 
 
+# SizingPeriod:DesignDay field indices (0 is the object type).
+_F_NAME = 1
+_F_MONTH = 2
+_F_MAX_DRY_BULB = 5
+_F_DAILY_DRY_BULB_RANGE = 6
+_F_HUMIDITY_VALUE = 10
+_F_ENTHALPY = 13
+_F_DAILY_WET_BULB_RANGE = 14
+_F_WIND_SPEED = 16
+_F_TAUB = 24
+_F_TAUD = 25
+
+_ANNUAL_DAY_RE = re.compile(r"Ann (?:Htg Wind|Htg|Clg|Hum_n)\s+([\d.]+)%\s+Condns\s+(\S+)")
+
+
+def _field(obj: list, index: int) -> str:
+    """One field of an IDF object, or '' when the object is shorter than that."""
+    return obj[index].strip() if len(obj) > index else ""
+
+
+def _annual_day_parts(name: str) -> Optional[tuple]:
+    """``(percentile, suffix)`` for an annual design-day name, else None.
+
+    Monthly design days (``... January .4% Condns DB=>MCWB``) do not match, so they are
+    skipped throughout: their design values live in ASHRAE columns HZ-PI, which neither
+    converter handles yet.
+    """
+    m = _ANNUAL_DAY_RE.search(name)
+    return (m.group(1), m.group(2)) if m else None
+
+
 def _design_day_columns(name: str) -> Optional[dict]:
     """Return ``{role: column}`` for one design-day name, or None if not annual."""
-    m = re.search(r"Ann (?:Htg Wind|Htg|Clg|Hum_n)\s+([\d.]+)%\s+Condns\s+(\S+)", name)
-    if not m:
+    parts = _annual_day_parts(name)
+    if parts is None:
         return None
-    pct, suffix = m.group(1), m.group(2)
+    pct, suffix = parts
     table = _SUFFIX_DISPATCH.get(suffix)
     if table is None or pct not in table:
         return None
@@ -132,9 +166,9 @@ def ddy_design_columns(text: str) -> dict:
         roles = _design_day_columns(name)
         if roles is None:
             continue
-        maxdb = obj[5].strip()
-        humval = obj[10].strip() if len(obj) > 10 else ""
-        windspeed = obj[16].strip() if len(obj) > 16 else ""
+        maxdb = _field(obj, _F_MAX_DRY_BULB)
+        humval = _field(obj, _F_HUMIDITY_VALUE)
+        windspeed = _field(obj, _F_WIND_SPEED)
         if maxdb:
             cols[roles["maxdb"]] = float(maxdb)
         if roles["humval"] and humval:
@@ -145,10 +179,11 @@ def ddy_design_columns(text: str) -> dict:
         # Enthalpy design days may carry the enthalpy magnitude in field 13 {J/kg}.
         # The onebuilding DDYs leave it blank; JSON-generated DDYs fill it.
         em = re.search(r"Ann Clg ([\d.]+)% Condns Enth=>MDB", name)
-        if em and len(obj) > 13 and obj[13].strip():
+        if em and _field(obj, _F_ENTHALPY):
             enth_col = {".4": "BE", "1": "BG", "2": "BI"}.get(em.group(1))
             if enth_col:
-                cols[enth_col] = round(float(obj[13]) / 1000.0, 1)  # J/kg -> kJ/kg
+                # J/kg -> kJ/kg
+                cols[enth_col] = round(float(_field(obj, _F_ENTHALPY)) / 1000.0, 1)
 
     # Comment-line statistics.
     def grab(pattern, *col_groups):
@@ -191,6 +226,44 @@ def ddy_design_columns(text: str) -> dict:
     if m and m.group(1).upper() in _MONTHS:
         cols["AF"] = _MONTHS[m.group(1).upper()]
     return cols
+
+
+def ddy_monthly_values(text: str) -> dict:
+    """Parse the per-design-day daily ranges and optical depths from a DDY.
+
+    Returns ``{variable: {month (1-12): raw value}}`` in the DDY's own units. These are
+    the ASHRAE monthly columns PJ-RQ (mean daily ranges) and RR-SO (clear-sky optical
+    depths). Each annual design day states them for its own month only, so a DDY
+    populates the design months and says nothing about the rest of the year.
+
+    Which range a day reports depends on the design variable it is built around, hence
+    ``DESIGN_DAY_RANGE_VARS``. The winter days report none.
+    """
+    monthly: dict = {}
+
+    def put(variable: Optional[str], month: int, raw: str) -> None:
+        if variable and raw:
+            monthly.setdefault(variable, {})[month] = float(raw)
+
+    for obj in parse_idf_objects(text):
+        if obj[0] != "SizingPeriod:DesignDay":
+            continue
+        parts = _annual_day_parts(_field(obj, _F_NAME))
+        if parts is None:
+            continue
+        month_field = _field(obj, _F_MONTH)
+        if not month_field:
+            continue
+        month = int(float(month_field))
+        db_var, wb_var = DESIGN_DAY_RANGE_VARS.get(parts[1], (None, None))
+        put(db_var, month, _field(obj, _F_DAILY_DRY_BULB_RANGE))
+        put(wb_var, month, _field(obj, _F_DAILY_WET_BULB_RANGE))
+        # taub/taud belong to the ASHRAETau solar models; the winter days use
+        # ASHRAEClearSky and leave both blank, so nothing is picked up there.
+        beam_var, diffuse_var = OPTICAL_DEPTH_VARS
+        put(beam_var, month, _field(obj, _F_TAUB))
+        put(diffuse_var, month, _field(obj, _F_TAUD))
+    return monthly
 
 
 def parse_site_location(text: str) -> Optional[dict]:
@@ -307,9 +380,13 @@ def ddy_to_climate_information(
                     "Annual design conditions parsed from the DDY SizingPeriod:DesignDay "
                     "objects and header comments, converted to base SI units. The DDY does "
                     "not carry the extreme-max wet-bulb or the standard deviations of the "
-                    "extreme-annual values."
+                    "extreme-annual values. The daily ranges and clear-sky optical depths "
+                    "are populated only for the design months the design days state."
                 ),
-                "summary_data": build_summary_data(cols, period_id),
+                "summary_data": {
+                    **build_summary_data(cols, period_id),
+                    **build_monthly_summary_data(ddy_monthly_values(text), period_id),
+                },
             }
         ],
     }

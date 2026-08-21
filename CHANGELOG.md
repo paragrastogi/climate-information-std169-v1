@@ -33,6 +33,25 @@ statistical and design summaries derived from it.
   - The five `daily_*_temperature_range*` variables.
   - The `coldest_month` / `hottest_month` convenience indices.
 
+### Fixed
+
+- `tools/json_to_ddy.py` wrote every design day with `Daily Dry-Bulb Temperature Range`
+  at `0.0`, a blank `Daily Wet-Bulb Temperature Range`, and an `ASHRAEClearSky` /
+  `Clearness 0.00` stub with no optical depths. In EnergyPlus that is an isothermal
+  design day with no sun, which under-sizes cooling plant. The cooling days now carry the
+  mean daily ranges and the clear-sky optical depths (`ASHRAETau2017`) for their month;
+  the heating days keep the zero range and `ASHRAEClearSky`, which is what real DDYs do.
+- `tools/ddy_to_json.py` did not read those fields either, so the loss was symmetric and
+  invisible to a round-trip test. It now recovers the five `daily_*_temperature_range*`
+  variables and both `clear_sky_*_optical_depth` variables, keyed to each design day's
+  month. `tools/test_climate_helpers.py` gains two tests over these fields: the annual
+  design days of both example DDYs now survive DDY -> JSON -> DDY unchanged, field for
+  field.
+- `tools/generate_examples.py` wrote `*-from-json.ddy` from the EPW-derived JSON, which
+  structurally cannot hold those fields (an EPW header is ASHRAE columns P-CL only). It
+  now writes the DDY from the DDY-derived JSON, making that artifact a true
+  DDY -> JSON -> DDY round-trip.
+
 ### Removed
 
 Nothing. Time-series variables already present but outside any design table (for example

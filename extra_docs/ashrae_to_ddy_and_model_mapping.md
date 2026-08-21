@@ -147,6 +147,30 @@ climate.onebuilding DDYs leave the `Enthalpy at Maximum Dry-Bulb` field blank, s
 from that source yields the enthalpy MCDB but not the enthalpy itself. DDYs written by
 `json_to_ddy.py` do fill the field, which is what makes the round-trip exact.
 
+### Daily ranges and the solar model
+
+Each design day also states the mean daily temperature ranges and the clear-sky optical
+depths **for its own month**, so these are read and written per design day rather than by
+column letter. Which range a day reports depends on the design variable it is built
+around:
+
+| Design day | `Daily Dry-Bulb Temperature Range` | `Daily Wet-Bulb Temperature Range` |
+|---|---|---|
+| `DB=>MWB` | `daily_dry_bulb_temperature_range_at_design_dry_bulb_temperature` | `daily_wet_bulb_temperature_range_at_design_dry_bulb_temperature` |
+| `WB=>MDB` | `daily_dry_bulb_temperature_range_at_design_wet_bulb_temperature` | `daily_wet_bulb_temperature_range_at_design_wet_bulb_temperature` |
+| `DP=>MDB`, `Enth=>MDB` | `daily_dry_bulb_temperature_range` | *(blank)* |
+| the winter days | `0.0` | *(blank)* |
+
+The winter days are not an omission: a heating design day deliberately has no diurnal
+swing and no solar gain, so real DDYs give it a `0.0` range and the `ASHRAEClearSky` model
+with `Clearness` at `0.00` and no optical depths. The summer days use `ASHRAETau2017` with
+the month's `clear_sky_beam_optical_depth` (taub) and `clear_sky_diffuse_optical_depth`
+(taud), and carry no `Clearness` field at all.
+
+Because a design day speaks only for its own month, a DDY-derived document populates the
+design months and leaves the other entries of each 12-month array empty -- for the example
+stations, only July, since both put every cooling day in the hottest month.
+
 ### Statistics carried in the comment block
 
 The `!` comment lines above the design days carry the statistics that have no design-day
@@ -170,20 +194,19 @@ ASHRAE-derived one. Absent from the output:
 - **Extreme Maximum Wet-Bulb (BK)** -- no design-day or comment slot.
 - **Standard deviations of the extreme annual values (BQ/BR, CC/CD)** -- the comment block
   carries the means only.
-- **Everything from column CM onward** -- average daily temperature, degree days, monthly
-  and annual average wind speed, precipitation, monthly design DB/WB tables, mean daily
-  ranges, and the clear-sky / all-sky solar columns. These live in the `.stat` file.
+- **Most of what follows column CM** -- average daily temperature, degree days, monthly
+  and annual average wind speed, precipitation, and the all-sky solar columns. These live
+  in the `.stat` file. The mean daily ranges (PJ-RQ) and the clear-sky optical depths
+  (RR-SO) are the exception: a design day states them for its own month, so a DDY carries
+  those months and nothing else.
+- **The monthly design DB/WB tables (HZ-PI).** A DDY does hold monthly design days, but
+  neither converter reads or writes them yet -- only the 18 annual days above.
 - **Any time series.** A DDY has no hourly records; pair it with an EPW for those (the
   converters merge an EPW and a DDY into one document when both are present).
 
-Two further gaps are in the writer rather than the format. `json_to_ddy.py` emits
-`Daily Dry-Bulb Temperature Range` as `0.0` and leaves the clear-sky optical depths
-(`taub` / `taud`) blank with `Clearness` at `0.00`, even though the model does carry
-`daily_dry_bulb_temperature_range` and both optical-depth variables. It also emits annual
-design days only -- monthly design days are not written, because the JSON design summary
-the writer consumes is annual. The `Barometric Pressure` field is recomputed from
-`elevation` via the US standard atmosphere, which is the ASHRAE StdP column (J) the model
-deliberately excludes as derivable.
+One field is regenerated rather than carried: `json_to_ddy.py` recomputes
+`Barometric Pressure` from `elevation` via the US standard atmosphere, which is the ASHRAE
+StdP column (J) the model deliberately excludes as derivable.
 
 ## ASHRAE quantities deliberately omitted
 
